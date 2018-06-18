@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import ome.api.IEventContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -51,7 +52,7 @@ import ome.services.graphs.GraphPolicy;
 import ome.services.graphs.GraphTraversal;
 import ome.services.graphs.GroupPredicate;
 import ome.services.util.ReadOnlyStatus;
-import ome.system.EventContext;
+
 import ome.system.Login;
 import ome.system.Roles;
 import omero.cmd.Chgrp2;
@@ -144,7 +145,7 @@ public class Chgrp2I extends Chgrp2 implements IRequest, ReadOnlyStatus.IsAware,
         this.graphHelper = new GraphHelper(helper, graphPathBean);
 
         /* check that the user is a member of the destination group */
-        final EventContext eventContext = helper.getEventContext();
+        final IEventContext eventContext = helper.getEventContext();
         final boolean isChgrpPrivilege = graphHelper.checkIsAdministrator(adminPrivileges.getPrivilege(AdminPrivilege.VALUE_CHGRP));
         if (!(isChgrpPrivilege || eventContext.getMemberOfGroupsList().contains(groupId))) {
             final Exception e = new IllegalArgumentException("not a member of the chgrp destination group");

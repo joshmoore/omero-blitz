@@ -12,16 +12,16 @@ import java.util.Set;
 import java.util.UUID;
 
 import ome.api.IAdmin;
+import ome.api.IEventContext;
 import ome.api.IShare;
 import ome.api.local.LocalAdmin;
 import ome.logic.HardWiredInterceptor;
 import ome.services.blitz.fire.AopContextInitializer;
-import ome.services.blitz.fire.Registry;
-import ome.services.blitz.fire.TopicManager;
+import ome.services.blitz.Registry;
+import ome.services.blitz.TopicManager;
 import ome.services.blitz.util.ServiceFactoryAware;
 import ome.services.sessions.SessionManager;
 import ome.services.util.Executor;
-import ome.system.EventContext;
 import ome.system.OmeroContext;
 import ome.system.Principal;
 import ome.system.ServiceFactory;
@@ -194,11 +194,11 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     public List<IObject> getSecurityContexts(Current __current)
             throws ServerError {
 
-        final EventContext ec = getEventContext();
-        List<?> objs = (List) executor.execute(principal,
-                new Executor.SimpleWork(this, "getSecurityContext") {
+        final IEventContext ec = getEventContext();
+        List<?> objs = executor.execute(principal,
+                new Executor.SimpleWork<List>(this, "getSecurityContext") {
                     @Transactional(readOnly = true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public List doWork(Session session, ServiceFactory sf) {
 
                         final IAdmin admin = sf.getAdminService();
                         final IShare share = sf.getShareService();
@@ -245,7 +245,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     public void setSecurityPassword(final String password, Current __current)
             throws ServerError {
 
-        final EventContext ec = getEventContext();
+        final IEventContext ec = getEventContext();
         final String name = ec.getCurrentUserName();
         final boolean ok = sessionManager.executePasswordCheck(name, password);
         if (!ok) {
@@ -552,28 +552,28 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     }
 
     /** Doesn't take current into account */
-    public EventContext getEventContext() {
+    public IEventContext getEventContext() {
         return sessionManager.getEventContext(this.principal);
     }
 
     /** Takes current into account */
-    public EventContext getEventContext(final Ice.Current current) {
-        return (EventContext) executor.execute(current.ctx, this.principal,
-                new Executor.SimpleWork(this, "getEventContext") {
+    public IEventContext getEventContext(final Ice.Current current) {
+        return executor.execute(current.ctx, this.principal,
+                new Executor.SimpleWork<IEventContext>(this, "getEventContext") {
                     @Transactional(readOnly=true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public IEventContext doWork(Session session, ServiceFactory sf) {
                         return ((LocalAdmin) sf.getAdminService()).getEventContextQuiet();
                     }
                 });
     }
 
     private boolean isGuest() {
-        return (Boolean) executor.execute(this.principal,
-                new Executor.SimpleWork(this, "isGuest") {
+        return executor.execute(this.principal,
+                new Executor.SimpleWork<Boolean>(this, "isGuest") {
                     @Transactional(readOnly=true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public Boolean doWork(Session session, ServiceFactory sf) {
                         LocalAdmin admin = (LocalAdmin) sf.getAdminService();
-                        EventContext ec = admin.getEventContextQuiet();
+                        IEventContext ec = admin.getEventContextQuiet();
                         long guestId = admin.getSecurityRoles().getGuestId();
                         return ec.getCurrentUserId().equals(guestId);
                     }

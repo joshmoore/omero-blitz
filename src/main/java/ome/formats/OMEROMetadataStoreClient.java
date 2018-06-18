@@ -228,7 +228,7 @@ import Glacier2.PermissionDeniedException;
  * @author Chris Allan, callan at lifesci.dundee.ac.uk
  */
 public class OMEROMetadataStoreClient
-    implements MetadataStore, IMinMaxStore, IObjectContainerStore
+        implements MetadataStore, IMinMaxStore, IObjectContainerStore
 {
 
     /** Logger for this class */
@@ -244,18 +244,18 @@ public class OMEROMetadataStoreClient
 
     /** Our IObject container cache. */
     private Map<LSID, IObjectContainer> containerCache =
-        new TreeMap<LSID, IObjectContainer>(new OMEXMLModelComparator());
+            new TreeMap<LSID, IObjectContainer>(new OMEXMLModelComparator());
 
     /** Our LSID reference cache. */
     private Map<LSID, List<LSID>> referenceCache =
-        new HashMap<LSID, List<LSID>>();
+            new HashMap<LSID, List<LSID>>();
 
     private Map<LSID, Set<LSID>> referenceCacheCheck =
-        new HashMap<LSID, Set<LSID>>();
+            new HashMap<LSID, Set<LSID>>();
 
     /** Our authoritative LSID container cache. */
     private Map<Class<? extends IObject>, Map<String, IObjectContainer>>
-        authoritativeContainerCache =
+            authoritativeContainerCache =
             new HashMap<Class<? extends IObject>, Map<String, IObjectContainer>>();
 
     /**
@@ -330,14 +330,14 @@ public class OMEROMetadataStoreClient
      * for an explanation of its usage.
      */
     public static final String OMERO_EMISSION_FILTER_SUFFIX =
-        ":OMERO_EMISSION_FILTER";
+            ":OMERO_EMISSION_FILTER";
 
     /** Excitation filter LSID suffix.
      * See {@link #setFilterSetExcitationFilterRef(String, int, int, int)}
      * for an explanation of its usage.
      */
     public static final String OMERO_EXCITATION_FILTER_SUFFIX =
-        ":OMERO_EXCITATION_FILTER";
+            ":OMERO_EXCITATION_FILTER";
 
     /** The default longest side of a thumbnail in OMERO.insight. */
     private static final int DEFAULT_INSIGHT_THUMBNAIL_LONGEST_SIDE = 96;
@@ -407,7 +407,7 @@ public class OMEROMetadataStoreClient
      * @throws ServerError
      */
     private void initializeServices(boolean manageLifecycle)
-        throws ServerError
+            throws ServerError
     {
 
         closeServices();
@@ -546,7 +546,7 @@ public class OMEROMetadataStoreClient
      * @throws ServerError if the services could not be initialized
      */
     public void initialize(ServiceFactoryPrx serviceFactory)
-        throws ServerError
+            throws ServerError
     {
         if (serviceFactory == null)
             throw new IllegalArgumentException("No factory.");
@@ -563,7 +563,7 @@ public class OMEROMetadataStoreClient
      * @throws ServerError if the services could not be initialized
      */
     public void initialize(omero.client c)
-        throws ServerError
+            throws ServerError
     {
         this.c = c;
         c.setAgent("OMERO.importer");
@@ -590,9 +590,9 @@ public class OMEROMetadataStoreClient
      */
     public void initialize(String username, String password,
                            String server, int port)
-        throws CannotCreateSessionException, PermissionDeniedException, ServerError
+            throws CannotCreateSessionException, PermissionDeniedException, ServerError
     {
-    // Always make this an unsecure session
+        // Always make this an unsecure session
         initialize(username, password, server, port, false);
     }
 
@@ -615,15 +615,15 @@ public class OMEROMetadataStoreClient
      * server.
      */
     public void initialize(String username, String password,
-            String server, int port, boolean isSecure)
-    throws CannotCreateSessionException, PermissionDeniedException, ServerError
+                           String server, int port, boolean isSecure)
+            throws CannotCreateSessionException, PermissionDeniedException, ServerError
     {
         secure(server, port);
         c.createSession(username, password);
-    if (!isSecure)
-    {
-        unsecure();
-    }
+        if (!isSecure)
+        {
+            unsecure();
+        }
         initializeServices(true);
     }
 
@@ -648,15 +648,15 @@ public class OMEROMetadataStoreClient
      * server.
      */
     public void initialize(String username, String password,
-            String server, int port, Long group, boolean isSecure)
-    throws CannotCreateSessionException, PermissionDeniedException, ServerError
+                           String server, int port, Long group, boolean isSecure)
+            throws CannotCreateSessionException, PermissionDeniedException, ServerError
     {
         secure(server, port);
         serviceFactory = c.createSession(username, password);
-    if (!isSecure)
-    {
-        unsecure();
-    }
+        if (!isSecure)
+        {
+            unsecure();
+        }
         setGroup(group);
         initializeServices(true);
     }
@@ -674,9 +674,9 @@ public class OMEROMetadataStoreClient
      * @throws ServerError if the services could not be initialized
      */
     public void initialize(String server, int port, String sessionKey)
-        throws CannotCreateSessionException, PermissionDeniedException, ServerError
+            throws CannotCreateSessionException, PermissionDeniedException, ServerError
     {
-    // Always make this an 'unsecure' session
+        // Always make this an 'unsecure' session
         initialize(server, port, sessionKey, false);
     }
 
@@ -694,7 +694,7 @@ public class OMEROMetadataStoreClient
      * @throws ServerError if the services could not be initialized
      */
     public void initialize(String server, int port, String sessionKey, boolean isSecure)
-        throws CannotCreateSessionException, PermissionDeniedException, ServerError
+            throws CannotCreateSessionException, PermissionDeniedException, ServerError
     {
         secure(server, port);
         serviceFactory = c.joinSession(sessionKey);
@@ -724,8 +724,8 @@ public class OMEROMetadataStoreClient
     private void secure(String server, int port) throws CannotCreateSessionException,
             PermissionDeniedException, ServerError {
         log.info(String.format(
-                    "Attempting initial SSL connection to %s:%d",
-                    server, port));
+                "Attempting initial SSL connection to %s:%d",
+                server, port));
         c = new client(server, port);
         c.setAgent("OMERO.importer");
     }
@@ -766,8 +766,8 @@ public class OMEROMetadataStoreClient
     {
         try {
             serviceFactory.keepAllAlive(new ServiceInterfacePrx[]
-                {iQuery, iAdmin, rawFileStore, rawPixelStore, thumbnailStore,
-                iRepoInfo, iContainer, iUpdate, iSettings, delegate});
+                    {iQuery, iAdmin, rawFileStore, rawPixelStore, thumbnailStore,
+                            iRepoInfo, iContainer, iUpdate, iSettings, delegate});
             log.debug("KeepAlive ping.");
 
         } catch (Exception e) {
@@ -840,7 +840,7 @@ public class OMEROMetadataStoreClient
     // RTYPES
     //
 
-  /**
+    /**
      * Transforms a Java type into the corresponding OMERO RType.
      *
      * @param value Java concrete type value.
@@ -856,12 +856,12 @@ public class OMEROMetadataStoreClient
         if (timeIncrement == null) return null;
 
         ome.model.enums.UnitsTime internal =
-            ome.model.enums.UnitsTime.bySymbol(
-                    timeIncrement.unit().getSymbol());
+                ome.model.enums.UnitsTime.bySymbol(
+                        timeIncrement.unit().getSymbol());
 
         omero.model.enums.UnitsTime ut =
-            omero.model.enums.UnitsTime.valueOf(
-                internal.toString());
+                omero.model.enums.UnitsTime.valueOf(
+                        internal.toString());
 
         omero.model.Time t = new omero.model.TimeI();
         t.setValue(timeIncrement.value().doubleValue());
@@ -1143,7 +1143,7 @@ public class OMEROMetadataStoreClient
             image.setAcquisitionDate(null);
             Pixels pixels = image.getPrimaryPixels();
             LinkedHashMap<Index, Integer> indexes =
-                new LinkedHashMap<Index, Integer>();
+                    new LinkedHashMap<Index, Integer>();
             indexes.put(Index.IMAGE_INDEX, series);
             container = getIObjectContainer(Image.class, indexes);
             container.sourceObject = image;
@@ -1177,9 +1177,9 @@ public class OMEROMetadataStoreClient
             log.debug("Creating root!");
             initializeServices(false); // Reset group
             authoritativeContainerCache =
-                new HashMap<Class<? extends IObject>, Map<String, IObjectContainer>>();
+                    new HashMap<Class<? extends IObject>, Map<String, IObjectContainer>>();
             containerCache =
-                new TreeMap<LSID, IObjectContainer>(new OMEXMLModelComparator());
+                    new TreeMap<LSID, IObjectContainer>(new OMEXMLModelComparator());
             referenceCache = new HashMap<LSID, List<LSID>>();
             referenceCacheCheck = new HashMap<LSID, Set<LSID>>();
             referenceStringCache = null;
@@ -1239,7 +1239,7 @@ public class OMEROMetadataStoreClient
                 {
                     log.trace(String.format("Duplicate LSID %s exists in %s,%s",
                             lsid, container.sourceObject, container.LSID));
-                        return;
+                    return;
                 }
             }
         }
@@ -1360,8 +1360,8 @@ public class OMEROMetadataStoreClient
     public void setUserSpecifiedTarget(IObject target)
     {
         if (target instanceof Screen && null != screenKey) {
-          log.info("deleting screen ref in favor of user-specified one");
-          referenceCache.remove(screenKey);
+            log.info("deleting screen ref in favor of user-specified one");
+            referenceCache.remove(screenKey);
         }
         this.userSpecifiedTarget = target;
     }
@@ -1383,7 +1383,7 @@ public class OMEROMetadataStoreClient
                                                    Double physicalSizeZ)
     {
         userSpecifiedPhysicalPixelSizes =
-            new Double[] { physicalSizeX, physicalSizeY, physicalSizeZ };
+                new Double[] { physicalSizeX, physicalSizeY, physicalSizeZ };
     }
 
     /**
@@ -1444,7 +1444,7 @@ public class OMEROMetadataStoreClient
      * @see ome.formats.model.IObjectContainerStore#getAuthoritativeContainerCache()
      */
     public Map<Class<? extends IObject>, Map<String, IObjectContainer>>
-        getAuthoritativeContainerCache()
+    getAuthoritativeContainerCache()
     {
         return authoritativeContainerCache;
     }
@@ -1456,17 +1456,17 @@ public class OMEROMetadataStoreClient
      * @param container Container to add.
      */
     private void addAuthoritativeContainer(Class<? extends IObject> klass,
-        String lsid,
-        IObjectContainer container)
+                                           String lsid,
+                                           IObjectContainer container)
     {
-      Map<String, IObjectContainer> lsidContainerMap =
-          authoritativeContainerCache.get(klass);
-      if (lsidContainerMap == null)
-      {
-          lsidContainerMap = new HashMap<String, IObjectContainer>();
-          authoritativeContainerCache.put(klass, lsidContainerMap);
-      }
-      lsidContainerMap.put(lsid, container);
+        Map<String, IObjectContainer> lsidContainerMap =
+                authoritativeContainerCache.get(klass);
+        if (lsidContainerMap == null)
+        {
+            lsidContainerMap = new HashMap<String, IObjectContainer>();
+            authoritativeContainerCache.put(klass, lsidContainerMap);
+        }
+        lsidContainerMap.put(lsid, container);
     }
 
     /**
@@ -1563,7 +1563,7 @@ public class OMEROMetadataStoreClient
     public boolean hasReference(LSID source, LSID target)
     {
         if (!referenceCache.containsKey(source)
-            || !referenceCache.get(source).contains(target))
+                || !referenceCache.get(source).contains(target))
         {
             return false;
         }
@@ -1585,9 +1585,9 @@ public class OMEROMetadataStoreClient
         catch (Exception e)
         {
             log.error("Server error setting extended properties for Pixels:" +
-                      pixelsId + " Target file:" + file, e);
+                    pixelsId + " Target file:" + file, e);
             throw e instanceof RuntimeException ?
-                (RuntimeException) e : new RuntimeException(e);
+                    (RuntimeException) e : new RuntimeException(e);
         }
     }
 
@@ -1598,7 +1598,7 @@ public class OMEROMetadataStoreClient
      * @throws ServerError if the group could not be set or the services initialized accordingly
      */
     public void setCurrentGroup(long groupID)
-        throws ServerError
+            throws ServerError
     {
         setGroup(groupID);
         initializeServices(false);
@@ -1612,22 +1612,22 @@ public class OMEROMetadataStoreClient
      * retrieve data from OMERO service.
      */
     List<ExperimenterGroup> getUserGroups()
-        throws ServerError
+            throws ServerError
     {
         List<ExperimenterGroup> myGroups = new ArrayList<ExperimenterGroup>();
         //Need method server side.
         ParametersI p = new ParametersI();
         p.addId(eventContext.userId);
         List<IObject> groups = iQuery.findAllByQuery(
-            "select distinct g from ExperimenterGroup as g "
-            + "join fetch g.groupExperimenterMap as map "
-            + "join fetch map.parent e "
-            + "left outer join fetch map.child u "
-            + "left outer join fetch u.groupExperimenterMap m2 "
-            + "left outer join fetch m2.parent p "
-            + "where g.id in "
-            + "  (select m.parent from GroupExperimenterMap m "
-            + "  where m.child.id = :id )", p);
+                "select distinct g from ExperimenterGroup as g "
+                        + "join fetch g.groupExperimenterMap as map "
+                        + "join fetch map.parent e "
+                        + "left outer join fetch map.child u "
+                        + "left outer join fetch u.groupExperimenterMap m2 "
+                        + "left outer join fetch m2.parent p "
+                        + "where g.id in "
+                        + "  (select m.parent from GroupExperimenterMap m "
+                        + "  where m.child.id = :id )", p);
 
         ExperimenterGroup group;
         Iterator<IObject> i = groups.iterator();
@@ -1660,7 +1660,7 @@ public class OMEROMetadataStoreClient
             return null;
 
         ExperimenterGroup currentDefaultGroup =
-            iAdmin.getDefaultGroup(eventContext.userId);
+                iAdmin.getDefaultGroup(eventContext.userId);
 
         Iterator<ExperimenterGroup> i = groups.iterator();
         ExperimenterGroup group = null;
@@ -1677,12 +1677,12 @@ public class OMEROMetadataStoreClient
         }
 
         String dn = currentDefaultGroup.getName() == null ? null
-            : currentDefaultGroup.getName().getValue();
+                : currentDefaultGroup.getName().getValue();
 
         // Add the default group last (unless its a system group)
         if (!systemGroups.contains(dn))
             names.put(currentDefaultGroup.getId().getValue(),
-            currentDefaultGroup.getName().getValue());
+                    currentDefaultGroup.getName().getValue());
 
         if (names.size() == 0) names = null;
         return names;
@@ -1697,10 +1697,10 @@ public class OMEROMetadataStoreClient
     public String getDefaultGroupName() throws ServerError
     {
         ExperimenterGroup currentDefaultGroup =
-            iAdmin.getDefaultGroup(eventContext.userId);
+                iAdmin.getDefaultGroup(eventContext.userId);
 
         String dn = currentDefaultGroup.getName() == null ? ""
-            : currentDefaultGroup.getName().getValue();
+                : currentDefaultGroup.getName().getValue();
 
         return dn;
     }
@@ -1717,7 +1717,7 @@ public class OMEROMetadataStoreClient
         int groupLevel = 0;
 
         ExperimenterGroup currentDefaultGroup =
-            iAdmin.getDefaultGroup(eventContext.userId);
+                iAdmin.getDefaultGroup(eventContext.userId);
 
         Permissions perm = currentDefaultGroup.getDetails().getPermissions();
 
@@ -1773,7 +1773,7 @@ public class OMEROMetadataStoreClient
         {
             Collection<IObjectContainer> containers = containerCache.values();
             IObjectContainer[] containerArray =
-                containers.toArray(new IObjectContainer[containers.size()]);
+                    containers.toArray(new IObjectContainer[containers.size()]);
 
             if (log.isDebugEnabled())
             {
@@ -1797,9 +1797,9 @@ public class OMEROMetadataStoreClient
                 }
 
                 log.debug("containerCache contains " + containerCache.size()
-                          + " entries.");
+                        + " entries.");
                 log.debug("referenceCache contains " + countCachedReferences(null, null)
-                          + " entries.");
+                        + " entries.");
             }
 
             int maxBatchSize = getDefaultBatchSize();
@@ -1809,7 +1809,7 @@ public class OMEROMetadataStoreClient
             while (containerPointer < containerArray.length)
             {
                 int nObjects = (int) Math.min(
-                    maxBatchSize, containerArray.length - containerPointer);
+                        maxBatchSize, containerArray.length - containerPointer);
 
                 IObjectContainer[] batch = Arrays.copyOfRange(
                         containerArray, containerPointer, containerPointer+nObjects);
@@ -1827,7 +1827,7 @@ public class OMEROMetadataStoreClient
             int referenceBatchCount = 0;
             int referencePointer = 0;
             String[] referenceKeys = referenceStringCache.keySet().toArray(
-              new String[referenceStringCache.size()]);
+                    new String[referenceStringCache.size()]);
 
             log.info("Handling # of references: {}", referenceKeys.length);
             while (referencePointer < referenceKeys.length) {
@@ -1840,7 +1840,7 @@ public class OMEROMetadataStoreClient
 
                 Map<String, String[]> referenceBatch = new HashMap<String, String[]>();
                 int batchSize = (int) Math.min(
-                    maxBatchSize, referenceKeys.length - referencePointer);
+                        maxBatchSize, referenceKeys.length - referencePointer);
                 for (int i=0; i<batchSize; i++) {
                     String key = referenceKeys[referencePointer + i];
                     referenceBatch.put(key, referenceStringCache.get(key));
@@ -1900,12 +1900,12 @@ public class OMEROMetadataStoreClient
             T obj = (T) iQuery.get(klass.getName(), id, allGroups);
             if (obj == null) {
                 throw new RuntimeException(String.format("Cannot find target: %s:%s",
-                            klass.getName(), id));
+                        klass.getName(), id));
             }
             long grpID = obj.getDetails().getGroup().getId().getValue();
             if (grpID != eventContext.groupId) {
                 throw new RuntimeException(String.format("Target container in group: %s, not current group: %s",
-                            grpID, eventContext.groupId));
+                        grpID, eventContext.groupId));
             }
             setCurrentGroup(grpID);
             return obj;
@@ -1939,7 +1939,7 @@ public class OMEROMetadataStoreClient
      * @return the newly persisted dataset
      */
     public Dataset addDataset(String datasetName, String datasetDescription,
-            Project project)
+                              Project project)
     {
         Dataset dataset = new DatasetI();
         if (datasetName.length() != 0)
@@ -1998,7 +1998,7 @@ public class OMEROMetadataStoreClient
         try
         {
             List<IObject> objects =
-                iContainer.loadContainerHierarchy(Screen.class.getName(), null, new ParametersI().exp(rlong(getExperimenterID())));
+                    iContainer.loadContainerHierarchy(Screen.class.getName(), null, new ParametersI().exp(rlong(getExperimenterID())));
             List<Screen> screens = new ArrayList<Screen>(objects.size());
             for (IObject object : objects)
             {
@@ -2021,7 +2021,7 @@ public class OMEROMetadataStoreClient
         try
         {
             List<IObject> objects =
-                iContainer.loadContainerHierarchy(Project.class.getName(), null, new ParametersI().exp(rlong(getExperimenterID())));
+                    iContainer.loadContainerHierarchy(Project.class.getName(), null, new ParametersI().exp(rlong(getExperimenterID())));
             List<Project> projects = new ArrayList<Project>(objects.size());
             for (IObject object : objects)
             {
@@ -2051,7 +2051,7 @@ public class OMEROMetadataStoreClient
             List<Long> ids = new ArrayList<Long>(1);
             ids.add(p.getId().getValue());
             List<IObject> objects =
-                iContainer.loadContainerHierarchy(Project.class.getName(), ids, null);
+                    iContainer.loadContainerHierarchy(Project.class.getName(), ids, null);
             if (objects.size() > 0)
             {
                 Project project = (Project) objects.get(0);
@@ -2079,7 +2079,7 @@ public class OMEROMetadataStoreClient
             param.exp(rlong(getExperimenterID()));
             param.orphan();
             List<IObject> objects =
-                iContainer.loadContainerHierarchy(Project.class.getName(), null, param);
+                    iContainer.loadContainerHierarchy(Project.class.getName(), null, param);
             List<Dataset> datasets = new ArrayList<Dataset>(0);
             for (IObject object : objects)
             {
@@ -2188,7 +2188,7 @@ public class OMEROMetadataStoreClient
      * server.
      */
     public int[] getTileSize(Long pixId)
-        throws ServerError
+            throws ServerError
     {
         resetPixelsId(pixId);
         return rawPixelStore.getTileSize();
@@ -2211,7 +2211,7 @@ public class OMEROMetadataStoreClient
      */
     public void setTile(Long pixId, byte[] arrayBuf, int z, int c, int t,
                         int x, int y, int w, int h)
-        throws ServerError
+            throws ServerError
     {
         resetPixelsId(pixId);
         rawPixelStore.setTile(arrayBuf, z, c, t, x, y, w, h);
@@ -2228,7 +2228,7 @@ public class OMEROMetadataStoreClient
      * server.
      */
     public void setPlane(Long pixId, byte[] arrayBuf, int z, int c, int t)
-        throws ServerError
+            throws ServerError
     {
         resetPixelsId(pixId);
         rawPixelStore.setPlane(arrayBuf, z, c, t);
@@ -2239,10 +2239,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelGlobalMinMax(int channel, double minimum,
-            double maximum, int series)
+                                       double maximum, int series)
     {
         Pixels pixels =
-            (Pixels) getSourceObject(new LSID(Pixels.class, series));
+                (Pixels) getSourceObject(new LSID(Pixels.class, series));
         if (imageChannelGlobalMinMax == null)
         {
             int imageCount = countCachedContainers(Image.class);
@@ -2252,13 +2252,13 @@ public class OMEROMetadataStoreClient
         if (channelGlobalMinMax == null)
         {
             imageChannelGlobalMinMax[series] = channelGlobalMinMax =
-                new double[pixels.getSizeC().getValue()][];
+                    new double[pixels.getSizeC().getValue()][];
         }
         double[] globalMinMax = channelGlobalMinMax[channel];
         if (globalMinMax == null)
         {
             imageChannelGlobalMinMax[series][channel] = globalMinMax =
-                new double[2];
+                    new double[2];
         }
         globalMinMax[0] = minimum;
         globalMinMax[1] = maximum;
@@ -2313,7 +2313,7 @@ public class OMEROMetadataStoreClient
      * @param pixelsIds Set of Pixels IDs to reset defaults and thumbnails for.
      */
     public void resetDefaultsAndGenerateThumbnails(List<Long> plateIds,
-        List<Long> pixelsIds)
+                                                   List<Long> pixelsIds)
     {
         try
         {
@@ -2326,7 +2326,7 @@ public class OMEROMetadataStoreClient
                 iSettings.resetDefaultsInSet("Pixels", pixelsIds);
             }
             thumbnailStore.createThumbnailsByLongestSideSet(
-                rint(DEFAULT_INSIGHT_THUMBNAIL_LONGEST_SIDE), pixelsIds);
+                    rint(DEFAULT_INSIGHT_THUMBNAIL_LONGEST_SIDE), pixelsIds);
         }
         catch (ServerError e)
         {
@@ -2512,7 +2512,7 @@ public class OMEROMetadataStoreClient
             Class<?> sourceClass = sourceLSID.getJavaClass();
             if (sourceClass.equals(source))
             {
-            for (LSID targetLSID : referenceCache.get(sourceLSID))
+                for (LSID targetLSID : referenceCache.get(sourceLSID))
                 {
                     Class<?> targetClass = targetLSID.getJavaClass();
                     if (targetClass.equals(target))
@@ -2546,7 +2546,7 @@ public class OMEROMetadataStoreClient
     private Arc getArc(int instrumentIndex, int lightSourceIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         return getSourceObject(Arc.class, indexes);
@@ -2560,7 +2560,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Arc.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         IObjectContainer o = getIObjectContainer(Arc.class, indexes);
@@ -2573,7 +2573,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setArcLotNumber(String lotNumber, int instrumentIndex,
-            int lightSourceIndex)
+                                int lightSourceIndex)
     {
         Arc o = getArc(instrumentIndex, lightSourceIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -2584,7 +2584,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setArcManufacturer(String manufacturer, int instrumentIndex,
-            int lightSourceIndex)
+                                   int lightSourceIndex)
     {
         Arc o = getArc(instrumentIndex, lightSourceIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -2595,7 +2595,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setArcModel(String model, int instrumentIndex,
-            int lightSourceIndex)
+                            int lightSourceIndex)
     {
         Arc o = getArc(instrumentIndex, lightSourceIndex);
         o.setModel(toRType(model));
@@ -2606,7 +2606,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setArcPower(Power power, int instrumentIndex,
-            int lightSourceIndex)
+                            int lightSourceIndex)
     {
         Arc o = getArc(instrumentIndex, lightSourceIndex);
         o.setPower(convertPower(power));
@@ -2617,7 +2617,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setArcSerialNumber(String serialNumber, int instrumentIndex,
-            int lightSourceIndex)
+                                   int lightSourceIndex)
     {
         Arc o = getArc(instrumentIndex, lightSourceIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -2628,7 +2628,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setArcType(ome.xml.model.enums.ArcType type,
-            int instrumentIndex, int lightSourceIndex)
+                           int instrumentIndex, int lightSourceIndex)
     {
         Arc o = getArc(instrumentIndex, lightSourceIndex);
         o.setType((ArcType) getEnumeration(ArcType.class, type.toString()));
@@ -2653,7 +2653,7 @@ public class OMEROMetadataStoreClient
     private BooleanAnnotation getBooleanAnnotation(int booleanAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.BOOLEAN_ANNOTATION_INDEX, booleanAnnotationIndex);
         return getSourceObject(BooleanAnnotation.class, indexes);
     }
@@ -2666,7 +2666,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(BooleanAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.BOOLEAN_ANNOTATION_INDEX, booleanAnnotationIndex);
         IObjectContainer o = getIObjectContainer(BooleanAnnotation.class, indexes);
         o.LSID = id;
@@ -2678,7 +2678,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setBooleanAnnotationNamespace(String namespace,
-            int booleanAnnotationIndex)
+                                              int booleanAnnotationIndex)
     {
         BooleanAnnotation o = getBooleanAnnotation(booleanAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -2689,7 +2689,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setBooleanAnnotationValue(Boolean value,
-            int booleanAnnotationIndex)
+                                          int booleanAnnotationIndex)
     {
         BooleanAnnotation o = getBooleanAnnotation(booleanAnnotationIndex);
         o.setBoolValue(toRType(value));
@@ -2718,7 +2718,7 @@ public class OMEROMetadataStoreClient
     public Channel getChannel(int imageIndex, int channelIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         indexes.put(Index.CHANNEL_INDEX, channelIndex);
         Channel c = getSourceObject(Channel.class, indexes);
@@ -2734,7 +2734,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Channel.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         indexes.put(Index.CHANNEL_INDEX, channelIndex);
         IObjectContainer o = getIObjectContainer(Channel.class, indexes);
@@ -2807,7 +2807,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelFilterSetRef(String filterSet, int imageIndex,
-            int channelIndex)
+                                       int channelIndex)
     {
         LSID key = new LSID(LogicalChannel.class, imageIndex, channelIndex);
         addReference(key, new LSID(filterSet));
@@ -2829,7 +2829,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelIlluminationType(IlluminationType illuminationType,
-            int imageIndex, int channelIndex)
+                                           int imageIndex, int channelIndex)
     {
         Channel o = getChannel(imageIndex, channelIndex);
         o.getLogicalChannel().setIllumination((Illumination) getEnumeration(Illumination.class, illuminationType.toString()));
@@ -2841,7 +2841,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelNDFilter(Double ndfilter, int imageIndex,
-            int channelIndex)
+                                   int channelIndex)
     {
         Channel o = getChannel(imageIndex, channelIndex);
         o.getLogicalChannel().setNdFilter(toRType(ndfilter));
@@ -2864,7 +2864,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelPinholeSize(Length pinholeSize, int imageIndex,
-            int channelIndex)
+                                      int channelIndex)
     {
         Channel o = getChannel(imageIndex, channelIndex);
         o.getLogicalChannel().setPinHoleSize(convertLength(pinholeSize));
@@ -2875,7 +2875,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelPockelCellSetting(Integer pockelCellSetting,
-            int imageIndex, int channelIndex)
+                                            int imageIndex, int channelIndex)
     {
         Channel o = getChannel(imageIndex, channelIndex);
         o.getLogicalChannel().setPockelCellSetting(toRType(pockelCellSetting));
@@ -2887,7 +2887,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelSamplesPerPixel(PositiveInteger samplesPerPixel,
-            int imageIndex, int channelIndex)
+                                          int imageIndex, int channelIndex)
     {
         Channel o = getChannel(imageIndex, channelIndex);
         o.getLogicalChannel().setSamplesPerPixel(toRType(samplesPerPixel));
@@ -2898,13 +2898,13 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelAnnotationRef(String annotation, int imageIndex,
-            int channelIndex, int annotationRefIndex)
+                                        int channelIndex, int annotationRefIndex)
     {
         LSID key = new LSID(Channel.class, imageIndex, channelIndex);
         addReference(key, new LSID(annotation));
     }
 
-     ////////Lightsource Settings/////////
+    ////////Lightsource Settings/////////
 
     /**
      * Logical Channel and Channel combined in the new model
@@ -2916,7 +2916,7 @@ public class OMEROMetadataStoreClient
     private LightSettings getChannelLightSourceSettings(int imageIndex, int channelIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         indexes.put(Index.CHANNEL_INDEX, channelIndex);
         return getSourceObject(LightSettings.class, indexes);
@@ -2927,7 +2927,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setChannelLightSourceSettingsID(String id, int imageIndex,
-            int channelIndex)
+                                                int channelIndex)
     {
         getChannelLightSourceSettings(imageIndex, channelIndex);
         LSID key = new LSID(LightSettings.class, imageIndex, channelIndex);
@@ -2969,7 +2969,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDatasetAnnotationRef(String annotation, int datasetIndex,
-            int annotationRefIndex)
+                                        int annotationRefIndex)
     {
         ignoreUnsupported("setDatasetAnnotationRef", annotation, datasetIndex,
                 annotationRefIndex);
@@ -3023,7 +3023,7 @@ public class OMEROMetadataStoreClient
     public Detector getDetector(int instrumentIndex, int detectorIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.DETECTOR_INDEX, detectorIndex);
         return getSourceObject(Detector.class, indexes);
@@ -3037,7 +3037,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Detector.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.DETECTOR_INDEX, detectorIndex);
         IObjectContainer o = getIObjectContainer(Detector.class, indexes);
@@ -3050,7 +3050,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorAmplificationGain(Double amplificationGain,
-            int instrumentIndex, int detectorIndex)
+                                             int instrumentIndex, int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setAmplificationGain(toRType(amplificationGain));
@@ -3061,7 +3061,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorGain(Double gain, int instrumentIndex,
-            int detectorIndex)
+                                int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setGain(toRType(gain));
@@ -3072,7 +3072,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorLotNumber(String lotNumber, int instrumentIndex,
-            int detectorIndex)
+                                     int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -3083,7 +3083,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorManufacturer(String manufacturer,
-            int instrumentIndex, int detectorIndex)
+                                        int instrumentIndex, int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -3094,7 +3094,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorModel(String model, int instrumentIndex,
-            int detectorIndex)
+                                 int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setModel(toRType(model));
@@ -3105,7 +3105,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorOffset(Double offset, int instrumentIndex,
-            int detectorIndex)
+                                  int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setOffsetValue(toRType(offset));
@@ -3116,7 +3116,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorSerialNumber(String serialNumber,
-            int instrumentIndex, int detectorIndex)
+                                        int instrumentIndex, int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -3128,7 +3128,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorType(ome.xml.model.enums.DetectorType type,
-            int instrumentIndex, int detectorIndex)
+                                int instrumentIndex, int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setType((DetectorType) getEnumeration(DetectorType.class, type.toString()));
@@ -3139,7 +3139,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorVoltage(ElectricPotential voltage, int instrumentIndex,
-            int detectorIndex)
+                                   int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setVoltage(convertElectricPotential(voltage));
@@ -3150,7 +3150,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorZoom(Double zoom, int instrumentIndex,
-            int detectorIndex)
+                                int detectorIndex)
     {
         Detector o = getDetector(instrumentIndex, detectorIndex);
         o.setZoom(toRType(zoom));
@@ -3166,7 +3166,7 @@ public class OMEROMetadataStoreClient
     private DetectorSettings getDetectorSettings(int imageIndex, int channelIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         indexes.put(Index.CHANNEL_INDEX, channelIndex);
         return getSourceObject(DetectorSettings.class, indexes);
@@ -3177,7 +3177,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorSettingsID(String id, int imageIndex,
-            int channelIndex)
+                                      int channelIndex)
     {
         getDetectorSettings(imageIndex, channelIndex);
         LSID key = new LSID(DetectorSettings.class, imageIndex, channelIndex);
@@ -3201,7 +3201,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorSettingsGain(Double gain, int imageIndex,
-            int channelIndex)
+                                        int channelIndex)
     {
         DetectorSettings o = getDetectorSettings(imageIndex, channelIndex);
         o.setGain(toRType(gain));
@@ -3222,7 +3222,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorSettingsOffset(Double offset, int imageIndex,
-            int channelIndex)
+                                          int channelIndex)
     {
         DetectorSettings o = getDetectorSettings(imageIndex, channelIndex);
         o.setOffsetValue(toRType(offset));
@@ -3233,7 +3233,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorSettingsReadOutRate(Frequency readOutRate,
-            int imageIndex, int channelIndex)
+                                               int imageIndex, int channelIndex)
     {
         DetectorSettings o = getDetectorSettings(imageIndex, channelIndex);
         o.setReadOutRate(convertFrequency(readOutRate));
@@ -3244,7 +3244,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDetectorSettingsVoltage(ElectricPotential voltage, int imageIndex,
-            int channelIndex)
+                                           int channelIndex)
     {
         DetectorSettings o = getDetectorSettings(imageIndex, channelIndex);
         o.setVoltage(convertElectricPotential(voltage));
@@ -3270,7 +3270,7 @@ public class OMEROMetadataStoreClient
     private Dichroic getDichroic(int instrumentIndex, int dichroicIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.DICHROIC_INDEX, dichroicIndex);
         return getSourceObject(Dichroic.class, indexes);
@@ -3284,7 +3284,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Dichroic.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.DICHROIC_INDEX, dichroicIndex);
         IObjectContainer o = getIObjectContainer(Dichroic.class, indexes);
@@ -3297,7 +3297,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDichroicLotNumber(String lotNumber, int instrumentIndex,
-            int dichroicIndex)
+                                     int dichroicIndex)
     {
         Dichroic o = getDichroic(instrumentIndex, dichroicIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -3308,7 +3308,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDichroicManufacturer(String manufacturer,
-            int instrumentIndex, int dichroicIndex)
+                                        int instrumentIndex, int dichroicIndex)
     {
         Dichroic o = getDichroic(instrumentIndex, dichroicIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -3319,7 +3319,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDichroicModel(String model, int instrumentIndex,
-            int dichroicIndex)
+                                 int dichroicIndex)
     {
         Dichroic o = getDichroic(instrumentIndex, dichroicIndex);
         o.setModel(toRType(model));
@@ -3330,7 +3330,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDichroicSerialNumber(String serialNumber,
-            int instrumentIndex, int dichroicIndex)
+                                        int instrumentIndex, int dichroicIndex)
     {
         Dichroic o = getDichroic(instrumentIndex, dichroicIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -3341,7 +3341,7 @@ public class OMEROMetadataStoreClient
     private DoubleAnnotation getDoubleAnnotation(int doubleAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.DOUBLE_ANNOTATION_INDEX, doubleAnnotationIndex);
         return getSourceObject(DoubleAnnotation.class, indexes);
     }
@@ -3354,7 +3354,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(DoubleAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.DOUBLE_ANNOTATION_INDEX, doubleAnnotationIndex);
         IObjectContainer o = getIObjectContainer(DoubleAnnotation.class, indexes);
         o.LSID = id;
@@ -3366,7 +3366,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDoubleAnnotationNamespace(String namespace,
-            int doubleAnnotationIndex)
+                                             int doubleAnnotationIndex)
     {
         DoubleAnnotation o = getDoubleAnnotation(doubleAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -3392,7 +3392,7 @@ public class OMEROMetadataStoreClient
     private Ellipse getEllipse(int ROIIndex, int shapeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Ellipse.class, indexes);
@@ -3406,7 +3406,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Ellipse.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Ellipse.class, indexes);
@@ -3429,7 +3429,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setEllipseFontSize(Length fontSize, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Ellipse o = getEllipse(ROIIndex, shapeIndex);
         o.setFontSize(convertLength(fontSize));
@@ -3480,7 +3480,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setEllipseStrokeDashArray(String strokeDashArray, int ROIIndex,
-            int shapeIndex)
+                                          int shapeIndex)
     {
         Ellipse o = getEllipse(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -3491,7 +3491,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setEllipseStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                      int shapeIndex)
     {
         Ellipse o = getEllipse(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength(strokeWidth));
@@ -3532,7 +3532,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setEllipseTransform(AffineTransform transform, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Ellipse o = getEllipse(ROIIndex, shapeIndex);
         o.setTransform(toRType(transform));
@@ -3563,7 +3563,7 @@ public class OMEROMetadataStoreClient
     private Experiment getExperiment(int experimentIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.EXPERIMENT_INDEX, experimentIndex);
         return getSourceObject(Experiment.class, indexes);
     }
@@ -3576,7 +3576,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Experiment.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.EXPERIMENT_INDEX, experimentIndex);
         IObjectContainer o = getIObjectContainer(Experiment.class, indexes);
         o.LSID = id;
@@ -3598,7 +3598,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimentExperimenterRef(String experimenter,
-            int experimentIndex)
+                                             int experimentIndex)
     {
         ignoreInsecure("setExperimenterExperiemnterRef", experimenter,
                 experimentIndex);
@@ -3609,7 +3609,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimentType(ome.xml.model.enums.ExperimentType type,
-            int experimentIndex)
+                                  int experimentIndex)
     {
         Experiment o = getExperiment(experimentIndex);
         o.setType((ExperimentType) getEnumeration(ExperimentType.class, type.toString()));
@@ -3631,7 +3631,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimenterAnnotationRef(String annotation,
-            int experimenterIndex, int annotationRefIndex)
+                                             int experimenterIndex, int annotationRefIndex)
     {
         ignoreUnsupported("setExperimenterAnnotationRef",
                 annotation, experimenterIndex, annotationRefIndex);
@@ -3661,7 +3661,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimenterInstitution(String institution,
-            int experimenterIndex)
+                                           int experimenterIndex)
     {
         ignoreUnsupported("setExperimenterInstitution",
                 institution, experimenterIndex);
@@ -3682,7 +3682,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimenterMiddleName(String middleName,
-            int experimenterIndex)
+                                          int experimenterIndex)
     {
         ignoreUnsupported("setExperimenterMiddleName",
                 middleName, experimenterIndex);
@@ -3703,7 +3703,7 @@ public class OMEROMetadataStoreClient
     public Filament getFilament(int instrumentIndex, int lightSourceIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         return getSourceObject(Filament.class, indexes);
@@ -3714,11 +3714,11 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilamentID(String id, int instrumentIndex,
-            int lightSourceIndex)
+                              int lightSourceIndex)
     {
         checkDuplicateLSID(Filament.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         IObjectContainer o = getIObjectContainer(Filament.class, indexes);
@@ -3731,7 +3731,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilamentLotNumber(String lotNumber, int instrumentIndex,
-            int lightSourceIndex)
+                                     int lightSourceIndex)
     {
         Filament o = getFilament(instrumentIndex, lightSourceIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -3742,7 +3742,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilamentManufacturer(String manufacturer,
-            int instrumentIndex, int lightSourceIndex)
+                                        int instrumentIndex, int lightSourceIndex)
     {
         Filament o = getFilament(instrumentIndex, lightSourceIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -3753,7 +3753,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilamentModel(String model, int instrumentIndex,
-            int lightSourceIndex)
+                                 int lightSourceIndex)
     {
         Filament o = getFilament(instrumentIndex, lightSourceIndex);
         o.setModel(toRType(model));
@@ -3764,7 +3764,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilamentPower(Power power, int instrumentIndex,
-            int lightSourceIndex)
+                                 int lightSourceIndex)
     {
         Filament o = getFilament(instrumentIndex, lightSourceIndex);
         o.setPower(convertPower(power));
@@ -3775,7 +3775,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilamentSerialNumber(String serialNumber,
-            int instrumentIndex, int lightSourceIndex)
+                                        int instrumentIndex, int lightSourceIndex)
     {
         Filament o = getFilament(instrumentIndex, lightSourceIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -3786,7 +3786,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilamentType(ome.xml.model.enums.FilamentType type,
-            int instrumentIndex, int lightSourceIndex)
+                                int instrumentIndex, int lightSourceIndex)
     {
         Filament o = getFilament(instrumentIndex, lightSourceIndex);
         o.setType((FilamentType) getEnumeration(FilamentType.class, type.toString()));
@@ -3797,7 +3797,7 @@ public class OMEROMetadataStoreClient
     private FileAnnotation getFileAnnotation(int fileAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.FILE_ANNOTATION_INDEX, fileAnnotationIndex);
         return getSourceObject(FileAnnotation.class, indexes);
     }
@@ -3810,7 +3810,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(FileAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.FILE_ANNOTATION_INDEX, fileAnnotationIndex);
         IObjectContainer o = getIObjectContainer(FileAnnotation.class, indexes);
         o.LSID = id;
@@ -3822,7 +3822,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFileAnnotationNamespace(String namespace,
-            int fileAnnotationIndex)
+                                           int fileAnnotationIndex)
     {
         FileAnnotation o = getFileAnnotation(fileAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -3833,7 +3833,7 @@ public class OMEROMetadataStoreClient
     private Filter getFilter(int instrumentIndex, int filterIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.FILTER_INDEX, filterIndex);
         return getSourceObject(Filter.class, indexes);
@@ -3847,7 +3847,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Filter.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.FILTER_INDEX, filterIndex);
         IObjectContainer o = getIObjectContainer(Filter.class, indexes);
@@ -3860,7 +3860,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterFilterWheel(String filterWheel, int instrumentIndex,
-            int filterIndex)
+                                     int filterIndex)
     {
         Filter o = getFilter(instrumentIndex, filterIndex);
         o.setFilterWheel(toRType(filterWheel));
@@ -3871,7 +3871,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterLotNumber(String lotNumber, int instrumentIndex,
-            int filterIndex)
+                                   int filterIndex)
     {
         Filter o = getFilter(instrumentIndex, filterIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -3882,7 +3882,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterManufacturer(String manufacturer, int instrumentIndex,
-            int filterIndex)
+                                      int filterIndex)
     {
         Filter o = getFilter(instrumentIndex, filterIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -3893,7 +3893,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterModel(String model, int instrumentIndex,
-            int filterIndex)
+                               int filterIndex)
     {
         Filter o = getFilter(instrumentIndex, filterIndex);
         o.setModel(toRType(model));
@@ -3904,7 +3904,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSerialNumber(String serialNumber, int instrumentIndex,
-            int filterIndex)
+                                      int filterIndex)
     {
         Filter o = getFilter(instrumentIndex, filterIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -3915,7 +3915,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterType(ome.xml.model.enums.FilterType type,
-            int instrumentIndex, int filterIndex)
+                              int instrumentIndex, int filterIndex)
     {
         Filter o = getFilter(instrumentIndex, filterIndex);
         o.setType((FilterType) getEnumeration(FilterType.class, type.toString()));
@@ -3926,7 +3926,7 @@ public class OMEROMetadataStoreClient
     public FilterSet getFilterSet(int instrumentIndex, int filterSetIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.FILTER_SET_INDEX, filterSetIndex);
         return getSourceObject(FilterSet.class, indexes);
@@ -3937,11 +3937,11 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetID(String id, int instrumentIndex,
-            int filterSetIndex)
+                               int filterSetIndex)
     {
         checkDuplicateLSID(FilterSet.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.FILTER_SET_INDEX, filterSetIndex);
         IObjectContainer o = getIObjectContainer(FilterSet.class, indexes);
@@ -3954,7 +3954,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetDichroicRef(String dichroic, int instrumentIndex,
-            int filterSetIndex)
+                                        int filterSetIndex)
     {
         LSID key = new LSID(FilterSet.class, instrumentIndex, filterSetIndex);
         addReference(key, new LSID(dichroic));
@@ -3965,7 +3965,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetEmissionFilterRef(String emissionFilter,
-            int instrumentIndex, int filterSetIndex, int emissionFilterRefIndex)
+                                              int instrumentIndex, int filterSetIndex, int emissionFilterRefIndex)
     {
         // Using this suffix is kind of a gross hack but the reference
         // processing logic does not easily handle multiple A --> B or B --> A
@@ -3982,8 +3982,8 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetExcitationFilterRef(String excitationFilter,
-            int instrumentIndex, int filterSetIndex,
-            int excitationFilterRefIndex)
+                                                int instrumentIndex, int filterSetIndex,
+                                                int excitationFilterRefIndex)
     {
         // Using this suffix is kind of a gross hack but the reference
         // processing logic does not easily handle multiple A --> B or B --> A
@@ -4000,7 +4000,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetLotNumber(String lotNumber, int instrumentIndex,
-            int filterSetIndex)
+                                      int filterSetIndex)
     {
         FilterSet o = getFilterSet(instrumentIndex, filterSetIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -4011,7 +4011,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetManufacturer(String manufacturer,
-            int instrumentIndex, int filterSetIndex)
+                                         int instrumentIndex, int filterSetIndex)
     {
         FilterSet o = getFilterSet(instrumentIndex, filterSetIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -4022,7 +4022,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetModel(String model, int instrumentIndex,
-            int filterSetIndex)
+                                  int filterSetIndex)
     {
         FilterSet o = getFilterSet(instrumentIndex, filterSetIndex);
         o.setModel(toRType(model));
@@ -4033,7 +4033,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setFilterSetSerialNumber(String serialNumber,
-            int instrumentIndex, int filterSetIndex)
+                                         int instrumentIndex, int filterSetIndex)
     {
         FilterSet o = getFilterSet(instrumentIndex, filterSetIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -4233,7 +4233,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimenterGroupLeader(String leader, int groupIndex,
-            int leaderIndex)
+                                           int leaderIndex)
     {
         ignoreInsecure("setExperimenterGroupLeader", leader, groupIndex, leaderIndex);
     }
@@ -4257,7 +4257,7 @@ public class OMEROMetadataStoreClient
     private Image getImage(int imageIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         Image o = getSourceObject(Image.class, indexes);
         o.setFormat(getImageFormat());
@@ -4272,7 +4272,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Image.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         IObjectContainer o = getIObjectContainer(Image.class, indexes);
         o.LSID = id;
@@ -4298,7 +4298,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setImageAnnotationRef(String annotation, int imageIndex,
-            int annotationRefIndex)
+                                      int annotationRefIndex)
     {
         LSID key = new LSID(Image.class, imageIndex);
         addReference(key, new LSID(annotation));
@@ -4357,7 +4357,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setImageMicrobeamManipulationRef(String microbeamManipulation,
-            int imageIndex, int microbeamManipulationRefIndex)
+                                                 int imageIndex, int microbeamManipulationRefIndex)
     {
         LSID key = new LSID(Image.class, imageIndex);
         addReference(key, new LSID(microbeamManipulation));
@@ -4388,7 +4388,7 @@ public class OMEROMetadataStoreClient
     public ObjectiveSettings getObjectiveSettings(int imageIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         return getSourceObject(ObjectiveSettings.class, indexes);
     }
@@ -4442,7 +4442,7 @@ public class OMEROMetadataStoreClient
     public ImagingEnvironment getImagingEnvironment(int imageIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         return getSourceObject(ImagingEnvironment.class, indexes);
     }
@@ -4452,7 +4452,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setImagingEnvironmentAirPressure(Pressure airPressure,
-            int imageIndex)
+                                                 int imageIndex)
     {
         ImagingEnvironment o = getImagingEnvironment(imageIndex);
         o.setAirPressure(convertPressure(airPressure));
@@ -4463,7 +4463,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setImagingEnvironmentCO2Percent(PercentFraction co2percent,
-            int imageIndex)
+                                                int imageIndex)
     {
         ImagingEnvironment o = getImagingEnvironment(imageIndex);
         o.setCo2percent(toRType(co2percent));
@@ -4474,7 +4474,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setImagingEnvironmentHumidity(PercentFraction humidity,
-            int imageIndex)
+                                              int imageIndex)
     {
         ImagingEnvironment o = getImagingEnvironment(imageIndex);
         o.setHumidity(toRType(humidity));
@@ -4491,7 +4491,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setImagingEnvironmentTemperature(Temperature temperature,
-            int imageIndex)
+                                                 int imageIndex)
     {
         ImagingEnvironment o = getImagingEnvironment(imageIndex);
         o.setTemperature(convertTemperature(temperature));
@@ -4507,7 +4507,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Instrument.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         IObjectContainer o = getIObjectContainer(Instrument.class, indexes);
         o.LSID = id;
@@ -4519,7 +4519,7 @@ public class OMEROMetadataStoreClient
     public Laser getLaser(int instrumentIndex, int lightSourceIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         return getSourceObject(Laser.class, indexes);
@@ -4533,7 +4533,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Laser.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         IObjectContainer o = getIObjectContainer(Laser.class, indexes);
@@ -4570,7 +4570,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserLotNumber(String lotNumber, int instrumentIndex,
-            int lightSourceIndex)
+                                  int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -4581,7 +4581,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserManufacturer(String manufacturer, int instrumentIndex,
-            int lightSourceIndex)
+                                     int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -4592,7 +4592,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserModel(String model, int instrumentIndex,
-            int lightSourceIndex)
+                              int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setModel(toRType(model));
@@ -4603,7 +4603,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserPockelCell(Boolean pockelCell, int instrumentIndex,
-            int lightSourceIndex)
+                                   int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setPockelCell(toRType(pockelCell));
@@ -4614,7 +4614,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserPower(Power power, int instrumentIndex,
-            int lightSourceIndex)
+                              int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setPower(convertPower(power));
@@ -4625,7 +4625,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserPulse(ome.xml.model.enums.Pulse pulse,
-            int instrumentIndex, int lightSourceIndex)
+                              int instrumentIndex, int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setPulse((Pulse) getEnumeration(Pulse.class, pulse.toString()));
@@ -4636,7 +4636,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserPump(String pump, int instrumentIndex,
-            int lightSourceIndex)
+                             int lightSourceIndex)
     {
         LSID key = new LSID(Laser.class, instrumentIndex, lightSourceIndex);
         addReference(key, new LSID(pump));
@@ -4647,7 +4647,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserRepetitionRate(Frequency repetitionRate,
-            int instrumentIndex, int lightSourceIndex)
+                                       int instrumentIndex, int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setRepetitionRate(convertFrequency(repetitionRate));
@@ -4658,7 +4658,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserSerialNumber(String serialNumber, int instrumentIndex,
-            int lightSourceIndex)
+                                     int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -4669,7 +4669,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserTuneable(Boolean tuneable, int instrumentIndex,
-            int lightSourceIndex)
+                                 int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setTuneable(toRType(tuneable));
@@ -4680,7 +4680,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserType(ome.xml.model.enums.LaserType type,
-            int instrumentIndex, int lightSourceIndex)
+                             int instrumentIndex, int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setType((LaserType) getEnumeration(LaserType.class, type.toString()));
@@ -4691,7 +4691,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLaserWavelength(Length wavelength,
-            int instrumentIndex, int lightSourceIndex)
+                                   int instrumentIndex, int lightSourceIndex)
     {
         Laser o = getLaser(instrumentIndex, lightSourceIndex);
         o.setWavelength(convertLength(wavelength));
@@ -4702,7 +4702,7 @@ public class OMEROMetadataStoreClient
     public LightEmittingDiode getLightEmittingDiode(int instrumentIndex, int lightSourceIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         return getSourceObject(LightEmittingDiode.class, indexes);
@@ -4713,11 +4713,11 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightEmittingDiodeID(String id, int instrumentIndex,
-            int lightSourceIndex)
+                                        int lightSourceIndex)
     {
         checkDuplicateLSID(LightEmittingDiode.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.LIGHT_SOURCE_INDEX, lightSourceIndex);
         IObjectContainer o = getIObjectContainer(LightEmittingDiode.class, indexes);
@@ -4730,10 +4730,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightEmittingDiodeLotNumber(String lotNumber,
-            int instrumentIndex, int lightSourceIndex)
+                                               int instrumentIndex, int lightSourceIndex)
     {
         LightEmittingDiode o = getLightEmittingDiode(instrumentIndex,
-            lightSourceIndex);
+                lightSourceIndex);
         o.setLotNumber(toRType(lotNumber));
     }
 
@@ -4742,7 +4742,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightEmittingDiodeManufacturer(String manufacturer,
-            int instrumentIndex, int lightSourceIndex)
+                                                  int instrumentIndex, int lightSourceIndex)
     {
         LightEmittingDiode o = getLightEmittingDiode(instrumentIndex, lightSourceIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -4753,7 +4753,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightEmittingDiodeModel(String model, int instrumentIndex,
-            int lightSourceIndex)
+                                           int lightSourceIndex)
     {
         LightEmittingDiode o = getLightEmittingDiode(instrumentIndex, lightSourceIndex);
         o.setModel(toRType(model));
@@ -4764,7 +4764,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightEmittingDiodePower(Power power, int instrumentIndex,
-            int lightSourceIndex)
+                                           int lightSourceIndex)
     {
         LightEmittingDiode o = getLightEmittingDiode(instrumentIndex, lightSourceIndex);
         o.setPower(convertPower(power));
@@ -4775,7 +4775,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightEmittingDiodeSerialNumber(String serialNumber,
-            int instrumentIndex, int lightSourceIndex)
+                                                  int instrumentIndex, int lightSourceIndex)
     {
         LightEmittingDiode o = getLightEmittingDiode(instrumentIndex, lightSourceIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -4789,7 +4789,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightPathDichroicRef(String dichroic, int imageIndex,
-            int channelIndex)
+                                        int channelIndex)
     {
         LSID key = new LSID(LightPath.class, imageIndex, channelIndex);
         addReference(key, new LSID(dichroic));
@@ -4800,7 +4800,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightPathEmissionFilterRef(String emissionFilter,
-            int imageIndex, int channelIndex, int emissionFilterRefIndex)
+                                              int imageIndex, int channelIndex, int emissionFilterRefIndex)
     {
         // Using this suffix is kind of a gross hack but the reference
         // processing logic does not easily handle multiple A --> B or B --> A
@@ -4816,7 +4816,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLightPathExcitationFilterRef(String excitationFilter,
-            int imageIndex, int channelIndex, int excitationFilterRefIndex)
+                                                int imageIndex, int channelIndex, int excitationFilterRefIndex)
     {
         // Using this suffix is kind of a gross hack but the reference
         // processing logic does not easily handle multiple A --> B or B --> A
@@ -4833,7 +4833,7 @@ public class OMEROMetadataStoreClient
     public Line getLine(int ROIIndex, int shapeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX,ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Line.class, indexes);
@@ -4847,7 +4847,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Line.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX,ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Line.class, indexes);
@@ -4900,7 +4900,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLineStrokeDashArray(String strokeDashArray, int ROIIndex,
-            int shapeIndex)
+                                       int shapeIndex)
     {
         Line o = getLine(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -4911,7 +4911,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLineStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Line o = getLine(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength(strokeWidth));
@@ -5003,7 +5003,7 @@ public class OMEROMetadataStoreClient
     public ListAnnotation getListAnnotation(int listAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.LIST_ANNOTATION_INDEX, listAnnotationIndex);
         return getSourceObject(ListAnnotation.class, indexes);
     }
@@ -5016,7 +5016,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(ListAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.LIST_ANNOTATION_INDEX, listAnnotationIndex);
         IObjectContainer o = getIObjectContainer(ListAnnotation.class, indexes);
         o.LSID = id;
@@ -5028,7 +5028,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setListAnnotationAnnotationRef(String annotation,
-            int listAnnotationIndex, int annotationRefIndex)
+                                               int listAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(ListAnnotation.class, listAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -5039,7 +5039,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setListAnnotationNamespace(String namespace,
-            int listAnnotationIndex)
+                                           int listAnnotationIndex)
     {
         ListAnnotation o = getListAnnotation(listAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -5051,7 +5051,7 @@ public class OMEROMetadataStoreClient
     public LongAnnotation getLongAnnotation(int longAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.LONG_ANNOTATION_INDEX, longAnnotationIndex);
         return getSourceObject(LongAnnotation.class, indexes);
     }
@@ -5064,7 +5064,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(LongAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.LONG_ANNOTATION_INDEX, longAnnotationIndex);
         IObjectContainer o = getIObjectContainer(LongAnnotation.class, indexes);
         o.LSID = id;
@@ -5076,7 +5076,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLongAnnotationNamespace(String namespace,
-            int longAnnotationIndex)
+                                           int longAnnotationIndex)
     {
         LongAnnotation o = getLongAnnotation(longAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -5097,7 +5097,7 @@ public class OMEROMetadataStoreClient
     public Mask getMask(int ROIIndex, int shapeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Mask.class, indexes);
@@ -5133,7 +5133,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMaskText(String description, int ROIIndex,
-            int shapeIndex)
+                            int shapeIndex)
     {
         Mask o = getMask(ROIIndex, shapeIndex);
         o.setTextValue(toRType(description));
@@ -5167,7 +5167,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Mask.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Mask.class, indexes);
@@ -5190,7 +5190,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMaskStrokeDashArray(String strokeDashArray, int ROIIndex,
-            int shapeIndex)
+                                       int shapeIndex)
     {
         Mask o = getMask(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -5201,7 +5201,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMaskStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Mask o = getMask(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength(strokeWidth));
@@ -5292,7 +5292,7 @@ public class OMEROMetadataStoreClient
     public MicrobeamManipulation getMicrobeamManipulation(int experimentIndex, int microbeamManipulationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.EXPERIMENT_INDEX, experimentIndex);
         indexes.put(Index.MICROBEAM_MANIPULATION_INDEX, microbeamManipulationIndex);
         return getSourceObject(MicrobeamManipulation.class, indexes);
@@ -5303,11 +5303,11 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicrobeamManipulationID(String id, int experimentIndex,
-            int microbeamManipulationIndex)
+                                           int microbeamManipulationIndex)
     {
         checkDuplicateLSID(MicrobeamManipulation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.EXPERIMENT_INDEX, experimentIndex);
         indexes.put(Index.MICROBEAM_MANIPULATION_INDEX, microbeamManipulationIndex);
         IObjectContainer o = getIObjectContainer(MicrobeamManipulation.class, indexes);
@@ -5327,7 +5327,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicrobeamManipulationExperimenterRef(String experimenter,
-            int experimentIndex, int microbeamManipulationIndex)
+                                                        int experimentIndex, int microbeamManipulationIndex)
     {
         //LSID key = new LSID(MicrobeamManipulation.class, experimentIndex, microbeamManipulationIndex);
         //addReference(key, new LSID(experimenter));
@@ -5339,7 +5339,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicrobeamManipulationROIRef(String roi, int experimentIndex,
-            int microbeamManipulationIndex, int ROIRefIndex)
+                                               int microbeamManipulationIndex, int ROIRefIndex)
     {
         LSID key = new LSID(MicrobeamManipulation.class, experimentIndex, microbeamManipulationIndex);
         addReference(key, new LSID(roi));
@@ -5350,7 +5350,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicrobeamManipulationType(ome.xml.model.enums.MicrobeamManipulationType type,
-            int experimentIndex, int microbeamManipulationIndex)
+                                             int experimentIndex, int microbeamManipulationIndex)
     {
         MicrobeamManipulation o = getMicrobeamManipulation(experimentIndex, microbeamManipulationIndex);
         o.setType((MicrobeamManipulationType) getEnumeration(MicrobeamManipulationType.class, type.toString()));
@@ -5359,10 +5359,10 @@ public class OMEROMetadataStoreClient
     ////////Microbeam Manipulation Light Source Settings /////////
 
     public LightSettings getMicrobeamManipulationLightSourceSettings(int experimentIndex, int microbeamManipulationIndex,
-            int lightSourceSettingsIndex)
+                                                                     int lightSourceSettingsIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.EXPERIMENT_INDEX, experimentIndex);
         indexes.put(Index.MICROBEAM_MANIPULATION_INDEX, microbeamManipulationIndex);
         indexes.put(Index.LIGHT_SOURCE_SETTINGS_INDEX, lightSourceSettingsIndex);
@@ -5374,14 +5374,14 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicrobeamManipulationLightSourceSettingsID(String id,
-            int experimentIndex, int microbeamManipulationIndex,
-            int lightSourceSettingsIndex)
+                                                              int experimentIndex, int microbeamManipulationIndex,
+                                                              int lightSourceSettingsIndex)
     {
         getMicrobeamManipulationLightSourceSettings(
                 experimentIndex, microbeamManipulationIndex,
                 lightSourceSettingsIndex);
         LSID key = new LSID(LightSettings.class, experimentIndex,
-            microbeamManipulationIndex, lightSourceSettingsIndex);
+                microbeamManipulationIndex, lightSourceSettingsIndex);
         addReference(key, new LSID(id));
     }
 
@@ -5416,7 +5416,7 @@ public class OMEROMetadataStoreClient
     private Microscope getMicroscope(int instrumentIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         return getSourceObject(Microscope.class, indexes);
     }
@@ -5436,7 +5436,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicroscopeManufacturer(String manufacturer,
-            int instrumentIndex)
+                                          int instrumentIndex)
     {
         Microscope o = getMicroscope(instrumentIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -5457,7 +5457,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicroscopeSerialNumber(String serialNumber,
-            int instrumentIndex)
+                                          int instrumentIndex)
     {
         Microscope o = getMicroscope(instrumentIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -5468,7 +5468,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMicroscopeType(ome.xml.model.enums.MicroscopeType type,
-            int instrumentIndex)
+                                  int instrumentIndex)
     {
         Microscope o = getMicroscope(instrumentIndex);
         o.setType((MicroscopeType)
@@ -5479,11 +5479,11 @@ public class OMEROMetadataStoreClient
 
     public Objective getObjective(int instrumentIndex, int objectiveIndex)
     {
-      LinkedHashMap<Index, Integer> indexes =
-          new LinkedHashMap<Index, Integer>();
-      indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
-      indexes.put(Index.OBJECTIVE_INDEX, objectiveIndex);
-      return getSourceObject(Objective.class, indexes);
+        LinkedHashMap<Index, Integer> indexes =
+                new LinkedHashMap<Index, Integer>();
+        indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
+        indexes.put(Index.OBJECTIVE_INDEX, objectiveIndex);
+        return getSourceObject(Objective.class, indexes);
     }
 
     /* (non-Javadoc)
@@ -5508,7 +5508,7 @@ public class OMEROMetadataStoreClient
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setCorrection((Correction) getEnumeration(
-            Correction.class, correction.toString()));
+                Correction.class, correction.toString()));
     }
 
     /* (non-Javadoc)
@@ -5516,11 +5516,11 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveID(String id, int instrumentIndex,
-            int objectiveIndex)
+                               int objectiveIndex)
     {
         checkDuplicateLSID(Objective.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.INSTRUMENT_INDEX, instrumentIndex);
         indexes.put(Index.OBJECTIVE_INDEX, objectiveIndex);
         IObjectContainer o = getIObjectContainer(Objective.class, indexes);
@@ -5538,7 +5538,7 @@ public class OMEROMetadataStoreClient
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setImmersion(
-            (Immersion) getEnumeration(Immersion.class, immersion.toString()));
+                (Immersion) getEnumeration(Immersion.class, immersion.toString()));
     }
 
     /* (non-Javadoc)
@@ -5546,7 +5546,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveIris(Boolean iris, int instrumentIndex,
-            int objectiveIndex)
+                                 int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setIris(toRType(iris));
@@ -5557,7 +5557,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveLensNA(Double lensNA, int instrumentIndex,
-            int objectiveIndex)
+                                   int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setLensNA(toRType(lensNA));
@@ -5568,7 +5568,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveLotNumber(String lotNumber, int instrumentIndex,
-            int objectiveIndex)
+                                      int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setLotNumber(toRType(lotNumber));
@@ -5579,7 +5579,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveManufacturer(String manufacturer,
-            int instrumentIndex, int objectiveIndex)
+                                         int instrumentIndex, int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setManufacturer(toRType(manufacturer));
@@ -5590,7 +5590,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveModel(String model, int instrumentIndex,
-            int objectiveIndex)
+                                  int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setModel(toRType(model));
@@ -5601,7 +5601,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveNominalMagnification(Double nominalMagnification,
-            int instrumentIndex, int objectiveIndex)
+                                                 int instrumentIndex, int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setNominalMagnification(toRType(nominalMagnification));
@@ -5612,7 +5612,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveSerialNumber(String serialNumber,
-            int instrumentIndex, int objectiveIndex)
+                                         int instrumentIndex, int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setSerialNumber(toRType(serialNumber));
@@ -5623,7 +5623,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setObjectiveWorkingDistance(Length workingDistance,
-            int instrumentIndex, int objectiveIndex)
+                                            int instrumentIndex, int objectiveIndex)
     {
         Objective o = getObjective(instrumentIndex, objectiveIndex);
         o.setWorkingDistance(convertLength(workingDistance));
@@ -5634,7 +5634,7 @@ public class OMEROMetadataStoreClient
     private Pixels getPixels(int imageIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         Pixels p = getSourceObject(Pixels.class, indexes);
         p.setSha1(rstring("Pending..."));
@@ -5650,7 +5650,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Pixels.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         IObjectContainer o = getIObjectContainer(Pixels.class, indexes);
         o.LSID = id;
@@ -5676,7 +5676,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPixelsBinDataBigEndian(Boolean bigEndian, int imageIndex,
-            int binDataIndex)
+                                          int binDataIndex)
     {
         ignoreUnneeded("setPixelsBinDataBigEndian", bigEndian, imageIndex);
     }
@@ -5702,7 +5702,7 @@ public class OMEROMetadataStoreClient
         // We're always the same dimension order in the server; force it to
         // "XYZCT" (ticket:3124, ticket:3718, ticket:3668)
         o.setDimensionOrder((DimensionOrder) getEnumeration(
-            DimensionOrder.class, omero.model.enums.DimensionOrderXYZCT.value));
+                DimensionOrder.class, omero.model.enums.DimensionOrderXYZCT.value));
     }
 
     /* (non-Javadoc)
@@ -5823,7 +5823,7 @@ public class OMEROMetadataStoreClient
     {
         Pixels o = getPixels(imageIndex);
         o.setPixelsType(
-            (PixelsType) getEnumeration(PixelsType.class, type.toString()));
+                (PixelsType) getEnumeration(PixelsType.class, type.toString()));
     }
 
     //////// Plane /////////
@@ -5831,7 +5831,7 @@ public class OMEROMetadataStoreClient
     private PlaneInfo getPlane(int imageIndex, int planeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         indexes.put(Index.PLANE_INDEX, planeIndex);
         return getSourceObject(PlaneInfo.class, indexes);
@@ -5842,10 +5842,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlaneAnnotationRef(String annotation, int imageIndex,
-            int planeIndex, int annotationRefIndex)
+                                      int planeIndex, int annotationRefIndex)
     {
         LSID key = new LSID(
-            PlaneInfo.class, imageIndex, planeIndex);
+                PlaneInfo.class, imageIndex, planeIndex);
         addReference(key, new LSID(annotation));
     }
 
@@ -5864,7 +5864,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlaneExposureTime(Time exposureTime, int imageIndex,
-            int planeIndex)
+                                     int planeIndex)
     {
         PlaneInfo o = getPlane(imageIndex, planeIndex);
         o.setExposureTime(convertTime(exposureTime));
@@ -5884,7 +5884,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlanePositionX(Length positionX, int imageIndex,
-            int planeIndex)
+                                  int planeIndex)
     {
         PlaneInfo o = getPlane(imageIndex, planeIndex);
         o.setPositionX(convertLength(positionX));
@@ -5895,7 +5895,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlanePositionY(Length positionY, int imageIndex,
-            int planeIndex)
+                                  int planeIndex)
     {
         PlaneInfo o = getPlane(imageIndex, planeIndex);
         o.setPositionY(convertLength(positionY));
@@ -5906,7 +5906,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlanePositionZ(Length positionZ, int imageIndex,
-            int planeIndex)
+                                  int planeIndex)
     {
         PlaneInfo o = getPlane(imageIndex, planeIndex);
         o.setPositionZ(convertLength(positionZ));
@@ -5945,10 +5945,10 @@ public class OMEROMetadataStoreClient
     //////// PlateAcquisition /////////
 
     private PlateAcquisition getPlateAcquisition(
-        int plateIndex, int plateAcquisitionIndex)
+            int plateIndex, int plateAcquisitionIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         indexes.put(Index.PLATE_ACQUISITION_INDEX, plateAcquisitionIndex);
         return getSourceObject(PlateAcquisition.class, indexes);
@@ -5959,10 +5959,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionAnnotationRef(String annotation,
-            int plateIndex, int plateAcquisitionIndex, int annotationRefIndex)
+                                                 int plateIndex, int plateAcquisitionIndex, int annotationRefIndex)
     {
         LSID key = new LSID(PlateAcquisition.class, plateIndex,
-            plateAcquisitionIndex);
+                plateAcquisitionIndex);
         addReference(key, new LSID(annotation));
     }
 
@@ -5971,10 +5971,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionDescription(String description,
-            int plateIndex, int plateAcquisitionIndex)
+                                               int plateIndex, int plateAcquisitionIndex)
     {
         PlateAcquisition o =
-            getPlateAcquisition(plateIndex, plateAcquisitionIndex);
+                getPlateAcquisition(plateIndex, plateAcquisitionIndex);
         o.setDescription(toRType(description));
     }
 
@@ -5983,10 +5983,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionEndTime(Timestamp endTime, int plateIndex,
-            int plateAcquisitionIndex)
+                                           int plateAcquisitionIndex)
     {
         PlateAcquisition o =
-            getPlateAcquisition(plateIndex, plateAcquisitionIndex);
+                getPlateAcquisition(plateIndex, plateAcquisitionIndex);
         o.setEndTime(toRType(endTime));
     }
 
@@ -5995,15 +5995,15 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionID(String id, int plateIndex,
-            int plateAcquisitionIndex)
+                                      int plateAcquisitionIndex)
     {
         checkDuplicateLSID(PlateAcquisition.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         indexes.put(Index.PLATE_ACQUISITION_INDEX, plateAcquisitionIndex);
         IObjectContainer o =
-            getIObjectContainer(PlateAcquisition.class, indexes);
+                getIObjectContainer(PlateAcquisition.class, indexes);
         o.LSID = id;
         addAuthoritativeContainer(PlateAcquisition.class, id, o);
     }
@@ -6013,10 +6013,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionMaximumFieldCount(PositiveInteger maximumFieldCount,
-            int plateIndex, int plateAcquisitionIndex)
+                                                     int plateIndex, int plateAcquisitionIndex)
     {
         PlateAcquisition o =
-            getPlateAcquisition(plateIndex, plateAcquisitionIndex);
+                getPlateAcquisition(plateIndex, plateAcquisitionIndex);
         o.setMaximumFieldCount(toRType(maximumFieldCount));
     }
 
@@ -6025,10 +6025,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionName(String name, int plateIndex,
-            int plateAcquisitionIndex)
+                                        int plateAcquisitionIndex)
     {
         PlateAcquisition o =
-            getPlateAcquisition(plateIndex, plateAcquisitionIndex);
+                getPlateAcquisition(plateIndex, plateAcquisitionIndex);
         o.setName(toRType(name));
     }
 
@@ -6037,10 +6037,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionStartTime(Timestamp startTime, int plateIndex,
-            int plateAcquisitionIndex)
+                                             int plateAcquisitionIndex)
     {
         PlateAcquisition o =
-            getPlateAcquisition(plateIndex, plateAcquisitionIndex);
+                getPlateAcquisition(plateIndex, plateAcquisitionIndex);
         o.setStartTime(toRType(startTime));
     }
 
@@ -6049,10 +6049,10 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAcquisitionWellSampleRef(String wellSample,
-            int plateIndex, int plateAcquisitionIndex, int wellSampleRefIndex)
+                                                 int plateIndex, int plateAcquisitionIndex, int wellSampleRefIndex)
     {
         LSID key = new LSID(PlateAcquisition.class, plateIndex,
-            plateAcquisitionIndex);
+                plateAcquisitionIndex);
         addReference(key, new LSID(wellSample));
     }
 
@@ -6061,7 +6061,7 @@ public class OMEROMetadataStoreClient
     private Plate getPlate(int plateIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         return getSourceObject(Plate.class, indexes);
     }
@@ -6071,7 +6071,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateAnnotationRef(String annotation, int plateIndex,
-            int annotationRefIndex)
+                                      int annotationRefIndex)
     {
         LSID key = new LSID(Plate.class, plateIndex);
         addReference(key, new LSID(annotation));
@@ -6113,7 +6113,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPlateExternalIdentifier(String externalIdentifier,
-            int plateIndex)
+                                           int plateIndex)
     {
         Plate o = getPlate(plateIndex);
         o.setExternalIdentifier(toRType(externalIdentifier));
@@ -6127,7 +6127,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Plate.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         IObjectContainer o = getIObjectContainer(Plate.class, indexes);
         o.LSID = id;
@@ -6200,7 +6200,7 @@ public class OMEROMetadataStoreClient
     private Point getPoint(int ROIIndex, int shapeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Point.class, indexes);
@@ -6244,7 +6244,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Point.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Point.class, indexes);
@@ -6267,7 +6267,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPointStrokeDashArray(String strokeDashArray, int ROIIndex,
-            int shapeIndex)
+                                        int shapeIndex)
     {
         Point o = getPoint(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -6278,7 +6278,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPointStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Point o = getPoint(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength(strokeWidth));
@@ -6349,7 +6349,7 @@ public class OMEROMetadataStoreClient
     private Polyline getPolyline(int ROIIndex, int shapeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Polyline.class, indexes);
@@ -6363,7 +6363,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Polyline.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Polyline.class, indexes);
@@ -6396,7 +6396,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineFontSize(Length fontSize, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Polyline o = getPolyline(ROIIndex, shapeIndex);
         o.setFontSize(convertLength(fontSize));
@@ -6408,8 +6408,8 @@ public class OMEROMetadataStoreClient
     @Override
     public void setPolylinePoints(String points, int ROIIndex, int shapeIndex)
     {
-      Polyline o = getPolyline(ROIIndex, shapeIndex);
-      o.setPoints(toRType(points));
+        Polyline o = getPolyline(ROIIndex, shapeIndex);
+        o.setPoints(toRType(points));
     }
 
     /* (non-Javadoc)
@@ -6427,7 +6427,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineStrokeDashArray(String strokeDashArray,
-            int ROIIndex, int shapeIndex)
+                                           int ROIIndex, int shapeIndex)
     {
         Polyline o = getPolyline(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -6438,7 +6438,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                       int shapeIndex)
     {
         Polyline o = getPolyline(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength(strokeWidth));
@@ -6479,7 +6479,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineTransform(AffineTransform transform, int ROIIndex,
-            int shapeIndex)
+                                     int shapeIndex)
     {
         Polyline o = getPolyline(ROIIndex, shapeIndex);
         o.setTransform(toRType(transform));
@@ -6501,7 +6501,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setProjectAnnotationRef(String annotation, int projectIndex,
-            int annotationRefIndex)
+                                        int annotationRefIndex)
     {
         ignoreUnsupported("setProjectAnnotationRef", annotation, projectIndex,
                 annotationRefIndex);
@@ -6548,7 +6548,7 @@ public class OMEROMetadataStoreClient
     private Roi getROI(int ROIIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         return getSourceObject(Roi.class, indexes);
     }
@@ -6561,7 +6561,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Roi.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         IObjectContainer o = getIObjectContainer(Roi.class, indexes);
         o.LSID = id;
@@ -6573,7 +6573,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setROIAnnotationRef(String annotation, int ROIIndex,
-            int annotationRefIndex)
+                                    int annotationRefIndex)
     {
         LSID key = new LSID(Roi.class, ROIIndex);
         addReference(key, new LSID(annotation));
@@ -6609,7 +6609,7 @@ public class OMEROMetadataStoreClient
     private Reagent getReagent(int screenIndex, int reagentIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.SCREEN_INDEX, screenIndex);
         indexes.put(Index.REAGENT_INDEX, reagentIndex);
         return getSourceObject(Reagent.class, indexes);
@@ -6623,7 +6623,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Reagent.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.SCREEN_INDEX, screenIndex);
         indexes.put(Index.REAGENT_INDEX, reagentIndex);
         IObjectContainer o = getIObjectContainer(Reagent.class, indexes);
@@ -6636,7 +6636,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setReagentAnnotationRef(String annotation, int screenIndex,
-            int reagentIndex, int annotationRefIndex)
+                                        int reagentIndex, int annotationRefIndex)
     {
         LSID key = new LSID(Reagent.class, screenIndex, reagentIndex);
         addReference(key, new LSID(annotation));
@@ -6647,7 +6647,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setReagentDescription(String description, int screenIndex,
-            int reagentIndex)
+                                      int reagentIndex)
     {
         Reagent o = getReagent(screenIndex, reagentIndex);
         o.setDescription(toRType(description));
@@ -6668,7 +6668,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setReagentReagentIdentifier(String reagentIdentifier,
-            int screenIndex, int reagentIndex)
+                                            int screenIndex, int reagentIndex)
     {
         Reagent o = getReagent(screenIndex, reagentIndex);
         o.setReagentIdentifier(toRType(reagentIdentifier));
@@ -6686,7 +6686,7 @@ public class OMEROMetadataStoreClient
     private Rectangle getRectangle(int ROIIndex, int shapeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Rectangle.class, indexes);
@@ -6700,7 +6700,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Rectangle.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Rectangle.class, indexes);
@@ -6713,7 +6713,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleText(String description, int ROIIndex,
-            int shapeIndex)
+                                 int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setTextValue(toRType(description));
@@ -6734,7 +6734,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleFontSize(Length fontSize, int ROIIndex,
-            int shapeIndex)
+                                     int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setFontSize(convertLength(fontSize));
@@ -6765,7 +6765,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleStrokeDashArray(String strokeDashArray,
-            int ROIIndex, int shapeIndex)
+                                            int ROIIndex, int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -6776,7 +6776,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                        int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength(strokeWidth));
@@ -6817,7 +6817,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleTransform(AffineTransform transform, int ROIIndex,
-            int shapeIndex)
+                                      int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setTransform(toRType(transform));
@@ -6872,7 +6872,7 @@ public class OMEROMetadataStoreClient
     private Screen getScreen(int screenIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.SCREEN_INDEX, screenIndex);
         return getSourceObject(Screen.class, indexes);
     }
@@ -6885,7 +6885,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Screen.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.SCREEN_INDEX, screenIndex);
         IObjectContainer o = getIObjectContainer(Screen.class, indexes);
         o.LSID = id;
@@ -6897,7 +6897,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setScreenAnnotationRef(String annotation, int screenIndex,
-            int annotationRefIndex)
+                                       int annotationRefIndex)
     {
         LSID key = new LSID(Screen.class, screenIndex);
         addReference(key, new LSID(annotation));
@@ -6928,7 +6928,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setScreenPlateRef(String plate, int screenIndex,
-            int plateRefIndex)
+                                  int plateRefIndex)
     {
         screenKey = new LSID(Screen.class, screenIndex);
         addReference(screenKey, new LSID(plate));
@@ -6939,7 +6939,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setScreenProtocolDescription(String protocolDescription,
-            int screenIndex)
+                                             int screenIndex)
     {
         Screen o = getScreen(screenIndex);
         o.setProtocolDescription(toRType(protocolDescription));
@@ -6950,7 +6950,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setScreenProtocolIdentifier(String protocolIdentifier,
-            int screenIndex)
+                                            int screenIndex)
     {
         Screen o = getScreen(screenIndex);
         o.setProtocolIdentifier(toRType(protocolIdentifier));
@@ -6961,7 +6961,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setScreenReagentSetDescription(String reagentSetDescription,
-            int screenIndex)
+                                               int screenIndex)
     {
         Screen o = getScreen(screenIndex);
         o.setReagentSetDescription(toRType(reagentSetDescription));
@@ -6972,7 +6972,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setScreenReagentSetIdentifier(String reagentSetIdentifier,
-            int screenIndex)
+                                              int screenIndex)
     {
         Screen o = getScreen(screenIndex);
         o.setReagentSetIdentifier(toRType(reagentSetIdentifier));
@@ -6998,7 +6998,7 @@ public class OMEROMetadataStoreClient
     private StageLabel getStageLabel(int imageIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.IMAGE_INDEX, imageIndex);
         return getSourceObject(StageLabel.class, indexes);
     }
@@ -7053,7 +7053,7 @@ public class OMEROMetadataStoreClient
     private CommentAnnotation getCommentAnnotation(int commentAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.COMMENT_ANNOTATION_INDEX, commentAnnotationIndex);
         return getSourceObject(CommentAnnotation.class, indexes);
     }
@@ -7066,7 +7066,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(CommentAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.COMMENT_ANNOTATION_INDEX, commentAnnotationIndex);
         IObjectContainer o = getIObjectContainer(CommentAnnotation.class, indexes);
         o.LSID = id;
@@ -7078,7 +7078,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setCommentAnnotationNamespace(String namespace,
-            int commentAnnotationIndex)
+                                              int commentAnnotationIndex)
     {
         CommentAnnotation o = getCommentAnnotation(commentAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -7115,7 +7115,7 @@ public class OMEROMetadataStoreClient
     {
 
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Label.class, indexes);
@@ -7129,7 +7129,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Label.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Label.class, indexes);
@@ -7182,7 +7182,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLabelStrokeDashArray(String strokeDashArray, int ROIIndex,
-            int shapeIndex)
+                                        int shapeIndex)
     {
         Label o = getLabel(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -7193,7 +7193,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLabelStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Label o = getLabel(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength (strokeWidth));
@@ -7266,7 +7266,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTiffDataFirstC(NonNegativeInteger firstC, int imageIndex,
-            int tiffDataIndex)
+                                  int tiffDataIndex)
     {
         ignoreUnneeded("setTiffDataFirstC", firstC, imageIndex, tiffDataIndex);
     }
@@ -7276,7 +7276,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTiffDataFirstT(NonNegativeInteger firstT, int imageIndex,
-            int tiffDataIndex)
+                                  int tiffDataIndex)
     {
         ignoreUnneeded("setTiffDataFirstT", firstT, imageIndex, tiffDataIndex);
     }
@@ -7286,7 +7286,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTiffDataFirstZ(NonNegativeInteger firstZ, int imageIndex,
-            int tiffDataIndex)
+                                  int tiffDataIndex)
     {
         ignoreUnneeded("setTiffDataFirstZ", firstZ, imageIndex, tiffDataIndex);
     }
@@ -7305,7 +7305,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTiffDataPlaneCount(NonNegativeInteger planeCount, int imageIndex,
-            int tiffDataIndex)
+                                      int tiffDataIndex)
     {
         ignoreUnneeded("setTiffDataPlaneCount", planeCount, imageIndex, tiffDataIndex);
     }
@@ -7320,7 +7320,7 @@ public class OMEROMetadataStoreClient
     private TimestampAnnotation getTimestampAnnotation(int timestampAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.TIMESTAMP_ANNOTATION_INDEX, timestampAnnotationIndex);
         return getSourceObject(TimestampAnnotation.class, indexes);
     }
@@ -7333,7 +7333,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(TimestampAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.TIMESTAMP_ANNOTATION_INDEX, timestampAnnotationIndex);
         IObjectContainer o = getIObjectContainer(TimestampAnnotation.class, indexes);
         o.LSID = id;
@@ -7344,7 +7344,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTimestampAnnotationNamespace(String namespace,
-            int timestampAnnotationIndex)
+                                                int timestampAnnotationIndex)
     {
         TimestampAnnotation o = getTimestampAnnotation(timestampAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -7355,7 +7355,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTimestampAnnotationValue(Timestamp value,
-            int timestampAnnotationIndex)
+                                            int timestampAnnotationIndex)
     {
         TimestampAnnotation o = getTimestampAnnotation(timestampAnnotationIndex);
         o.setTimeValue(toRType(value));
@@ -7380,7 +7380,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTransmittanceRangeCutIn(Length cutIn, int instrumentIndex,
-            int filterIndex)
+                                           int filterIndex)
     {
         TransmittanceRange o = getTransmittanceRange(instrumentIndex, filterIndex);
         o.setCutIn(convertLength(cutIn));
@@ -7391,7 +7391,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTransmittanceRangeCutInTolerance(Length cutInTolerance,
-            int instrumentIndex, int filterIndex)
+                                                    int instrumentIndex, int filterIndex)
     {
         TransmittanceRange o = getTransmittanceRange(instrumentIndex, filterIndex);
         o.setCutInTolerance(convertLength(cutInTolerance));
@@ -7402,7 +7402,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTransmittanceRangeCutOut(Length cutOut,
-            int instrumentIndex, int filterIndex)
+                                            int instrumentIndex, int filterIndex)
     {
         TransmittanceRange o = getTransmittanceRange(instrumentIndex, filterIndex);
         o.setCutOut(convertLength(cutOut));
@@ -7413,7 +7413,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTransmittanceRangeCutOutTolerance(Length cutOutTolerance,
-            int instrumentIndex, int filterIndex)
+                                                     int instrumentIndex, int filterIndex)
     {
         TransmittanceRange o = getTransmittanceRange(instrumentIndex, filterIndex);
         o.setCutOutTolerance(convertLength(cutOutTolerance));
@@ -7446,14 +7446,14 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setUUIDFileName(String fileName, int imageIndex,
-            int tiffDataIndex)
+                                int tiffDataIndex)
     {
         ignoreUnneeded("setUUIDFileName", fileName, imageIndex, tiffDataIndex);
     }
 
     @Override
     public void setUUIDValue(String fileName, int imageIndex,
-            int tiffDataIndex)
+                             int tiffDataIndex)
     {
         ignoreUnneeded("setUUIDValue", fileName, imageIndex, tiffDataIndex);
     }
@@ -7469,7 +7469,7 @@ public class OMEROMetadataStoreClient
     private Well getWell(int plateIndex, int wellIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         indexes.put(Index.WELL_INDEX, wellIndex);
         return getSourceObject(Well.class, indexes);
@@ -7483,7 +7483,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Well.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         indexes.put(Index.WELL_INDEX, wellIndex);
         IObjectContainer o = getIObjectContainer(Well.class, indexes);
@@ -7496,7 +7496,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellAnnotationRef(String annotation, int plateIndex,
-            int wellIndex, int annotationRefIndex)
+                                     int wellIndex, int annotationRefIndex)
     {
         LSID key = new LSID(Well.class, plateIndex, wellIndex);
         addReference(key, new LSID(annotation));
@@ -7520,7 +7520,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellColumn(NonNegativeInteger column, int plateIndex,
-            int wellIndex)
+                              int wellIndex)
     {
         Well o = getWell(plateIndex, wellIndex);
         o.setColumn(toRType(column));
@@ -7531,7 +7531,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellExternalDescription(String externalDescription,
-            int plateIndex, int wellIndex)
+                                           int plateIndex, int wellIndex)
     {
         Well o = getWell(plateIndex, wellIndex);
         o.setExternalDescription(toRType(externalDescription));
@@ -7542,7 +7542,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellExternalIdentifier(String externalIdentifier,
-            int plateIndex, int wellIndex)
+                                          int plateIndex, int wellIndex)
     {
         Well o = getWell(plateIndex, wellIndex);
         o.setExternalIdentifier(toRType(externalIdentifier));
@@ -7580,7 +7580,7 @@ public class OMEROMetadataStoreClient
     private WellSample getWellSample(int plateIndex, int wellIndex, int wellSampleIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         indexes.put(Index.WELL_INDEX, wellIndex);
         indexes.put(Index.WELL_SAMPLE_INDEX, wellSampleIndex);
@@ -7594,11 +7594,11 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellSampleID(String id, int plateIndex, int wellIndex,
-            int wellSampleIndex)
+                                int wellSampleIndex)
     {
         checkDuplicateLSID(WellSample.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.PLATE_INDEX, plateIndex);
         indexes.put(Index.WELL_INDEX, wellIndex);
         indexes.put(Index.WELL_SAMPLE_INDEX, wellSampleIndex);
@@ -7612,7 +7612,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellSampleImageRef(String image, int plateIndex,
-            int wellIndex, int wellSampleIndex)
+                                      int wellIndex, int wellSampleIndex)
     {
         LSID key = new LSID(WellSample.class, plateIndex, wellIndex, wellSampleIndex);
         addReference(key, new LSID(image));
@@ -7623,7 +7623,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellSampleIndex(NonNegativeInteger index, int plateIndex,
-            int wellIndex, int wellSampleIndex)
+                                   int wellIndex, int wellSampleIndex)
     {
         ignoreMissing("setWellSampleIndex", index, plateIndex, wellIndex,
                 wellSampleIndex);
@@ -7635,7 +7635,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellSamplePositionX(Length positionX, int plateIndex,
-            int wellIndex, int wellSampleIndex)
+                                       int wellIndex, int wellSampleIndex)
     {
         WellSample o = getWellSample(plateIndex, wellIndex, wellSampleIndex);
         o.setPosX(convertLength(positionX));
@@ -7646,7 +7646,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellSamplePositionY(Length positionY, int plateIndex,
-            int wellIndex, int wellSampleIndex)
+                                       int wellIndex, int wellSampleIndex)
     {
         WellSample o = getWellSample(plateIndex, wellIndex, wellSampleIndex);
         o.setPosY(convertLength(positionY));
@@ -7657,14 +7657,14 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setWellSampleTimepoint(Timestamp timepoint, int plateIndex,
-            int wellIndex, int wellSampleIndex)
+                                       int wellIndex, int wellSampleIndex)
     {
         if (timepoint == null)
         {
             return;
         }
         WellSample o =
-            getWellSample(plateIndex, wellIndex, wellSampleIndex);
+                getWellSample(plateIndex, wellIndex, wellSampleIndex);
         o.setTimepoint(toRType(timepoint));
     }
 
@@ -7679,7 +7679,7 @@ public class OMEROMetadataStoreClient
     private XmlAnnotation getXMLAnnotation(int XMLAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.XML_ANNOTATION_INDEX, XMLAnnotationIndex);
         return getSourceObject(XmlAnnotation.class, indexes);
     }
@@ -7692,7 +7692,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(XmlAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.XML_ANNOTATION_INDEX, XMLAnnotationIndex);
         IObjectContainer o = getIObjectContainer(XmlAnnotation.class, indexes);
         o.LSID = id;
@@ -7704,16 +7704,16 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setXMLAnnotationNamespace(String namespace,
-            int XMLAnnotationIndex)
+                                          int XMLAnnotationIndex)
     {
         XmlAnnotation o = getXMLAnnotation(XMLAnnotationIndex);
         o.setNs(toRType(namespace));
-   }
+    }
 
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setXMLAnnotationValue(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setXMLAnnotationValue(String value, int XMLAnnotationIndex)
     {
         XmlAnnotation o = getXMLAnnotation(XMLAnnotationIndex);
@@ -7723,7 +7723,7 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setXMLAnnotationAnnotator(java.lang.String,int)
      */
-   @Override
+    @Override
     public void  setXMLAnnotationAnnotator(String value, int index)
     {
         ignoreAnnotator("setXMLAnnotationAnnotator", value, index);
@@ -7732,9 +7732,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setXMLAnnotationAnnotationRef(java.lang.String, int, int)
      */
-   @Override
+    @Override
     public void setXMLAnnotationAnnotationRef(String annotation,
-            int XMLAnnotationIndex, int annotationRefIndex)
+                                              int XMLAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(XmlAnnotation.class, XMLAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -7743,9 +7743,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setXMLAnnotationDescription(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setXMLAnnotationDescription(String description,
-            int XMLAnnotationIndex)
+                                            int XMLAnnotationIndex)
     {
         XmlAnnotation o = getXMLAnnotation(XMLAnnotationIndex);
         o.setDescription(toRType(description));
@@ -7754,9 +7754,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setBooleanAnnotationAnnotationRef(java.lang.String, int, int)
      */
-   @Override
+    @Override
     public void setBooleanAnnotationAnnotationRef(String annotation,
-            int booleanAnnotationIndex, int annotationRefIndex)
+                                                  int booleanAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(BooleanAnnotation.class, booleanAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -7765,9 +7765,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setBooleanAnnotationDescription(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setBooleanAnnotationDescription(String description,
-            int booleanAnnotationIndex)
+                                                int booleanAnnotationIndex)
     {
         BooleanAnnotation o = getBooleanAnnotation(booleanAnnotationIndex);
         o.setDescription(toRType(description));
@@ -7776,7 +7776,7 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setBooleanAnnotationAnnotator(java.lang.String,int)
      */
-   @Override
+    @Override
     public void  setBooleanAnnotationAnnotator(String value, int index)
     {
         ignoreAnnotator("setBooleanAnnotationAnnotator", value, index);
@@ -7785,9 +7785,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setCommentAnnotationAnnotationRef(java.lang.String, int, int)
      */
-   @Override
+    @Override
     public void setCommentAnnotationAnnotationRef(String annotation,
-            int commentAnnotationIndex, int annotationRefIndex)
+                                                  int commentAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(CommentAnnotation.class, commentAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -7796,9 +7796,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setCommentAnnotationDescription(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setCommentAnnotationDescription(String description,
-            int commentAnnotationIndex)
+                                                int commentAnnotationIndex)
     {
         CommentAnnotation o = getCommentAnnotation(commentAnnotationIndex);
         o.setDescription(toRType(description));
@@ -7807,9 +7807,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setDoubleAnnotationAnnotationRef(java.lang.String, int, int)
      */
-   @Override
+    @Override
     public void setDoubleAnnotationAnnotationRef(String annotation,
-            int doubleAnnotationIndex, int annotationRefIndex)
+                                                 int doubleAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(DoubleAnnotation.class, doubleAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -7818,9 +7818,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setDoubleAnnotationDescription(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setDoubleAnnotationDescription(String description,
-            int doubleAnnotationIndex)
+                                               int doubleAnnotationIndex)
     {
         DoubleAnnotation o = getDoubleAnnotation(doubleAnnotationIndex);
         o.setDescription(toRType(description));
@@ -7829,7 +7829,7 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setDoubleAnnotationAnnotator(java.lang.String,int)
      */
-   @Override
+    @Override
     public void  setDoubleAnnotationAnnotator(String value, int index)
     {
         ignoreAnnotator("setDoubleAnnotationAnnotator", value, index);
@@ -7838,9 +7838,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setFileAnnotationAnnotationRef(java.lang.String, int, int)
      */
-   @Override
+    @Override
     public void setFileAnnotationAnnotationRef(String annotation,
-            int fileAnnotationIndex, int annotationRefIndex)
+                                               int fileAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(FileAnnotation.class, fileAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -7849,9 +7849,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setFileAnnotationDescription(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setFileAnnotationDescription(String description,
-            int fileAnnotationIndex)
+                                             int fileAnnotationIndex)
     {
         FileAnnotation o = getFileAnnotation(fileAnnotationIndex);
         o.setDescription(toRType(description));
@@ -7860,7 +7860,7 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setFileAnnotationAnnotator(java.lang.String,int)
      */
-   @Override
+    @Override
     public void  setFileAnnotationAnnotator(String value, int index)
     {
         ignoreAnnotator("setFileAnnotationAnnotator", value, index);
@@ -7869,9 +7869,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setListAnnotationDescription(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setListAnnotationDescription(String description,
-            int listAnnotationIndex)
+                                             int listAnnotationIndex)
     {
         ListAnnotation o = getListAnnotation(listAnnotationIndex);
         o.setDescription(toRType(description));
@@ -7880,7 +7880,7 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setListAnnotationAnnotator(java.lang.String,int)
      */
-   @Override
+    @Override
     public void  setListAnnotationAnnotator(String value, int index)
     {
         ignoreAnnotator("setListAnnotationAnnotator", value, index);
@@ -7890,9 +7890,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setLongAnnotationAnnotationRef(java.lang.String, int, int)
      */
-   @Override
+    @Override
     public void setLongAnnotationAnnotationRef(String annotation,
-            int longAnnotationIndex, int annotationRefIndex)
+                                               int longAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(LongAnnotation.class, longAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -7901,9 +7901,9 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setLongAnnotationDescription(java.lang.String, int)
      */
-   @Override
+    @Override
     public void setLongAnnotationDescription(String description,
-            int longAnnotationIndex)
+                                             int longAnnotationIndex)
     {
         LongAnnotation o = getLongAnnotation(longAnnotationIndex);
         o.setDescription(toRType(description));
@@ -7912,7 +7912,7 @@ public class OMEROMetadataStoreClient
     /* (non-Javadoc)
      * @see loci.formats.meta.MetadataStore#setLongAnnotationAnnotator(java.lang.String,int)
      */
-   @Override
+    @Override
     public void  setLongAnnotationAnnotator(String value, int XMLAnnotationIndex)
     {
         ignoreAnnotator("setLongAnnotationAnnotator", value, XMLAnnotationIndex);
@@ -7972,7 +7972,7 @@ public class OMEROMetadataStoreClient
     private TagAnnotation getTagAnnotation(int tagAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.TAG_ANNOTATION_INDEX, tagAnnotationIndex);
         return getSourceObject(TagAnnotation.class, indexes);
     }
@@ -7982,7 +7982,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTagAnnotationAnnotationRef(String annotation,
-            int tagAnnotationIndex, int annotationRefIndex)
+                                              int tagAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(TagAnnotation.class, tagAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -7993,7 +7993,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTagAnnotationDescription(String description,
-            int tagAnnotationIndex)
+                                            int tagAnnotationIndex)
     {
         TagAnnotation o = getTagAnnotation(tagAnnotationIndex);
         o.setDescription(toRType(description));
@@ -8007,7 +8007,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(TagAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.TAG_ANNOTATION_INDEX, tagAnnotationIndex);
         IObjectContainer o = getIObjectContainer(TagAnnotation.class, indexes);
         o.LSID = id;
@@ -8019,7 +8019,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTagAnnotationNamespace(String namespace,
-            int tagAnnotationIndex)
+                                          int tagAnnotationIndex)
     {
         TagAnnotation o = getTagAnnotation(tagAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -8052,7 +8052,7 @@ public class OMEROMetadataStoreClient
     private TermAnnotation getTermAnnotation(int termAnnotationIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.TERM_ANNOTATION_INDEX, termAnnotationIndex);
         return getSourceObject(TermAnnotation.class, indexes);
     }
@@ -8062,7 +8062,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTermAnnotationAnnotationRef(String annotation,
-            int termAnnotationIndex, int annotationRefIndex)
+                                               int termAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(TermAnnotation.class, termAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -8073,7 +8073,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTermAnnotationDescription(String description,
-            int termAnnotationIndex)
+                                             int termAnnotationIndex)
     {
         TermAnnotation o = getTermAnnotation(termAnnotationIndex);
         o.setDescription(toRType(description));
@@ -8087,7 +8087,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(TermAnnotation.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.TERM_ANNOTATION_INDEX, termAnnotationIndex);
         IObjectContainer o = getIObjectContainer(TermAnnotation.class, indexes);
         o.LSID = id;
@@ -8099,7 +8099,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTermAnnotationNamespace(String namespace,
-            int termAnnotationIndex)
+                                           int termAnnotationIndex)
     {
         TermAnnotation o = getTermAnnotation(termAnnotationIndex);
         o.setNs(toRType(namespace));
@@ -8129,7 +8129,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTimestampAnnotationAnnotationRef(String annotation,
-            int timestampAnnotationIndex, int annotationRefIndex)
+                                                    int timestampAnnotationIndex, int annotationRefIndex)
     {
         LSID key = new LSID(TimestampAnnotation.class, timestampAnnotationIndex);
         addReference(key, new LSID(annotation));
@@ -8140,7 +8140,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setTimestampAnnotationDescription(String description,
-            int timestampAnnotationIndex)
+                                                  int timestampAnnotationIndex)
     {
         TimestampAnnotation o = getTimestampAnnotation(timestampAnnotationIndex);
         o.setDescription(toRType(description));
@@ -8221,7 +8221,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setDatasetImageRef(String image, int datasetIndex,
-            int imageRefIndex)
+                                   int imageRefIndex)
     {
         ignoreUnsupported("setDatasetImageRef", image, datasetIndex, imageRefIndex);
     }
@@ -8231,7 +8231,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setEllipseFillRule(FillRule fillRule, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Ellipse o = getEllipse(ROIIndex, shapeIndex);
         o.setFillRule(toRType(fillRule.getValue()));
@@ -8242,7 +8242,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setEllipseFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                     int shapeIndex)
     {
         Ellipse o = getEllipse(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8253,7 +8253,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setEllipseFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Ellipse o = getEllipse(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontStyle.getValue()));
@@ -8274,7 +8274,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimenterGroupAnnotationRef(String annotation,
-            int experimenterGroupIndex, int annotationRefIndex)
+                                                  int experimenterGroupIndex, int annotationRefIndex)
     {
         ignoreInsecure("setExperimenterGroupAnnotationRef", annotation,
                 experimenterGroupIndex, annotationRefIndex);
@@ -8285,7 +8285,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setExperimenterGroupExperimenterRef(String experimenter,
-            int experimenterGroupIndex, int experimenterRefIndex)
+                                                    int experimenterGroupIndex, int experimenterRefIndex)
     {
         ignoreInsecure("setExperimenterGroupExperimenterRef", experimenter,
                 experimenterGroupIndex, experimenterRefIndex);
@@ -8306,7 +8306,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLabelFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Label o = getLabel(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8317,7 +8317,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLabelFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                  int shapeIndex)
     {
         Label o = getLabel(ROIIndex, shapeIndex);
         o.setFontStyle(toRType(fontStyle.getValue()));
@@ -8348,7 +8348,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLineFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                  int shapeIndex)
     {
         Line o = getLine(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8359,7 +8359,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLineFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                 int shapeIndex)
     {
         Line o = getLine(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontStyle.getValue()));
@@ -8390,7 +8390,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setLineMarkerStart(Marker markerStart, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         final Line line = getLine(ROIIndex, shapeIndex);
         line.setMarkerStart(toRType(markerStart.getValue()));
@@ -8411,7 +8411,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMaskFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                  int shapeIndex)
     {
         Mask o = getMask(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8422,7 +8422,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setMaskFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                 int shapeIndex)
     {
         Mask o = getMask(ROIIndex, shapeIndex);
         o.setFontStyle(toRType(fontStyle.getValue()));
@@ -8453,7 +8453,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPointFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Point o = getPoint(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8464,7 +8464,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPointFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                  int shapeIndex)
     {
         Point o = getPoint(ROIIndex, shapeIndex);
         o.setFontStyle(toRType(fontStyle.getValue()));
@@ -8485,7 +8485,7 @@ public class OMEROMetadataStoreClient
     private Polygon getPolygon(int ROIIndex, int shapeIndex)
     {
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         return getSourceObject(Polygon.class, indexes);
@@ -8496,7 +8496,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonFillColor(Color fillColor, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setFillColor(toRType(fillColor));
@@ -8507,7 +8507,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonFillRule(FillRule fillRule, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setFillRule(toRType(fillRule.getValue()));
@@ -8518,7 +8518,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                     int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8529,7 +8529,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonFontSize(Length fontSize, int ROIIndex,
-            int shapeIndex)
+                                   int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setFontSize(convertLength(fontSize));
@@ -8540,7 +8540,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setFontStyle(toRType(fontStyle.getValue()));
@@ -8554,7 +8554,7 @@ public class OMEROMetadataStoreClient
     {
         checkDuplicateLSID(Polygon.class, id);
         LinkedHashMap<Index, Integer> indexes =
-            new LinkedHashMap<Index, Integer>();
+                new LinkedHashMap<Index, Integer>();
         indexes.put(Index.ROI_INDEX, ROIIndex);
         indexes.put(Index.SHAPE_INDEX, shapeIndex);
         IObjectContainer o = getIObjectContainer(Polygon.class, indexes);
@@ -8577,7 +8577,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonStrokeColor(Color strokeColor, int ROIIndex,
-            int shapeIndex)
+                                      int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setStrokeColor(toRType(strokeColor));
@@ -8588,7 +8588,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonStrokeDashArray(String strokeDashArray, int ROIIndex,
-            int shapeIndex)
+                                          int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setStrokeDashArray(toRType(strokeDashArray));
@@ -8599,7 +8599,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonStrokeWidth(Length strokeWidth, int ROIIndex,
-            int shapeIndex)
+                                      int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setStrokeWidth(convertLength(strokeWidth));
@@ -8620,7 +8620,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonTheC(NonNegativeInteger theC, int ROIIndex,
-            int shapeIndex)
+                               int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setTheC(toRType(theC));
@@ -8631,7 +8631,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonTheT(NonNegativeInteger theT, int ROIIndex,
-            int shapeIndex)
+                               int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setTheT(toRType(theT.getValue()));
@@ -8642,7 +8642,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonTheZ(NonNegativeInteger theZ, int ROIIndex,
-            int shapeIndex)
+                               int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setTheZ(toRType(theZ.getValue()));
@@ -8653,7 +8653,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolygonTransform(AffineTransform transform, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Polygon o = getPolygon(ROIIndex, shapeIndex);
         o.setTransform(toRType(transform));
@@ -8674,7 +8674,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineFillRule(FillRule fillRule, int ROIIndex,
-            int shapeIndex)
+                                    int shapeIndex)
     {
         Polyline o = getPolyline(ROIIndex, shapeIndex);
         o.setFillRule(toRType(fillRule.getValue()));
@@ -8685,7 +8685,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                      int shapeIndex)
     {
         Polyline o = getPolyline(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8696,7 +8696,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                     int shapeIndex)
     {
         Polyline o = getPolyline(ROIIndex, shapeIndex);
         o.setFontStyle(toRType(fontStyle.getValue()));
@@ -8717,7 +8717,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineMarkerEnd(Marker markerEnd, int ROIIndex,
-            int shapeIndex)
+                                     int shapeIndex)
     {
         final Polyline polyline = getPolyline(ROIIndex, shapeIndex);
         polyline.setMarkerEnd(toRType(markerEnd.getValue()));
@@ -8728,7 +8728,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setPolylineMarkerStart(Marker markerStart, int ROIIndex,
-            int shapeIndex)
+                                       int shapeIndex)
     {
         final Polyline polyline = getPolyline(ROIIndex, shapeIndex);
         polyline.setMarkerStart(toRType(markerStart.getValue()));
@@ -8739,7 +8739,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setProjectDatasetRef(String dataset, int projectIndex,
-            int datasetRefIndex)
+                                     int datasetRefIndex)
     {
         ignoreUnsupported("setProjectDatasetRef", dataset, projectIndex,
                 datasetRefIndex);
@@ -8750,7 +8750,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleFillRule(FillRule fillRule, int ROIIndex,
-            int shapeIndex)
+                                     int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setFillRule(toRType(fillRule.getValue()));
@@ -8761,7 +8761,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleFontFamily(FontFamily fontFamily, int ROIIndex,
-            int shapeIndex)
+                                       int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setFontFamily(toRType(fontFamily.getValue()));
@@ -8772,7 +8772,7 @@ public class OMEROMetadataStoreClient
      */
     @Override
     public void setRectangleFontStyle(FontStyle fontStyle, int ROIIndex,
-            int shapeIndex)
+                                      int shapeIndex)
     {
         Rectangle o = getRectangle(ROIIndex, shapeIndex);
         o.setFontStyle(toRType(fontStyle.getValue()));

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ome.api.IEventContext;
 import ome.conditions.InternalException;
 import ome.model.IObject;
 import ome.model.ModelBased;
@@ -530,7 +531,7 @@ public class IceMapper extends ome.util.ModelMapper implements
 
     }
 
-    public static EventContext convert(ome.system.EventContext ctx) {
+    public static EventContext convert(IEventContext ctx) {
         if (ctx == null) {
             return null;
         }
@@ -1241,8 +1242,8 @@ public class IceMapper extends ome.util.ModelMapper implements
             return convert((Roles) o);
         } else if (Date.class.isAssignableFrom(type)) {
             return convert((Date) o);
-        } else if (ome.system.EventContext.class.isAssignableFrom(type)) {
-            return convert((ome.system.EventContext) o);
+        } else if (IEventContext.class.isAssignableFrom(type)) {
+            return convert((IEventContext) o);
         } else if (Set.class.isAssignableFrom(type)) {
             return map(new ArrayList((Set) o)); // Necessary since Ice
             // doesn't support Sets.

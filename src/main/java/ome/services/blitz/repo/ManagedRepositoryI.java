@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 
 import loci.formats.FormatReader;
 import ome.api.IAdmin;
+import ome.api.IEventContext;
 import ome.api.IUpdate;
 import ome.conditions.ApiUsageException;
 import ome.formats.importer.ImportConfig;
@@ -1444,7 +1445,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
     @Override
     protected void makeCheckedDirs(final LinkedList<CheckedPath> paths,
             boolean parents, Session s, ServiceFactory sf, SqlAction sql,
-            ome.system.EventContext effectiveEventContext) throws ServerError {
+                                   IEventContext effectiveEventContext) throws ServerError {
 
         final IAdmin adminService = sf.getAdminService();
         final EventContext ec = IceMapper.convert(effectiveEventContext);
@@ -1453,7 +1454,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
         List<CheckedPath> pathsForRoot;
 
         /* if running as root then the paths must be root-owned */
-        final ome.system.EventContext currentEventContext = adminService.getEventContext();
+        final ome.api.IEventContext currentEventContext = adminService.getEventContext();
         final long rootId = adminService.getSecurityRoles().getRootId();
         if (currentEventContext.getCurrentUserId() == rootId) {
             pathsForRoot = ImmutableList.copyOf(paths);

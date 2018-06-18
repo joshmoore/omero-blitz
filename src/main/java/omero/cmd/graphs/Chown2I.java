@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import ome.api.IEventContext;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,6 @@ import ome.services.graphs.GraphTraversal;
 import ome.services.graphs.GroupPredicate;
 import ome.services.graphs.PermissionsPredicate;
 import ome.services.util.ReadOnlyStatus;
-import ome.system.EventContext;
 import ome.system.Login;
 import ome.system.Roles;
 import omero.ServerError;
@@ -164,7 +164,7 @@ public class Chown2I extends Chown2 implements IRequest, ReadOnlyStatus.IsAware,
         this.graphHelper = new GraphHelper(helper, graphPathBean);
 
         /* if the current user is not an administrator then find of which groups the target user is a member */
-        final EventContext eventContext = helper.getEventContext();
+        final IEventContext eventContext = helper.getEventContext();
         final boolean isChownPrivilege = graphHelper.checkIsAdministrator(adminPrivileges.getPrivilege(AdminPrivilege.VALUE_CHOWN));
         if (isChownPrivilege) {
             acceptableGroupsFrom = null;

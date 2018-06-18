@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import ome.api.JobHandle;
 import ome.model.IObject;
-import ome.services.blitz.fire.Registry;
-import ome.services.blitz.fire.TopicManager;
+import ome.services.blitz.Registry;
+import ome.services.blitz.TopicManager;
 import ome.services.blitz.util.BlitzExecutor;
 import ome.services.blitz.util.BlitzOnly;
 import ome.services.blitz.util.ParamsCache;
@@ -65,8 +65,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import Ice.Current;
-import Ice.LocalException;
-import Ice.UserException;
 
 /**
  * Implementation of the SharedResources interface.

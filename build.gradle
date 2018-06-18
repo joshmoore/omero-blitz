@@ -1,71 +1,137 @@
 buildscript {
     repositories {
-        jcenter()
-        mavenLocal()
+        gradlePluginPortal()
     }
-
     dependencies {
-        classpath 'com.openmicroscopy:dslplugin:1.0'
+        classpath "gradle.plugin.com.zeroc.gradle.ice-builder:slice:1.4.5"
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
-apply plugin: 'com.openmicroscopy.dslplugin'
+plugins {
+    id "java"
+    id 'maven-publish'
+    id 'org.openmicroscopy.dsl' version '5.5.0-SNAPSHOT'
+    id 'org.openmicroscopy.blitz' version '5.5.0-SNAPSHOT'
+}
 
-group 'openmicroscopy.com'
-version '1.0-SNAPSHOT'
+// We have to use old plugin syntax in order for slice plugin to work
+apply plugin: "com.zeroc.gradle.ice-builder.slice"
 
-sourceCompatibility = 1.8
+group = 'org.openmicroscopy'
+version = '5.5.0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url 'http://artifacts.openmicroscopy.org/artifactory/maven/' }
     maven { url 'http://repo.boundlessgeo.com/main/' }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'org.openmicroscopy:omero-server:5.5.0-SNAPSHOT'
 
-    compile 'com.openmicroscopy:omero-server:1.0-SNAPSHOT'
+    implementation 'com.sun.activation:javax.activation:1.2.0'
+
+    implementation 'org.ini4j:ini4j:0.4.1'
+
+    implementation 'commons-beanutils:commons-beanutils:1.9.3'
+    implementation 'org.apache.xmlgraphics:batik-all:1.9.1'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
+    implementation 'org.apache.httpcomponents:httpmime:4.5.6'
+
+    implementation 'gnu.getopt:java-getopt:1.0.13'
+    implementation 'net.sf.ehcache:ehcache:2.10.6'
 }
 
 sourceSets {
     main {
         java {
-            srcDirs 'src/main/java', 'src/generated/java'
+            srcDirs "src/generated/java"
         }
         resources {
-            srcDirs 'src/main/resources', 'src/generated/resources'
+            srcDirs "src/generated/resources"
+        }
+    }
+}
+
+/**
+ * Creates .combined files that can then be split into sources.
+ * In this instance, we're splitting out .java and .ice files
+ * from .combined files.
+ **/
+blitz {
+    outputPath "src/generated"
+    api {
+        java {
+            language "java"
+            outputPath "java/omero/model"
+        }
+
+        ice {
+            language "ice"
+            outputPath "slice/omero/model"
+            outputName "\$1"
         }
     }
 }
 
 dsl {
-    velocity {
-        resource_loader = 'file'
-        file_resource_loader_path = "${projectDir}/src/main/resources/templates"
-        file_resource_loader_cache = false
-    }
-
-    generate {
-        javaIceMap {
-            template = "java_ice_map.vm"
-            outFile = file('src/generated/resources/IceMap.java')
-            omeXmlFiles = project.fileTree(dir: "src/main/resources/templates", include: '**/*.ome.xml')
+    templateFiles fileTree(
+            dir: "src/main/resources/templates",
+            include: '**/*.vm'
+    )
+    outputPath "src/generated"
+    resource {
+        iceMap {
+            template "java_ice_map.vm"
+            outputFile "java/omero/util/IceMap.java"
         }
 
-        javaModelObjectFactoryRegistry {
-            template = "java_obj_reg.vm"
-            outFile = project.file('src/generated/resources/ModelObjectFactoryRegistry.java')
-            omeXmlFiles = project.fileTree(dir: "src/main/resources/templates", include: '**/*.ome.xml')
-        }
-
-        enums {
-            template = "enums.vm"
-            outFile = project.file('src/generated/resources/enums.properties')
-            omeXmlFiles = project.fileTree(dir: "src/main/resources/templates", include: '**/*.ome.xml')
+        objectFactoryRegistry {
+            template "java_obj_reg.vm"
+            outputFile "java/omero/util/ModelObjectFactoryRegistry.java"
         }
     }
 }
+
+slice {
+    java {
+        include = [
+                "src/generated/slice",
+                "src/main/slice"
+        ]
+        files = fileTree(dir: "src/generated/slice", include: '**/*.ice') +
+                fileTree(dir: "src/main/slice", include: '**/*.ice')
+        args = "--tie"
+    }
+}
+
+afterEvaluate {
+    if (slice.iceVersion.contains('3.7')) {
+        slice.output = file('src/generated/ice37')
+        dependencies {
+            implementation 'com.zeroc:icegrid:3.7.+'
+            implementation 'com.zeroc:icestorm:3.7.+'
+        }
+        sourceSets.main.java {
+            srcDirs 'src/main/ice37', slice.output
+        }
+    } else if (slice.iceVersion.contains('3.6')) {
+        slice.output = file('src/generated/ice36')
+        dependencies {
+            implementation 'com.zeroc:icegrid:3.6.+'
+            implementation 'com.zeroc:icestorm:3.6.+'
+        }
+        sourceSets.main.java {
+            srcDirs 'src/main/ice36', slice.output
+        }
+    }
+}
+
+// Set compileSlice to depend on the generation of ice files from "splitIce"
+compileSlice.dependsOn "splitIce"
+
+// Set compileJava to additionally depend on "splitJava"
+compileJava.dependsOn "splitJava"

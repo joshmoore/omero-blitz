@@ -9,10 +9,10 @@ import java.net.URL;
 
 import ome.security.SecuritySystem;
 import ome.services.blitz.fire.PermissionsVerifierI;
-import ome.services.blitz.fire.Registry;
+import ome.services.blitz.Registry;
 import ome.services.blitz.fire.Ring;
 import ome.services.blitz.fire.SessionManagerI;
-import ome.services.blitz.fire.TopicManager;
+import ome.services.blitz.TopicManager;
 import ome.services.sessions.SessionProvider;
 import ome.services.util.Executor;
 

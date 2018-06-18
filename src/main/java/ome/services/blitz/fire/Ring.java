@@ -11,6 +11,7 @@ import java.util.Set;
 
 import ome.security.NodeProvider;
 import ome.security.basic.NodeProviderInMemory;
+import ome.services.blitz.Registry;
 import ome.services.blitz.redirect.NullRedirector;
 import ome.services.blitz.redirect.Redirector;
 import ome.services.blitz.util.BlitzConfiguration;
@@ -66,7 +67,7 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
 
     private/* final */Ice.Communicator communicator;
 
-    private/* final */Registry registry;
+    private/* final */ Registry registry;
 
     /**
      * Standard blitz adapter which is used for the callback.

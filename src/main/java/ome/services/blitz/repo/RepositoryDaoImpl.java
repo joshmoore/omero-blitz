@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ome.api.IEventContext;
 import ome.api.IQuery;
 import ome.api.IUpdate;
 import ome.api.JobHandle;
@@ -22,13 +23,11 @@ import ome.model.fs.FilesetJobLink;
 import ome.model.internal.Permissions.Right;
 import ome.model.internal.Permissions.Role;
 import ome.model.meta.Experimenter;
-import ome.model.meta.ExperimenterGroup;
 import ome.parameters.Parameters;
 import ome.security.basic.OmeroInterceptor;
 import ome.services.RawFileBean;
 import ome.services.blitz.repo.path.FsFile;
 import ome.services.util.Executor;
-import ome.system.EventContext;
 import ome.system.Principal;
 import ome.system.Roles;
 import ome.system.ServiceFactory;
@@ -80,8 +79,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
         }
     }
 
-    private static abstract class StatefulWork
-        extends Executor.SimpleWork
+    private static abstract class StatefulWork<T> extends Executor.SimpleWork<T>
         implements Executor.StatefulWork {
 
         private final RawFileBean bean;
@@ -172,10 +170,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
         try {
             Map<String, String> fileContext = fileContext(fileId, current);
             statefulExecutor.execute(fileContext, currentUser(current),
-                new StatefulWork(bean, this,
+                new StatefulWork<Void>(bean, this,
                     "setFileIdWithBuffer", fileId, checked, mode) {
                     @Transactional(readOnly = true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public Void doWork(Session session, ServiceFactory sf) {
                         bean.setFileIdWithBuffer(fileId, buffer);
                         return null;
                     }
@@ -191,9 +189,9 @@ public class RepositoryDaoImpl implements RepositoryDao {
             throws omero.ServerError {
 
         try {
-            ome.model.core.OriginalFile ofile = (ome.model.core.OriginalFile) executor
+            ome.model.core.OriginalFile ofile =  executor
                     .execute(current.ctx, currentUser(current),
-                            new Executor.SimpleWork(this, "findRepoFile", uuid, checked, mimetype) {
+                            new Executor.SimpleWork<ome.model.core.OriginalFile>(this, "findRepoFile", uuid, checked, mimetype) {
                         @Transactional(readOnly = true)
                         public ome.model.core.OriginalFile doWork(Session session, ServiceFactory sf) {
                         return findRepoFile(sf, getSqlAction(), uuid, checked, mimetype);
@@ -226,11 +224,11 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
         final RMap map = omero.rtypes.rmap();
         executor.execute(current.ctx, currentUser(current),
-                new Executor.SimpleWork(this,
+                new Executor.SimpleWork<Void>(this,
                 "treeList", repoUuid, checked) {
 
             @Transactional(readOnly = true)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public Void doWork(Session session, ServiceFactory sf) {
                 _treeList(map, repoUuid, checked, sf, getSqlAction());
                 return null;
             }
@@ -385,11 +383,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     public boolean canUpdate(final omero.model.IObject obj, Ice.Current current) {
-        return (Boolean)  executor
-                .execute(current.ctx, currentUser(current),
-                        new Executor.SimpleWork(this, "canUpdate") {
+        return executor.execute(current.ctx, currentUser(current),
+                        new Executor.SimpleWork<Boolean>(this, "canUpdate") {
                     @Transactional(readOnly = true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public Boolean doWork(Session session, ServiceFactory sf) {
                         try {
                             ome.model.IObject iobj = (ome.model.IObject)
                                 new IceMapper().reverse(obj);
@@ -404,9 +401,9 @@ public class RepositoryDaoImpl implements RepositoryDao {
     public List<Long> filterFilesByRepository(final String repo, List<Long> ids, Ice.Current current) {
         final List<Long> inRepo = new ArrayList<Long>();
         for (final List<Long> idsBatch : Iterables.partition(ids, BATCH_SIZE)) {
-            inRepo.addAll((Collection<Long>) executor
+            inRepo.addAll( executor
                     .execute(current.ctx, currentUser(current),
-                            new Executor.SimpleWork(this, "filterFilesByRepository") {
+                            new Executor.SimpleWork<Collection<Long>>(this, "filterFilesByRepository") {
                         @Override
                         @Transactional(readOnly = true)
                         public List<Long> doWork(Session session, ServiceFactory sf) {
@@ -421,11 +418,11 @@ public class RepositoryDaoImpl implements RepositoryDao {
             final Ice.Current current) throws SecurityViolation {
 
          try {
-             ome.model.core.OriginalFile oFile = (ome.model.core.OriginalFile) executor
+             ome.model.core.OriginalFile oFile = executor
                  .execute(current.ctx, currentUser(current),
-                         new Executor.SimpleWork(this, "getOriginalFile", repoId) {
+                         new Executor.SimpleWork<ome.model.core.OriginalFile>(this, "getOriginalFile", repoId) {
                      @Transactional(readOnly = true)
-                     public Object doWork(Session session, ServiceFactory sf) {
+                     public ome.model.core.OriginalFile doWork(Session session, ServiceFactory sf) {
                         return sf.getQueryService().findByQuery(
                         LOAD_ORIGINAL_FILE+" f.id = :id",
                         new Parameters().addId(repoId));
@@ -521,12 +518,12 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
         final StopWatch outer = new Slf4JStopWatch();
         try {
-            return (Fileset) mapper.map((ome.model.fs.Fileset)
+            return (Fileset) mapper.map(
                     executor.execute(current.ctx, currentUser(current),
-                            new Executor.SimpleWork(
+                            new Executor.SimpleWork<ome.model.fs.Fileset>(
                     this, "saveFileset", repoUuid, fs, paths) {
                 @Transactional(readOnly = false)
-                public Object doWork(Session session, ServiceFactory sf) {
+                public ome.model.fs.Fileset doWork(Session session, ServiceFactory sf) {
                     // Pre-save all the jobs.
                     for (int i = 0; i < fs.sizeOfJobLinks(); i++) {
                         FilesetJobLink link = fs.getFilesetJobLink(i);
@@ -608,12 +605,11 @@ public class RepositoryDaoImpl implements RepositoryDao {
         final IceMapper mapper = new IceMapper();
 
         try {
-            final ome.model.core.OriginalFile of = (ome.model.core.OriginalFile)
-                    executor.execute(current.ctx, currentUser(current),
-                            new Executor.SimpleWork(
+            final ome.model.core.OriginalFile of = executor.execute(current.ctx, currentUser(current),
+                            new Executor.SimpleWork<ome.model.core.OriginalFile>(
                     this, "register", repoUuid, checked, mimetype) {
                 @Transactional(readOnly = false)
-                public Object doWork(Session session, ServiceFactory sf) {
+                public ome.model.core.OriginalFile doWork(Session session, ServiceFactory sf) {
                     return _internalRegister(repoUuid,
                             Arrays.asList(checked), Arrays.asList(parent),
                             null, mimetype, sf, getSqlAction(), session).get(0);
@@ -671,12 +667,11 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
         try {
             final ome.model.jobs.Job in = (ome.model.jobs.Job) mapper.reverse(job);
-            final ome.model.jobs.Job out = (ome.model.jobs.Job)
-                    executor.execute(current.ctx, currentUser(current),
-                            new Executor.SimpleWork(
+            final ome.model.jobs.Job out = executor.execute(current.ctx, currentUser(current),
+                            new Executor.SimpleWork<ome.model.jobs.Job>(
                     this, "saveJob", in) {
                 @Transactional(readOnly = false)
-                public Object doWork(Session session, ServiceFactory sf) {
+                public ome.model.jobs.Job doWork(Session session, ServiceFactory sf) {
                     JobHandle jh = sf.createJobHandle();
                     jh.submit(in);
                     return jh.getJob();
@@ -703,10 +698,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
         try {
             final ome.model.jobs.Job in = (ome.model.jobs.Job) mapper.reverse(job);
             executor.execute(current.ctx, currentUser(current),
-                            new Executor.SimpleWork(
+                            new Executor.SimpleWork<Void>(
                     this, "updateJob", in, message, status) {
                 @Transactional(readOnly = false)
-                public Object doWork(Session session, ServiceFactory sf) {
+                public Void doWork(Session session, ServiceFactory sf) {
                     JobHandle jh = sf.createJobHandle();
                     jh.attach(in.getId());
                     jh.setStatusAndMessage(status, message);
@@ -728,7 +723,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
             final Ice.Current __current) throws ServerError {
         try {
             /* first check for sudo to find real user's event context */
-            final EventContext effectiveEventContext;
+            final IEventContext effectiveEventContext;
             final String realSessionUuid = __current.ctx.get(PublicRepositoryI.SUDO_REAL_SESSIONUUID);
             if (realSessionUuid != null) {
                 final String realGroupName = __current.ctx.get(PublicRepositoryI.SUDO_REAL_GROUP_NAME);
@@ -740,10 +735,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
                 } else {
                     realCtx.put(omero.constants.GROUP.value, realGroupName);
                 }
-                effectiveEventContext = (EventContext) executor.execute(realCtx, realPrincipal,
-                        new Executor.SimpleWork(this, "makeDirs", dirs) {
+                effectiveEventContext = executor.execute(realCtx, realPrincipal,
+                        new Executor.SimpleWork<IEventContext>(this, "makeDirs", dirs) {
                     @Transactional(readOnly = true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public IEventContext doWork(Session session, ServiceFactory sf) {
                         return ((LocalAdmin) sf.getAdminService()).getEventContextQuiet();
                     }
                 });
@@ -752,10 +747,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
             }
             /* now actually make the directories */
             executor.execute(__current.ctx, currentUser(__current),
-                new Executor.SimpleWork(this, "makeDirs", dirs) {
+                new Executor.SimpleWork<Void>(this, "makeDirs", dirs) {
             @Transactional(readOnly = false)
-            public Object doWork(Session session, ServiceFactory sf) {
-                final ome.system.EventContext eventContext;
+            public Void doWork(Session session, ServiceFactory sf) {
+                final IEventContext eventContext;
                 if (effectiveEventContext == null) {
                     eventContext =
                         ((LocalAdmin) sf.getAdminService()).getEventContextQuiet();
@@ -852,17 +847,15 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     public FsFile getFile(final long id, final Ice.Current current,
             final String repoUuid) {
-        return (FsFile) executor.execute(current.ctx, currentUser(current),
-                new Executor.SimpleWork(this, "getFile", id) {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.SimpleWork<FsFile>(this, "getFile", id) {
             @Transactional(readOnly = true)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public FsFile doWork(Session session, ServiceFactory sf) {
                     String path = getSqlAction().findRepoFilePath(
                             repoUuid, id);
-
                     if (path == null) {
                         return null;
                     }
-
                     return new FsFile(path);
             }
         });
@@ -870,10 +863,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     @SuppressWarnings("unchecked")
     public List<DeleteLog> findRepoDeleteLogs(final DeleteLog template, Current current) {
-        return (List<DeleteLog>) executor.execute(current.ctx, currentUser(current),
-                new Executor.SimpleWork(this, "findRepoDeleteLogs", template) {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.SimpleWork<List<DeleteLog>>(this, "findRepoDeleteLogs", template) {
             @Transactional(readOnly = true)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public List<DeleteLog> doWork(Session session, ServiceFactory sf) {
                 return getSqlAction().findRepoDeleteLogs(template);
             }
         });
@@ -881,10 +874,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     @SuppressWarnings("unchecked")
     public List<List<DeleteLog>> findRepoDeleteLogs(final List<DeleteLog> templates, Current current) {
-        return (List<List<DeleteLog>>) executor.execute(current.ctx, currentUser(current),
-                new Executor.SimpleWork(this, "findRepoDeleteLogs", templates) {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.SimpleWork<List<List<DeleteLog>>>(this, "findRepoDeleteLogs", templates) {
             @Transactional(readOnly = true)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public List<List<DeleteLog>> doWork(Session session, ServiceFactory sf) {
                 List<List<DeleteLog>> rv = new ArrayList<List<DeleteLog>>();
                 for (DeleteLog template : templates) {
                     rv.add(getSqlAction().findRepoDeleteLogs(template));
@@ -895,10 +888,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     public int deleteRepoDeleteLogs(final DeleteLog template, Current current) {
-        return (Integer) executor.execute(current.ctx, currentUser(current),
-                new Executor.SimpleWork(this, "deleteRepoDeleteLogs", template) {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.SimpleWork<Integer>(this, "deleteRepoDeleteLogs", template) {
             @Transactional(readOnly = false)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public Integer doWork(Session session, ServiceFactory sf) {
                 return getSqlAction().deleteRepoDeleteLogs(template);
             }
         });
@@ -906,10 +899,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     @SuppressWarnings("unchecked")
     public List<Integer> deleteRepoDeleteLogs(final List<DeleteLog> templates, Current current) {
-        return (List<Integer>) executor.execute(current.ctx, currentUser(current),
-                new Executor.SimpleWork(this, "deleteRepoDeleteLogs", templates) {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.SimpleWork<List<Integer>>(this, "deleteRepoDeleteLogs", templates) {
             @Transactional(readOnly = false)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public List<Integer> doWork(Session session, ServiceFactory sf) {
                 List<Integer> rv = new ArrayList<Integer>();
                 for (DeleteLog template : templates) {
                     Integer i = getSqlAction().deleteRepoDeleteLogs(template);
@@ -922,10 +915,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     public omero.sys.EventContext getEventContext(Ice.Current curr) {
         final Principal currentUser = new Principal(curr.ctx.get(omero.constants.SESSIONUUID.value));
-        final EventContext ec = (EventContext) executor.execute(curr.ctx, currentUser,
-                new Executor.SimpleWork(this, "getEventContext") {
+        final IEventContext ec = executor.execute(curr.ctx, currentUser,
+                new Executor.SimpleWork<IEventContext>(this, "getEventContext") {
             @Transactional(readOnly = true)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public IEventContext doWork(Session session, ServiceFactory sf) {
                 return ((LocalAdmin) sf.getAdminService()).getEventContextQuiet();
             }
         });
@@ -933,10 +926,10 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     public String getUserInstitution(final long userId, Ice.Current current) {
-        return (String) executor.execute(current.ctx, currentUser(current),
-                new Executor.SimpleWork(this, "getUserInstitution") {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.SimpleWork<String>(this, "getUserInstitution") {
             @Transactional(readOnly = true)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public String doWork(Session session, ServiceFactory sf) {
                 return getUserInstitution(userId, sf);
             }
         });
@@ -1079,7 +1072,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
         if (parentObjectOwnerId != roles.getRootId() || parentObjectGroupId != roles.getUserGroupId()) {
             final LocalAdmin admin = (LocalAdmin) sf.getAdminService();
-            final EventContext ec = admin.getEventContext();
+            final IEventContext ec = admin.getEventContext();
             if (!(admin.canAnnotate(parentObject) ||
                     parentObjectGroupId == roles.getUserGroupId() &&
                     ec.getCurrentGroupPermissions().isGranted(
@@ -1137,8 +1130,8 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     @Override
     public ome.model.enums.ChecksumAlgorithm getChecksumAlgorithm(final String name, Ice.Current current) {
-        return (ome.model.enums.ChecksumAlgorithm) executor.execute(current.ctx, currentUser(current),
-                new Executor.Work<ome.model.enums.ChecksumAlgorithm>() {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.LoggedWork<ome.model.enums.ChecksumAlgorithm>() {
 
             @Override
             public String description() {
@@ -1158,8 +1151,8 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     @Override
     public ome.model.core.OriginalFile getOriginalFileWithHasher(final long id, Ice.Current current) {
-        return (ome.model.core.OriginalFile) executor.execute(current.ctx, currentUser(current),
-                new Executor.Work<ome.model.core.OriginalFile>() {
+        return executor.execute(current.ctx, currentUser(current),
+                new Executor.LoggedWork<ome.model.core.OriginalFile>() {
 
             @Override
             public String description() {
@@ -1180,7 +1173,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     @Override
     public void saveObject(final IObject object, Ice.Current current) {
         executor.execute(current.ctx, currentUser(current),
-                new Executor.Work<Object>() {
+                new Executor.LoggedWork<Void>() {
 
             @Override
             public String description() {
@@ -1189,7 +1182,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
             @Override
             @Transactional(readOnly = false)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public Void doWork(Session session, ServiceFactory sf) {
                 sf.getUpdateService().saveObject(object);
                 return null;
             }

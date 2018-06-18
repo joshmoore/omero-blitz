@@ -12,17 +12,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ome.api.IEventContext;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mail.MailException;
 
 import ome.api.IQuery;
 import ome.api.local.LocalAdmin;
 import ome.parameters.Parameters;
 import ome.services.mail.MailUtil;
 import ome.services.util.ReadOnlyStatus;
-import ome.system.EventContext;
 import omero.cmd.HandleI.Cancel;
 import omero.cmd.ERR;
 import omero.cmd.Helper;
@@ -74,7 +73,7 @@ public class SendEmailRequestI extends SendEmailRequest implements IRequest, Rea
     public void init(Helper helper) {
         this.helper = helper;
 
-        final EventContext ec = ((LocalAdmin) helper.getServiceFactory()
+        final IEventContext ec = ((LocalAdmin) helper.getServiceFactory()
                 .getAdminService()).getEventContextQuiet();
         if (!ec.isCurrentUserAdmin()) {
             throw helper.cancel(new ERR(), null, "no-permissions",
@@ -130,7 +129,7 @@ public class SendEmailRequestI extends SendEmailRequest implements IRequest, Rea
         try {
             mailUtil.sendEmail(this.sender, email, subject, body, html, null,
                     null);
-        } catch (MailException me) {
+        } catch (RuntimeException me) {
             log.error(me.getMessage());
             rsp.invalidemails.add(email);
         }

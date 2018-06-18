@@ -32,6 +32,7 @@ import loci.formats.MissingLibraryException;
 import loci.formats.UnknownFormatException;
 import loci.formats.UnsupportedCompressionException;
 import loci.formats.in.MIASReader;
+import ome.api.IEventContext;
 import ome.formats.OMEROMetadataStoreClient;
 import ome.formats.OverlayMetadataStore;
 import ome.formats.importer.ImportConfig;
@@ -41,8 +42,8 @@ import ome.formats.importer.OMEROWrapper;
 import ome.formats.importer.targets.ServerTemplateImportTarget;
 import ome.formats.importer.util.ErrorHandler;
 import ome.io.nio.TileSizes;
-import ome.services.blitz.fire.Registry;
-import ome.system.EventContext;
+import ome.services.blitz.Registry;
+
 import omero.ServerError;
 import omero.api.ServiceFactoryPrx;
 import omero.cmd.ERR;
@@ -211,7 +212,7 @@ public class ManagedImportRequestI extends ImportRequest implements IRequest {
         this.helper = helper;
         helper.setSteps(5);
 
-        final EventContext ec = helper.getEventContext();
+        final IEventContext ec = helper.getEventContext();
         final ImportConfig config = new ImportConfig();
         final String sessionUuid = ec.getCurrentSessionUuid();
 

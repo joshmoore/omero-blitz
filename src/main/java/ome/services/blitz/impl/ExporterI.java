@@ -271,9 +271,9 @@ public class ExporterI extends AbstractCloseableAmdServant implements
     private void do_xml(final AMD_Exporter_generateXml __cb) {
         try {
             factory.getExecutor().execute(factory.getPrincipal(),
-                    new Executor.SimpleWork(this, "generateXml") {
+                    new Executor.SimpleWork<Void>(this, "generateXml") {
                         @Transactional(readOnly = true)
-                        public Object doWork(Session session, ServiceFactory sf) {
+                        public Void doWork(Session session, ServiceFactory sf) {
                             retrieve.initialize(session);
                             IMetadata xmlMetadata = null;
                             try {
@@ -336,9 +336,9 @@ public class ExporterI extends AbstractCloseableAmdServant implements
     private void do_tiff(final AMD_Exporter_generateTiff __cb) {
         try {
             factory.executor.execute(factory.principal,
-                    new Executor.SimpleWork(this, "generateTiff") {
+                    new Executor.SimpleWork<Void>(this, "generateTiff") {
                         @Transactional(readOnly = true)
-                        public Object doWork(Session session, ServiceFactory sf) {
+                        public Void doWork(Session session, ServiceFactory sf) {
                             retrieve.initialize(session);
 
                             int num = retrieve.sizeImages();

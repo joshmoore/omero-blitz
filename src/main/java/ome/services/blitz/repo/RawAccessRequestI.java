@@ -30,7 +30,7 @@ import Ice.Current;
 
 import ome.io.nio.FileBuffer;
 
-import ome.services.blitz.fire.Registry;
+import ome.services.blitz.Registry;
 import ome.services.blitz.util.ChecksumAlgorithmMapper;
 
 import omero.cmd.ERR;

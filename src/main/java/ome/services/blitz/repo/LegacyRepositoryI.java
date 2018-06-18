@@ -6,7 +6,7 @@
 package ome.services.blitz.repo;
 
 import ome.io.nio.OriginalFilesService;
-import ome.services.blitz.fire.Registry;
+import ome.services.blitz.Registry;
 import ome.services.util.Executor;
 import ome.services.util.ReadOnlyStatus;
 import ome.system.Principal;
