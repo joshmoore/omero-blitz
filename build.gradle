@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath 'org.openmicroscopy:dslplugin:1.0'
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+// apply plugin: 'org.openmicroscopy.dslplugin'
+apply plugin: 'org.openmicroscopy.blitzplugin'
+
+group 'openmicroscopy.com'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url 'http://artifacts.openmicroscopy.org/artifactory/maven/' }
+    maven { url 'http://repo.boundlessgeo.com/main/' }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'org.openmicroscopy:omero-server:1.0-SNAPSHOT'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs "src/main/java", "src/generated/java"
+        }
+        resources {
+            srcDirs "src/main/resources", "src/generated/resources"
+        }
+    }
+}
+
+//task importMappings(type: ImportMappingsTask) {
+//    description 'Extracts mapping files from dependency org.openmicroscopy:omero-model'
+//    extractDir = project.file('extracted')
+//}
+
+// apply from: 'dsl.gradle'
+
+task splitCpp (type: SplitTask) {
+    language = 'cpp'
+    outputDir = 'myfolder'
+    combined = 'mycombinedFiles'
+}
+
+task  zipStuff (ype: Zip) {
+    from 'folder'
+    into 'folder'
+}
+
+zipStuff.dependsOn splitCpp
