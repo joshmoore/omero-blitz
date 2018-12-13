@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Ice.Current;
 import Ice.ObjectAdapter;
-import ome.services.blitz.fire.Registry;
+import ome.services.blitz.Registry;
 import ome.services.messages.DeleteLogMessage;
 import ome.services.messages.DeleteLogsMessage;
 import ome.services.util.Executor;

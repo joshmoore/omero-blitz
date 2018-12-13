@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import ome.api.IEventContext;
 import ome.api.JobHandle;
 import ome.api.RawFileStore;
 import ome.api.local.LocalAdmin;
@@ -26,7 +27,6 @@ import ome.services.procs.Processor;
 import ome.services.scripts.ScriptRepoHelper;
 import ome.services.sessions.SessionManager;
 import ome.services.util.Executor;
-import ome.system.EventContext;
 import ome.system.Principal;
 import ome.system.ServiceFactory;
 import ome.tools.hibernate.QueryBuilder;
@@ -453,10 +453,10 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
             + "where file.name = :name and job.id = :id";
 
     private OriginalFile loadFileOrNull(final String name, final Ice.Current current) {
-        return (OriginalFile) this.ex.execute(current.ctx, this.principal,
-                new Executor.SimpleWork(this, "optionallyLoadFile") {
+        return this.ex.execute(current.ctx, this.principal,
+                new Executor.SimpleWork<OriginalFile>(this, "optionallyLoadFile") {
             @Transactional(readOnly=true)
-            public Object doWork(org.hibernate.Session session,
+            public OriginalFile doWork(org.hibernate.Session session,
                     ServiceFactory sf) {
 
                 return sf.getQueryService().findByQuery(
@@ -479,9 +479,9 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
 
     private void appendIfText(final OriginalFile file, final StringBuilder sb, final Ice.Current current) {
         if (file.getMimetype() != null && file.getMimetype().contains("text")) {
-            this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork(this, "appendIfText", file) {
+            this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork<Void>(this, "appendIfText", file) {
                 @Transactional(readOnly=true)
-                public Object doWork(org.hibernate.Session session,
+                public Void doWork(org.hibernate.Session session,
                         ServiceFactory sf) {
                     RawFileStore rfs = sf.createRawFileStore();
                     try {
@@ -497,9 +497,9 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
     }
 
     private void failJob(final ValidationException ve, final Ice.Current current) {
-        this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork(this, "failJob", job.getId().getValue()) {
+        this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork<Void>(this, "failJob", job.getId().getValue()) {
             @Transactional(readOnly=false)
-            public Object doWork(org.hibernate.Session session,
+            public Void doWork(org.hibernate.Session session,
                     ServiceFactory sf) {
                 JobHandle jh = sf.createJobHandle();
                 try {
@@ -516,11 +516,10 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
         });
     }
 
-    private EventContext getEventContext(final Ice.Current current) {
-        return (EventContext)
-        this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork(this, "getEventContext") {
+    private IEventContext getEventContext(final Ice.Current current) {
+        return this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork<IEventContext>(this, "getEventContext") {
             @Transactional(readOnly=true)
-            public Object doWork(org.hibernate.Session session,
+            public IEventContext doWork(org.hibernate.Session session,
                     ServiceFactory sf) {
                     return ((LocalAdmin) sf.getAdminService()).getEventContextQuiet();
             }
@@ -528,7 +527,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
     }
 
     private Session newSession(Current __current) {
-        EventContext ec = getEventContext(__current);
+        IEventContext ec = getEventContext(__current);
         Session newSession = mgr.createWithAgent(
                 new Principal(ec.getCurrentUserName(),
                 ec.getCurrentGroupName(), "Processing"), "OMERO.scripts", null);

@@ -3,7 +3,7 @@
  *   Use is subject to license terms supplied in LICENSE.txt
  */
 
-package ome.services.blitz.fire;
+package ome.services.blitz;
 
 import java.util.Arrays;
 import java.util.HashMap;

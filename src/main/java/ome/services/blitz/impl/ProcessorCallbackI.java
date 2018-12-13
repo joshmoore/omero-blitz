@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import ome.services.blitz.fire.TopicManager;
+import ome.services.blitz.TopicManager;
 import ome.services.blitz.util.ResultHolder;
 import ome.system.EventContext;
 import ome.system.Principal;

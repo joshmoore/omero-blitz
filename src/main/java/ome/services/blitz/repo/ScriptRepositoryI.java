@@ -7,7 +7,7 @@ package ome.services.blitz.repo;
 
 import java.util.Set;
 
-import ome.services.blitz.fire.Registry;
+import ome.services.blitz.Registry;
 import ome.services.scripts.ScriptRepoHelper;
 import ome.services.util.Executor;
 import ome.services.util.ReadOnlyStatus;

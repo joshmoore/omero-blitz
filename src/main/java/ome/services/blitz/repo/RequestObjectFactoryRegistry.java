@@ -26,7 +26,7 @@ import org.springframework.context.ApplicationContextAware;
 
 import ome.io.nio.PixelsService;
 import ome.io.nio.TileSizes;
-import ome.services.blitz.fire.Registry;
+import ome.services.blitz.Registry;
 import ome.services.blitz.fire.Ring;
 import ome.system.OmeroContext;
 

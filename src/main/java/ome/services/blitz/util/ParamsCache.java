@@ -27,7 +27,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import ome.model.core.OriginalFile;
-import ome.services.blitz.fire.Registry;
+import ome.services.blitz.Registry;
 import ome.services.blitz.impl.ServiceFactoryI;
 import ome.services.scripts.ScriptRepoHelper;
 import ome.system.OmeroContext;

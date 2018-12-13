@@ -135,9 +135,9 @@ public class PermissionsVerifierI extends _PermissionsVerifierDisp {
                 return true;
             } else {
                 final List<String> data = new ArrayList<String>();
-                ex.execute(p, new Executor.SimpleWork("failedPassword", userId) {
+                ex.execute(p, new Executor.SimpleWork<Void>("failedPassword", userId) {
                     @Transactional(readOnly = true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public Void doWork(Session session, ServiceFactory sf) {
                         final Long sessionId = sessionProvider.findSessionIdByUuid(userId, sf);
                         final ome.model.meta.Session s =
                                 sessionId == null ? null : sessionProvider.findSessionById(sessionId, sf);

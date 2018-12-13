@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import ome.services.blitz.fire.TopicManager;
+import ome.services.blitz.TopicManager;
 import ome.services.util.Executor;
 import ome.tools.spring.OnContextRefreshedEventListener;
 import ome.util.SqlAction;

@@ -12,15 +12,16 @@ buildscript {
 plugins {
     id "java"
     id 'maven-publish'
-    id 'org.openmicroscopy.dsl' version '0.1.0'
-    id 'org.openmicroscopy.blitz' version '0.1.0'
+    id 'org.openmicroscopy.dsl' version '5.4.8-SNAPSHOT'
+    id 'org.openmicroscopy.blitz' version '5.4.8-SNAPSHOT'
 }
 
 apply plugin: "com.zeroc.gradle.ice-builder.slice"
 
 group = 'openmicroscopy.com'
 version = '1.0-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
@@ -31,6 +32,13 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'org.openmicroscopy:omero-server:1.0-SNAPSHOT'
+
+    implementation 'commons-beanutils:commons-beanutils:1.9.3'
+    implementation 'org.apache.xmlgraphics:batik-all:1.9.1'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
+    implementation 'gnu.getopt:java-getopt:1.0.13'
+    implementation 'net.sf.ehcache:ehcache:2.10.6'
+
 }
 
 sourceSets {
@@ -100,14 +108,19 @@ slice {
 afterEvaluate {
     if (slice.iceVersion.contains('3.7')) {
         slice.output = file('src/generated/ice37')
-        dependencies.add('compile', 'com.zeroc:glacier2:3.7.+')
+        dependencies {
+            implementation 'com.zeroc:icegrid:3.7.+'
+            implementation 'com.zeroc:icestorm:3.7.+'
+        }
         sourceSets.main.java {
             srcDirs 'src/main/ice37', slice.output
         }
-
     } else if (slice.iceVersion.contains('3.6')) {
         slice.output = file('src/generated/ice36')
-        dependencies.add('compile', 'com.zeroc:glacier2:3.6.+')
+        dependencies {
+            implementation 'com.zeroc:icegrid:3.6.+'
+            implementation 'com.zeroc:icestorm:3.6.+'
+        }
         sourceSets.main.java {
             srcDirs 'src/main/ice36', slice.output
         }
