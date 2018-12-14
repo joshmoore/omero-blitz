@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import ome.api.IEventContext;
 import ome.services.blitz.TopicManager;
 import ome.services.blitz.util.ResultHolder;
-import ome.system.EventContext;
+
 import ome.system.Principal;
 
 import omero.ServerError;
@@ -117,7 +118,7 @@ public class ProcessorCallbackI extends AbstractAmdServant
             ProcessorCallbackPrx cbPrx = ProcessorCallbackPrxHelper
                     .uncheckedCast(prx);
 
-            EventContext ec = sf.getEventContext(current);
+            IEventContext ec = sf.getEventContext(current);
 
             TopicManager.TopicMessage msg = new TopicManager.TopicMessage(this,
                     PROCESSORACCEPTS.value, new ProcessorPrxHelper(),
@@ -160,9 +161,9 @@ public class ProcessorCallbackI extends AbstractAmdServant
                     "Processor with session %s returned %s accepted",
                     sessionUuid, procLog, accepted));
             try {
-                EventContext procEc = sf.sessionManager
+                IEventContext procEc = sf.sessionManager
                         .getEventContext(new Principal(sessionUuid));
-                EventContext ec = sf.getEventContext(__current);
+                IEventContext ec = sf.getEventContext(__current);
                 if (procEc.isCurrentUserAdmin()
                         || procEc.getCurrentUserId().equals(
                                 ec.getCurrentUserId())) {

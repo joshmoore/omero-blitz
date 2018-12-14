@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import ome.api.IEventContext;
 import ome.api.IUpdate;
 import ome.api.RawFileStore;
 import ome.model.core.OriginalFile;
@@ -25,7 +26,7 @@ import ome.services.blitz.util.ServiceFactoryAware;
 import ome.services.scripts.RepoFile;
 import ome.services.scripts.ScriptRepoHelper;
 import ome.services.util.Executor;
-import ome.system.EventContext;
+
 import ome.system.ServiceFactory;
 import ome.tools.hibernate.QueryBuilder;
 import ome.util.checksum.ChecksumProviderFactory;
@@ -213,8 +214,8 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
     private void assertCanWriteFiles(final Current __current, final boolean isIntoUserGroup) throws SecurityViolation {
         boolean allowCreation = false;
         try {
-            allowCreation = (Boolean) factory.executor.execute(
-                    __current.ctx, factory.principal, new Executor.SimpleWork(this, "uploadScript-prep") {
+            allowCreation =  factory.executor.execute(
+                    __current.ctx, factory.principal, new Executor.SimpleWork<Boolean>(this, "uploadScript-prep") {
                         @Transactional(readOnly = true)
                         public Boolean doWork(Session session, ServiceFactory sf) {
                             final OriginalFile file = new OriginalFile();
@@ -271,7 +272,7 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
         assertCanWriteFiles(__current, true);
         safeRunnableCall(__current, __cb, false, new Callable<Long>() {
             public Long call() throws Exception {
-                EventContext ec = factory.getEventContext();
+                IEventContext ec = factory.getEventContext();
                 if ( ! ec.isCurrentUserAdmin() ) {
                     throw new omero.SecurityViolation(null, null, "User is not an administrator");
                 }
@@ -401,10 +402,10 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
                             + " invalid on Blitz.OMERO server.");
         }
 
-        return (String) factory.executor.execute(current.ctx, factory.principal,
-                new Executor.SimpleWork(this, "getScriptWithDetails") {
+        return factory.executor.execute(current.ctx, factory.principal,
+                new Executor.SimpleWork<String>(this, "getScriptWithDetails") {
                     @Transactional(readOnly = true)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public String doWork(Session session, ServiceFactory sf) {
                         RawFileStore rawFileStore = sf.createRawFileStore();
                         try {
                             rawFileStore.setFileId(file.getId());
@@ -609,8 +610,8 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
                     throw new ApiUsageException(null, null,
                             "No script with id " + id + " on server.");
                 }
-                final boolean allowDelete = (Boolean) factory.executor.execute(
-                        __current.ctx, factory.principal, new Executor.SimpleWork(this, "deleteScript-prep") {
+                final boolean allowDelete = factory.executor.execute(
+                        __current.ctx, factory.principal, new Executor.SimpleWork<Boolean>(this, "deleteScript-prep") {
                             @Transactional(readOnly = true)
                             public Boolean doWork(Session session, ServiceFactory sf) {
                                 return aclVoter.allowDelete(file, file.getDetails());
@@ -623,10 +624,10 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
 
                 deleteOriginalFile(file, __current);
                 factory.executor.execute(
-                        __current.ctx, factory.principal, new Executor.SimpleWork(this, "deleteScript") {
+                        __current.ctx, factory.principal, new Executor.SimpleWork<Void>(this, "deleteScript") {
 
                             @Transactional(readOnly = false)
-                            public Object doWork(Session session, ServiceFactory sf) {
+                            public Void doWork(Session session, ServiceFactory sf) {
                                 for (final ome.model.IObject foundLink : sf.getQueryService().findAllByQuery(
                                         "FROM JobOriginalFileLink WHERE child.id = :id", new Parameters().addId(id))) {
                                     // TODO: instead use Delete2 which automatically handles any necessary unlinking
@@ -700,11 +701,11 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
      * @throws ServerError
      */
     private OriginalFile updateFile(final OriginalFile file, final Ice.Current current) throws ServerError {
-        OriginalFile updatedFile = (OriginalFile) factory.executor.execute(
-                current.ctx, factory.principal, new Executor.SimpleWork(this, "updateFile") {
+        OriginalFile updatedFile = factory.executor.execute(
+                current.ctx, factory.principal, new Executor.SimpleWork<OriginalFile>(this, "updateFile") {
 
                     @Transactional(readOnly = false)
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public OriginalFile doWork(Session session, ServiceFactory sf) {
                         IUpdate update = sf.getUpdateService();
                         file.getDetails().setUpdateEvent(null);
                         return update.saveAndReturnObject(file);
@@ -726,10 +727,10 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
      */
     private OriginalFile writeContent(final OriginalFile file, final String script,
             final Ice.Current current) throws ServerError {
-        return (OriginalFile) factory.executor.execute(current.ctx, factory.principal, new Executor.SimpleWork(
+        return factory.executor.execute(current.ctx, factory.principal, new Executor.SimpleWork<OriginalFile>(
                 this, "writeContent") {
             @Transactional(readOnly = false)
-            public Object doWork(Session session, ServiceFactory sf) {
+            public OriginalFile doWork(Session session, ServiceFactory sf) {
                 final byte[] buf = script.getBytes();
                 final RawFileStore rawFileStore = sf.createRawFileStore();
                 try {
@@ -783,13 +784,13 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
             qb.and("o.id = :id");
             qb.param("id", id);
 
-            OriginalFile file = (OriginalFile) factory.executor.execute(
-                    current.ctx, factory.principal, new Executor.SimpleWork(this,
+            OriginalFile file = factory.executor.execute(
+                    current.ctx, factory.principal, new Executor.SimpleWork<OriginalFile>(this,
                             "getOriginalFileOrNull", id) {
 
                         @Transactional(readOnly = true)
-                        public Object doWork(Session session, ServiceFactory sf) {
-                            return qb.query(session).uniqueResult();
+                        public OriginalFile doWork(Session session, ServiceFactory sf) {
+                            return (OriginalFile) qb.query(session).uniqueResult();
                         }
                     });
             return file;

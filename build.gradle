@@ -13,7 +13,7 @@ plugins {
     id "java"
     id 'maven-publish'
     id 'org.openmicroscopy.dsl' version '5.4.8-SNAPSHOT'
-    id 'org.openmicroscopy.blitz' version '5.4.8-SNAPSHOT'
+    id 'org.openmicroscopy.blitz' version '5.5.0-SNAPSHOT'
 }
 
 apply plugin: "com.zeroc.gradle.ice-builder.slice"
@@ -31,14 +31,17 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'org.openmicroscopy:omero-server:1.0-SNAPSHOT'
+    compile 'org.openmicroscopy:omero-server:5.5.0-SNAPSHOT'
+
+    implementation 'com.sun.activation:javax.activation:1.2.0'
 
     implementation 'commons-beanutils:commons-beanutils:1.9.3'
     implementation 'org.apache.xmlgraphics:batik-all:1.9.1'
     implementation 'org.apache.httpcomponents:httpclient:4.5.6'
+    implementation 'org.apache.httpcomponents:httpmime:4.5.6'
+
     implementation 'gnu.getopt:java-getopt:1.0.13'
     implementation 'net.sf.ehcache:ehcache:2.10.6'
-
 }
 
 sourceSets {
@@ -94,6 +97,11 @@ dsl {
     }
 }
 
+//task copyIceFiles(type: Copy) {
+//    from "src/main/slice"
+//    into "src/generated/slice"
+//}
+
 slice {
     java {
         include = [
@@ -127,6 +135,6 @@ afterEvaluate {
     }
 }
 
-// Set compileSlice to depend on the generation of ice files from "splitIce"
-tasks.compileSlice.dependsOn "splitIce"
 
+// Set compileSlice to depend on the generation of ice files from "splitIce"
+compileSlice.dependsOn "splitIce"

@@ -41,12 +41,13 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
+import ome.api.IEventContext;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-import org.postgresql.util.PSQLException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -464,9 +465,9 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         final Principal principal = new Principal(session, group, null);
 
         try {
-            executor.execute(ctx, principal, new Executor.SimpleWork(this, "setOriginalFileHasherToSHA1", id) {
+            executor.execute(ctx, principal, new Executor.SimpleWork<Void>(this, "setOriginalFileHasherToSHA1", id) {
                     @Transactional
-                    public Object doWork(Session session, ServiceFactory sf) {
+                    public Void doWork(Session session, ServiceFactory sf) {
                         final IQuery iQuery = sf.getQueryService();
                         final ome.model.core.OriginalFile originalFile = iQuery.find(ome.model.core.OriginalFile.class, id);
                         final ome.model.enums.ChecksumAlgorithm sha1 = iQuery.findByString(ome.model.enums.ChecksumAlgorithm.class,
@@ -499,8 +500,8 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         final Principal principal = new Principal(session, group, null);
 
         try {
-            return (ome.model.core.OriginalFile) executor.execute(ctx, principal,
-                    new Executor.SimpleWork(this, "persistLogFile", id) {
+            return executor.execute(ctx, principal,
+                    new Executor.SimpleWork<ome.model.core.OriginalFile>(this, "persistLogFile", id) {
                 @Transactional(readOnly = false)
                 public ome.model.core.OriginalFile doWork(Session session, ServiceFactory sf) {
                     final ome.model.core.OriginalFile persisted = sf.getUpdateService().saveAndReturnObject(originalFile);
@@ -694,7 +695,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
 
     public void makeDir(CheckedPath checked, boolean parents,
             Session s, ServiceFactory sf, SqlAction sql,
-            ome.system.EventContext effectiveEventContext) throws ServerError {
+            IEventContext effectiveEventContext) throws ServerError {
 
         final LinkedList<CheckedPath> paths = new LinkedList<CheckedPath>();
         while (!checked.isRoot) {
@@ -731,8 +732,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
      * @param effectiveEventContext
      */
     protected void makeCheckedDirs(final LinkedList<CheckedPath> paths,
-            boolean parents, Session s, ServiceFactory sf, SqlAction sql,
-            ome.system.EventContext effectiveEventContext) throws ServerError {
+            boolean parents, Session s, ServiceFactory sf, SqlAction sql, IEventContext effectiveEventContext) throws ServerError {
 
         CheckedPath checked;
 
