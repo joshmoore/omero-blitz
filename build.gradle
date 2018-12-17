@@ -35,6 +35,8 @@ dependencies {
 
     implementation 'com.sun.activation:javax.activation:1.2.0'
 
+    implementation 'org.ini4j:ini4j:0.4.1'
+
     implementation 'commons-beanutils:commons-beanutils:1.9.3'
     implementation 'org.apache.xmlgraphics:batik-all:1.9.1'
     implementation 'org.apache.httpcomponents:httpclient:4.5.6'
@@ -62,7 +64,6 @@ sourceSets {
  **/
 blitz {
     outputPath "src/generated"
-
     api {
         java {
             language "java"
@@ -83,7 +84,6 @@ dsl {
             include: '**/*.vm'
     )
     outputPath "src/generated"
-
     resource {
         iceMap {
             template "java_ice_map.vm"
@@ -97,11 +97,6 @@ dsl {
     }
 }
 
-//task copyIceFiles(type: Copy) {
-//    from "src/main/slice"
-//    into "src/generated/slice"
-//}
-
 slice {
     java {
         include = [
@@ -110,6 +105,7 @@ slice {
         ]
         files = fileTree(dir: "src/generated/slice", include: '**/*.ice') +
                 fileTree(dir: "src/main/slice", include: '**/*.ice')
+        args = "--tie"
     }
 }
 
@@ -135,6 +131,5 @@ afterEvaluate {
     }
 }
 
-
 // Set compileSlice to depend on the generation of ice files from "splitIce"
-compileSlice.dependsOn "splitIce"
+compileSlice.dependsOn "splitIce", "copyIceFiles"

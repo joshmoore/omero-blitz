@@ -1423,7 +1423,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
         List<CheckedPath> pathsForRoot;
 
         /* if running as root then the paths must be root-owned */
-        final ome.system.EventContext currentEventContext = adminService.getEventContext();
+        final ome.api.IEventContext currentEventContext = adminService.getEventContext();
         final long rootId = adminService.getSecurityRoles().getRootId();
         if (currentEventContext.getCurrentUserId() == rootId) {
             pathsForRoot = ImmutableList.copyOf(paths);
