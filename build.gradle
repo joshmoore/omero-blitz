@@ -99,11 +99,11 @@ dsl {
 slice {
     java {
         include = [
-                "src/generated/slice",
-                "src/main/slice"
+                file("src/generated/slice"),
+                file("src/main/slice")
         ]
-        files = fileTree(dir: "src/generated/slice", include: '**/*.ice') +
-                fileTree(dir: "src/main/slice", include: '**/*.ice')
+        files = fileTree(dir: file("src/generated/slice"), include: '**/*.ice') +
+                fileTree(dir: file("src/main/slice"), include: '**/*.ice')
         args = "--tie"
     }
 }
