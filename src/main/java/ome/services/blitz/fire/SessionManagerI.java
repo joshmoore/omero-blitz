@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import ome.api.IRoles;
 import ome.services.blitz.Registry;
 import ome.services.blitz.TopicManager;
 import org.slf4j.Logger;
@@ -166,7 +167,7 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
             }
 
             // Defaults
-            Roles roles = securitySystem.getSecurityRoles();
+            IRoles roles = securitySystem.getSecurityRoles();
 
             String group = getGroup(current);
             if (group == null) {

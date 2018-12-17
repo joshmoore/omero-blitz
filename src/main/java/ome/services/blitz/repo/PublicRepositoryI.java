@@ -47,7 +47,6 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -759,7 +758,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
                     repositoryDao.register(repoUuid, checked,
                             DIRECTORY_MIMETYPE, sf, sql, s);
                 } catch (ValidationException ve) {
-                    if (ve.getCause() instanceof PSQLException) {
+                    if (ve.getCause().getClass().getSimpleName().equals("PSQLException") ) {
                         // Could have collided with another thread also creating the directory.
                         // See Trac #11096 regarding originalfile table uniqueness of columns repo, path, name.
                         // So, give the other thread time to complete registration.

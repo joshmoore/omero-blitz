@@ -1,8 +1,6 @@
 buildscript {
     repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        gradlePluginPortal()
     }
     dependencies {
         classpath "gradle.plugin.com.zeroc.gradle.ice-builder:slice:1.4.5"
@@ -12,14 +10,15 @@ buildscript {
 plugins {
     id "java"
     id 'maven-publish'
-    id 'org.openmicroscopy.dsl' version '5.4.8-SNAPSHOT'
+    id 'org.openmicroscopy.dsl' version '5.5.0-SNAPSHOT'
     id 'org.openmicroscopy.blitz' version '5.5.0-SNAPSHOT'
 }
 
+// We have to use old plugin syntax in order for slice plugin to work
 apply plugin: "com.zeroc.gradle.ice-builder.slice"
 
 group = 'openmicroscopy.com'
-version = '1.0-SNAPSHOT'
+version = '5.5.0-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -132,4 +131,7 @@ afterEvaluate {
 }
 
 // Set compileSlice to depend on the generation of ice files from "splitIce"
-compileSlice.dependsOn "splitIce", "copyIceFiles"
+compileSlice.dependsOn "splitIce"
+
+// Set compileJava to additionally depend on "splitJava"
+compileJava.dependsOn "splitJava"
