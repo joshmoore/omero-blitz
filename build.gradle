@@ -74,6 +74,11 @@ blitz {
             outputPath "slice/omero/model"
             outputName "\$1"
         }
+
+        python {
+            language "python"
+            outputPath "$buildDir/toArchive/python"
+        }
     }
 }
 

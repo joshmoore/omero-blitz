@@ -8,12 +8,23 @@ task javadocJar(type: Jar) {
     from javadoc
 }
 
+task pythonZip(dependsOn: "splitPython", type: Zip) {
+    afterEvaluate { from splitPython.outputDir }
+    destinationDir file("$buildDir/archived")
+    archiveName "python.zip"
+}
+
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        bltizJava(MavenPublication) {
             from components.java
             artifact sourceJar
             artifact javadocJar
+        }
+        blitzPython(MavenPublication) {
+            afterEvaluate {
+                artifact source: pythonZip, extension: 'zip', classifier: 'python'
+            }
         }
     }
 }
