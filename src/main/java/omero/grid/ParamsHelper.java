@@ -253,7 +253,7 @@ public class ParamsHelper {
     // TODO refactor
     public interface Acquirer {
         public InteractiveProcessorPrx acquireProcessor(final Job submittedJob,
-                int seconds, final Current current) throws ServerError;
+                                                        int seconds, final Current current) throws ServerError;
     }
 
 }

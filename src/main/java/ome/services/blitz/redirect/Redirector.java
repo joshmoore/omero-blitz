@@ -74,7 +74,7 @@ public interface Redirector {
      * @throws CannotCreateSessionException
      */
     public SessionPrx getProxyOrNull(Context context, String userId,
-            Glacier2.SessionControlPrx control, Ice.Current current)
+                                     Glacier2.SessionControlPrx control, Ice.Current current)
             throws CannotCreateSessionException;
 
     /**

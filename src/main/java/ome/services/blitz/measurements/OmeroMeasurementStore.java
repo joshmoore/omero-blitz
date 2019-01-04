@@ -24,7 +24,7 @@ public interface OmeroMeasurementStore {
      * 
      */
     public abstract void initialize(String[] headers, String[] idTypes,
-            Class[] types, Map<String, Object> metadata) throws Exception;
+                                    Class[] types, Map<String, Object> metadata) throws Exception;
 
     /**
      * Adds an array of rows (Object[]) to the store. These rows might be

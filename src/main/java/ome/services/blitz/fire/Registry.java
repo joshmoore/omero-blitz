@@ -60,7 +60,7 @@ public interface Registry {
      * </pre>
      */
     ServiceFactoryPrx getInternalServiceFactory(String user, Long groupId,
-            int retries, int interval, String client_uuid) throws Exception;
+                                                int retries, int interval, String client_uuid) throws Exception;
 
     /**
      * Returns an active {@link IceGrid.QueryPrx} or null if none is available.

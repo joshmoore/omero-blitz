@@ -125,7 +125,7 @@ public interface IObjectContainerStore {
    * @param physicalSizeZ Physical pixel depth.
    */
   void setUserSpecifiedPhysicalPixelSizes(
-      Double physicalSizeX, Double physicalSizeY, Double physicalSizeZ);
+          Double physicalSizeX, Double physicalSizeY, Double physicalSizeZ);
 
   /**
    * Returns the current authoritative LSID container cache. This container
@@ -191,7 +191,7 @@ public interface IObjectContainerStore {
    * @return See above.
    */
   IObjectContainer getIObjectContainer(
-      Class<? extends IObject> klass, LinkedHashMap<Index, Integer> indexes);
+          Class<? extends IObject> klass, LinkedHashMap<Index, Integer> indexes);
 
   /**
    * Removes an IObject container from within the OME-XML data model store.
@@ -231,7 +231,7 @@ public interface IObjectContainerStore {
    * @return See above.
    */
   int countCachedReferences(
-      Class<? extends IObject> source, Class<? extends IObject> target);
+          Class<? extends IObject> source, Class<? extends IObject> target);
 
   /**
    * Checks to see if there is currently an active reference for two LSIDs.

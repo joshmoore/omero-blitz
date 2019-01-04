@@ -48,7 +48,7 @@ public interface EnumerationProvider
      * @return Enumeration object.
      */
 	<T extends IObject> T getEnumeration(Class<T> klass, String value,
-		               boolean loaded);
+                                         boolean loaded);
 
     /**
      * Retrieves all enumerations of a specific type.

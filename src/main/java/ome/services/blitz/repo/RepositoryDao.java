@@ -40,7 +40,7 @@ public interface RepositoryDao {
      *      {@link RawFileBean#setFileIdWithBuffer(long, FileBuffer)} called.
      */
     RawFileStore getRawFileStore(long fileId, CheckedPath checked, String mode,
-            final Ice.Current current) throws SecurityViolation;
+                                 final Ice.Current current) throws SecurityViolation;
 
     /**
      * Delegate to {@link ome.util.SqlAction#findRepoFile(String, String, String, String)}
@@ -53,15 +53,15 @@ public interface RepositoryDao {
      * @return See above.
      */
     OriginalFile findRepoFile(String uuid, CheckedPath checked,
-            String mimetype, Ice.Current current) throws ServerError;
+                              String mimetype, Ice.Current current) throws ServerError;
 
     /**
      * As {@link #findRepoFile(String, CheckedPath, String, Current)} but
      * can be called from within a transaction.
      */
     ome.model.core.OriginalFile findRepoFile(ServiceFactory sf,
-            SqlAction sql, final String uuid, final CheckedPath checked,
-            final String mimetype);
+                                             SqlAction sql, final String uuid, final CheckedPath checked,
+                                             final String mimetype);
 
     /*
      * Look up all original files at a given path, recursively, in a single
@@ -83,7 +83,7 @@ public interface RepositoryDao {
      * if they aren't in the "user" group, they are moved.
      */
     void createOrFixUserDir(String uuid,
-            List<CheckedPath> path, Session s, ServiceFactory sf, SqlAction sql)
+                            List<CheckedPath> path, Session s, ServiceFactory sf, SqlAction sql)
         throws ServerError;
 
     /**
@@ -127,7 +127,7 @@ public interface RepositoryDao {
      * @param current
      */
     List<OriginalFile> getOriginalFiles(String repoUuid, CheckedPath checked,
-            Ice.Current current) throws SecurityViolation;
+                                        Ice.Current current) throws SecurityViolation;
 
     /**
      * Fill the various fields of the {@link Fileset} and then save the
@@ -143,7 +143,7 @@ public interface RepositoryDao {
      * @param current Current context
      */
     Fileset saveFileset(String repoUuid, Fileset fs, ChecksumAlgorithm checksumAlgorithm,
-            List<CheckedPath> paths, Ice.Current current) throws ServerError;
+                        List<CheckedPath> paths, Ice.Current current) throws ServerError;
 
     /**
      * Load filesets by id.
@@ -172,7 +172,7 @@ public interface RepositoryDao {
      *
      */
     OriginalFile register(String repoUuid, CheckedPath checked, String mimetype,
-            final Ice.Current current) throws ServerError;
+                          final Ice.Current current) throws ServerError;
 
     /**
      * Like {@link #register(String, CheckedPath, String, Ice.Current)} but
@@ -190,7 +190,7 @@ public interface RepositoryDao {
      * @throws ServerError
      */
     public ome.model.core.OriginalFile register(String repoUuid, CheckedPath checked,
-            final String mimetype, final ServiceFactory sf, final SqlAction sql, Session session)
+                                                final String mimetype, final ServiceFactory sf, final SqlAction sql, Session session)
                     throws ServerError;
 
     /**
@@ -204,7 +204,7 @@ public interface RepositoryDao {
      *
      */
     FsFile getFile(final long id, final Ice.Current current,
-            final String repoUuid);
+                   final String repoUuid);
 
     /**
      * Create a job from an instance provided by either the client or the
@@ -298,7 +298,7 @@ public interface RepositoryDao {
      * within a {@link PublicRepositoryI#sudo(Current, String)}.
      */
     void makeDirs(PublicRepositoryI repo, List<CheckedPath> dirs, boolean parents,
-            Current c) throws ServerError;
+                  Current c) throws ServerError;
 
     /**
      * Retrieve the checksum algorithm of the given name.

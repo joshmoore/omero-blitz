@@ -28,8 +28,8 @@ public interface BlitzExecutor {
      * the invoker is passed to the user.
      */
     void callInvokerOnRawArgs(ServiceInterface service,
-            IceMethodInvoker invoker, Object __cb, Ice.Current __current,
-            Object... args);
+                              IceMethodInvoker invoker, Object __cb, Ice.Current __current,
+                              Object... args);
 
     /**
      * Passes the given arguments to {@link IceMethodInvoker} with the
@@ -38,11 +38,11 @@ public interface BlitzExecutor {
      * return value from ome.* to omero.*.
      */
     void callInvokerWithMappedArgs(ServiceInterface service,
-            IceMethodInvoker invoker, IceMapper mapper, Object __cb,
-            Ice.Current __current, Object... args);
+                                   IceMethodInvoker invoker, IceMapper mapper, Object __cb,
+                                   Ice.Current __current, Object... args);
 
     void runnableCall(Ice.Current __current, Task runnable);
 
     <R> void safeRunnableCall(Ice.Current __current, Object cb, boolean isVoid,
-            Callable<R> callable);
+                              Callable<R> callable);
 }
