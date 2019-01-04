@@ -29,6 +29,7 @@ import loci.common.services.AbstractService;
 import loci.formats.IFormatReader;
 import loci.formats.IFormatWriter;
 import loci.ome.io.OmeroReader;
+import ome.model.core.Image;
 
 /**
  *
@@ -41,7 +42,7 @@ public class OMEReaderWriterServiceImpl extends AbstractService
   public OMEReaderWriterServiceImpl() {
     // Just being thorough with these dependencies.
     checkClassDependency(OmeroReader.class);
-    checkClassDependency(omero.model.Image.class);
+    checkClassDependency(Image.class);
   }
 
   /* (non-Javadoc)
