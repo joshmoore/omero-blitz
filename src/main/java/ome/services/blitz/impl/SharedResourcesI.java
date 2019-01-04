@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import ome.api.JobHandle;
 import ome.model.IObject;
-import ome.services.blitz.Registry;
-import ome.services.blitz.TopicManager;
+import ome.services.blitz.fire.Registry;
+import ome.services.blitz.fire.TopicManager;
 import ome.services.blitz.util.BlitzExecutor;
 import ome.services.blitz.util.BlitzOnly;
 import ome.services.blitz.util.ParamsCache;

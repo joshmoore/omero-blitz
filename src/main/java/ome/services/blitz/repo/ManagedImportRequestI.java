@@ -42,7 +42,7 @@ import ome.formats.importer.OMEROWrapper;
 import ome.formats.importer.targets.ServerTemplateImportTarget;
 import ome.formats.importer.util.ErrorHandler;
 import ome.io.nio.TileSizes;
-import ome.services.blitz.Registry;
+import ome.services.blitz.fire.Registry;
 
 import omero.ServerError;
 import omero.api.ServiceFactoryPrx;

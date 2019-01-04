@@ -5,7 +5,7 @@
 
 package ome.services.blitz.repo;
 
-import ome.services.blitz.Registry;
+import ome.services.blitz.fire.Registry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

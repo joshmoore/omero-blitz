@@ -13,8 +13,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ome.api.IRoles;
-import ome.services.blitz.Registry;
-import ome.services.blitz.TopicManager;
+import ome.services.blitz.fire.Registry;
+import ome.services.blitz.fire.TopicManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
