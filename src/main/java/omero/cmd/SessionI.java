@@ -147,18 +147,6 @@ public class SessionI implements _SessionOperations {
 
     public void submit_async(AMD_Session_submit __cb, omero.cmd.Request req,
             Ice.Current current) {
-        final Executor.Priority priority;
-        if (req instanceof GraphQuery) {
-            priority = Executor.Priority.BACKGROUND;
-        } else {
-            /* defaults to Priority.USER */
-            priority = null;
-        }
-        submit_async(__cb, req, current, priority);
-    }
-
-    public void submit_async(AMD_Session_submit __cb, omero.cmd.Request req,
-            Ice.Current current, Executor.Priority priority) {
         try {
 
             if (req == null || !IRequest.class.isAssignableFrom(req.getClass())) {
@@ -212,7 +200,7 @@ public class SessionI implements _SessionOperations {
             // Init
             try {
                 handle.initialize(id, (IRequest) req, current.ctx);
-                executor.submit(priority, current.ctx, Executors.callable(handle));
+                executor.submit(current.ctx, Executors.callable(handle));
                 __cb.ice_response(prx);
             } catch (Throwable e) {
                 log.error("Exception on startup; removing handle " + id, e);
@@ -566,23 +554,10 @@ public class SessionI implements _SessionOperations {
      */
     public Ice.ObjectPrx registerServant(Ice.Identity id, Ice.Object servant)
             throws ServerError {
-        return registerServant(id, servant, null);
-    }
-
-    /**
-     * Additionally stores information from the {@link Ice.Current} argument
-     * in the {@link CallContext} so that information from the creation of
-     * a servant can be recorded server-side without the need for clients to
-     * re-send the information or even for values which clients should not
-     * know.
-     */
-    public Ice.ObjectPrx registerServant(Ice.Identity id, Ice.Object servant,
-            Ice.Current current)
-            throws ServerError {
 
         Ice.ObjectPrx prx = null;
         try {
-            servant = callContextWrapper(servant, current);
+            servant = callContextWrapper(servant);
             Ice.Object already = adapter.find(id);
             if (null == already) {
                 adapter.add(servant, id); // OK ADAPTER USAGE
@@ -622,7 +597,7 @@ public class SessionI implements _SessionOperations {
     }
 
 
-    protected Ice.Object callContextWrapper(Ice.Object servant, Ice.Current current) {
+    protected Ice.Object callContextWrapper(Ice.Object servant) {
         // If this isn't a tie, then we can't do any wrapping.
         if (!(Ice.TieBase.class.isAssignableFrom(servant.getClass()))) {
             return servant;
@@ -632,7 +607,7 @@ public class SessionI implements _SessionOperations {
         Object delegate = tie.ice_delegate();
 
         ProxyFactory wrapper = new ProxyFactory(delegate);
-        wrapper.addAdvice(0, new CallContext(context, token, current));
+        wrapper.addAdvice(0, new CallContext(context, token));
         tie.ice_delegate(wrapper.getProxy());
         return servant;
     }

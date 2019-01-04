@@ -106,9 +106,13 @@ public class ChannelProcessor implements ModelProcessor {
   private void setSingleChannel(ChannelData channelData) {
     int channelIndex = channelData.getChannelIndex();
     Channel channel = channelData.getChannel();
+    Integer red = getValue(channel.getRed());
+    Integer green = getValue(channel.getGreen());
+    Integer blue = getValue(channel.getBlue());
+    Integer alpha = getValue(channel.getAlpha());
     RString name;
-    if (hasColor(channel)) {
-      //color already set by Bio-formats
+    //color already set by Bio-formats
+    if (red != null && green != null && blue != null && alpha != null) {
       return;
     }
     int[] defaultColor = ColorsFactory.newGreyColor();
@@ -159,9 +163,13 @@ public class ChannelProcessor implements ModelProcessor {
       return;
     }
 
+    Integer red = getValue(channel.getRed());
+    Integer green = getValue(channel.getGreen());
+    Integer blue = getValue(channel.getBlue());
+    Integer alpha = getValue(channel.getAlpha());
     RString name;
-    if (hasColor(channel)) {
-      //color already set by Bio-formats
+    //color already set by Bio-formats
+    if (red != null && green != null && blue != null && alpha != null) {
       //Try to set the name.
       log.debug("Already set in BF.");
       if (lc.getName() == null) {
@@ -266,22 +274,6 @@ public class ChannelProcessor implements ModelProcessor {
 
     //not been able to set the color
     setDefaultChannelColor(channel, channelIndex);
-  }
-
-  /**
-   * Checks if a valid color is already set on the Channel.
-   * All four color components (red, green, blue, alpha)
-   * must be non-null.
-   *
-   * @param channel the Channel to check for a color
-   * @return true if a valid color was found; false otherwise
-   */
-  private boolean hasColor(Channel channel) {
-    Integer red = getValue(channel.getRed());
-    Integer green = getValue(channel.getGreen());
-    Integer blue = getValue(channel.getBlue());
-    Integer alpha = getValue(channel.getAlpha());
-    return red != null && green != null && blue != null && alpha != null;
   }
 
   /**
@@ -481,16 +473,13 @@ public class ChannelProcessor implements ModelProcessor {
       } else {
         for (int c = 0; c < sizeC; c++) {
           channelData = ChannelData.fromObjectContainerStore(store, i, c);
-          boolean hasBFColor = hasColor(channelData.getChannel());
           //Color section
           populateDefault(channelData, isGraphicsDomain);
 
           //only retrieve if not graphics
           if (!isGraphicsDomain) {
             //Determine if the channel same emission wavelength.
-            // don't allow the color to be reset to white if a color
-            // was set by Bio-Formats
-            v = ColorsFactory.hasEmissionData(channelData) || hasBFColor;
+            v = ColorsFactory.hasEmissionData(channelData);
             if (!v) {
               count++;
             }

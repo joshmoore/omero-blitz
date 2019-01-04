@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2018 University of Dundee & Open Microscopy Environment.
+ * Copyright (C) 2013 University of Dundee & Open Microscopy Environment.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -31,18 +31,13 @@ import org.apache.commons.lang.time.StopWatch;
  */
 public class ProportionalTimeEstimatorImpl implements TimeEstimator {
 
-    private final ThreadLocal<StopWatch> swGetter = new ThreadLocal<StopWatch>() {
-        @Override
-        protected StopWatch initialValue() {
-            return new StopWatch();
-        }
-    };
-
     private long imageContainerSize = 0, timeLeft = 0;
 
     private long totalBytes = 0;
 
     private long totalTime = 0;
+
+    private StopWatch sw;
 
     /**
      * Creates a new object of this class with a defined internal buffer size.
@@ -52,6 +47,7 @@ public class ProportionalTimeEstimatorImpl implements TimeEstimator {
      *            time is being estimated.
      */
     public ProportionalTimeEstimatorImpl(long imageContainerSize) {
+        sw = new StopWatch();
         this.imageContainerSize = imageContainerSize;
     }
 
@@ -59,7 +55,6 @@ public class ProportionalTimeEstimatorImpl implements TimeEstimator {
      * @see TimeEstimator#start()
      */
     public void start() {
-        final StopWatch sw = swGetter.get();
         sw.reset();
         sw.start();
     }
@@ -68,25 +63,15 @@ public class ProportionalTimeEstimatorImpl implements TimeEstimator {
      * @see TimeEstimator#stop()
      */
     public void stop() {
-        final StopWatch sw = swGetter.get();
         sw.stop();
-        updateStats(sw);
+        totalTime += sw.getTime();
     }
 
     /**
      * @see TimeEstimator#stop(long)
      */
     public void stop(long uploadedBytes) {
-        final StopWatch sw = swGetter.get();
         sw.stop();
-        updateStats(sw, uploadedBytes);
-    }
-
-    private synchronized void updateStats(StopWatch sw) {
-        totalTime += sw.getTime();
-    }
-
-    private synchronized void updateStats(StopWatch sw, long uploadedBytes) {
         totalTime += sw.getTime();
         totalBytes += uploadedBytes;
         imageContainerSize -= uploadedBytes;
@@ -101,7 +86,8 @@ public class ProportionalTimeEstimatorImpl implements TimeEstimator {
     /**
      * @see TimeEstimator#getUploadTimeLeft()
      */
-    public synchronized long getUploadTimeLeft() {
+    public long getUploadTimeLeft() {
         return timeLeft;
     }
+
 }

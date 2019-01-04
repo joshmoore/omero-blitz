@@ -331,10 +331,14 @@ public class client {
 
         // Strictly necessary for this class to work
         optionallySetProperty(id, "Ice.ImplicitContext", "Shared");
-        optionallySetProperty(id, "Ice.ACM.Client.Timeout",
-                ""+omero.constants.ACMCLIENTTIMEOUT.value);
-        optionallySetProperty(id, "Ice.ACM.Client.Heartbeat", ""+
-                omero.constants.ACMCLIENTHEARTBEAT.value);
+        if (Ice.Util.intVersion() >= 30600) {
+            optionallySetProperty(id, "Ice.ACM.Client.Timeout",
+                    ""+omero.constants.ACMCLIENTTIMEOUT.value);
+            optionallySetProperty(id, "Ice.ACM.Client.Heartbeat", ""+
+                    omero.constants.ACMCLIENTHEARTBEAT.value);
+        } else {
+            optionallySetProperty(id, "Ice.ACM.Client", "0");
+        }
         optionallySetProperty(id, "Ice.CacheMessageBuffers", "0");
         optionallySetProperty(id, "Ice.RetryIntervals", "-1");
         optionallySetProperty(id, "Ice.Default.EndpointSelection", "Ordered");
@@ -345,6 +349,12 @@ public class client {
         optionallySetProperty(id, "IceSSL.VerifyPeer", "0");
         optionallySetProperty(id, "omero.block_size", Integer
             .toString(omero.constants.DEFAULTBLOCKSIZE.value));
+
+        // Set the default encoding if this is Ice 3.5 or later
+        // and none is set.
+        if (Ice.Util.intVersion() >= 30500) {
+            optionallySetProperty(id, "Ice.Default.EncodingVersion", "1.0");
+        }
 
         // Setting MessageSizeMax
         optionallySetProperty(id, "Ice.MessageSizeMax", Integer
@@ -470,7 +480,7 @@ public class client {
     }
 
     /**
-     * Creates a possibly insecure {@link omero.client} instance and calls
+     * Creates a possibly insecure {@link client} instance and calls
      * {@link #joinSession(String)} using the current {@link #getSessionId()
      * session id}. If secure is false, then first the "omero.router.insecure"
      * configuration property is retrieved from the server and used as the value
@@ -480,7 +490,7 @@ public class client {
      * Note: detachOnDestroy has NOT been called on the session in the returned client.
      * Clients are responsible for doing this immediately if such desired.
      */
-    public omero.client createClient(boolean secure) throws ServerError,
+    public client createClient(boolean secure) throws ServerError,
             CannotCreateSessionException, PermissionDeniedException {
 
         Map<String, String> props = getPropertyMap();
@@ -494,7 +504,7 @@ public class client {
             }
         }
 
-        omero.client nClient = new omero.client(props, secure);
+        client nClient = new client(props, secure);
         nClient.setAgent(__agent + ";secure=" + secure);
         nClient.joinSession(getSessionId());
         return nClient;
@@ -804,7 +814,7 @@ public class client {
     /**
      * Resets the "omero.keep_alive" property on the current
      * {@link Ice.Communicator} which is used on initialization to determine the
-     * time-period between {@link omero.util.Resources.Entry#check() checks}.
+     * time-period between {@link Entry#check() checks}.
      */
     public void enableKeepAlive(int seconds) {
 

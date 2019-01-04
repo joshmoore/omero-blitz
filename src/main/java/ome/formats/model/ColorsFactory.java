@@ -216,7 +216,7 @@ public class ColorsFactory {
         (cutIn.getValue()+cutOut.getValue())/2, cutIn.getUnit());
     if (v.getValue() < 0)
       return makeLength(
-          0.0, ome.formats.model.UnitsFactory.TransmittanceRange_CutIn);
+          0.0, UnitsFactory.TransmittanceRange_CutIn);
     return v;
   }
 

@@ -100,7 +100,6 @@ public class LineData
         if (shape == null) 
             throw new IllegalArgumentException("No shape specified.");
         shape.setTextValue(rtypes.rstring(text));
-        setDirty(true);
     }
 
     /**
@@ -129,7 +128,6 @@ public class LineData
         if (shape == null) 
             throw new IllegalArgumentException("No shape specified.");
         shape.setX1(rtypes.rdouble(x1));
-        setDirty(true);
     }
 
     /**
@@ -158,7 +156,6 @@ public class LineData
         if (shape == null) 
             throw new IllegalArgumentException("No shape specified.");
         shape.setX2(rtypes.rdouble(x2));
-        setDirty(true);
     }
 
     /**
@@ -187,7 +184,6 @@ public class LineData
         if (shape == null) 
             throw new IllegalArgumentException("No shape specified.");
         shape.setY1(rtypes.rdouble(y1));
-        setDirty(true);
     }
 
     /**
@@ -216,7 +212,6 @@ public class LineData
         if (shape == null) 
             throw new IllegalArgumentException("No shape specified.");
         shape.setY2(rtypes.rdouble(y2));
-        setDirty(true);
     }
 
 }

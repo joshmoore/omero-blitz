@@ -1,6 +1,9 @@
 /*
- *   Copyright 2018 University of Dundee. All rights reserved.
+ *   $Id$
+ *
+ *   Copyright 2014 University of Dundee. All rights reserved.
  *   Use is subject to license terms supplied in LICENSE.txt
+ *
  */
 
 #ifndef OMERO_CMD_ADMIN_ICE
@@ -20,7 +23,6 @@ module omero {
 
          /**
           * Requests a reset password for the given user.
-          * The user must not be an administrator.
           *
           * examples:
           *  - omero.cmd.ResetPasswordRequest(omename, email)

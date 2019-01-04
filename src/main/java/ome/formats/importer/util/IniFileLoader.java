@@ -401,14 +401,12 @@ public class IniFileLoader {
         userPrefs.node("UI").putInt("yOffset", bounds.y);
     }
 
-    @Deprecated
     public boolean getUserFullPath()
     {
     	if (userPrefs == null) return true;
 	    return userPrefs.node("UI").getBoolean("userFullPath", true);
     }
 
-    @Deprecated
     public void setUserFullPath(boolean b)
     {
     	if (userPrefs != null)

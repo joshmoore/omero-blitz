@@ -25,7 +25,7 @@ import loci.formats.IFormatReader;
 import loci.formats.MissingLibraryException;
 import loci.formats.UnknownFormatException;
 import loci.formats.UnsupportedCompressionException;
-import loci.formats.in.DynamicMetadataOptions;
+import loci.formats.in.DefaultMetadataOptions;
 import loci.formats.in.MetadataLevel;
 import ome.formats.ImageNameMetadataStore;
 import ome.formats.importer.util.ErrorHandler;
@@ -423,7 +423,7 @@ public class ImportCandidates extends DirectoryWalker
                 reader.close();
                 reader.setMetadataStore(new ImageNameMetadataStore());
                 reader.setMetadataOptions(
-                        new DynamicMetadataOptions(METADATA_LEVEL));
+                        new DefaultMetadataOptions(METADATA_LEVEL));
                 reader.setId(path);
                 format = reader.getFormat();
                 usedFiles = getOrderedFiles();
@@ -621,9 +621,7 @@ public class ImportCandidates extends DirectoryWalker
             public void removeSelfIfSingular() {
                 int users = theyUseMe.size();
                 int used = iUseThem.size();
-                if (used < users) {
-                    // remove only if this file has more users
-                    // than it uses other associated files itself
+                if (used <= 1 && users > 0) {
                     groups.remove(key);
                 }
             }
