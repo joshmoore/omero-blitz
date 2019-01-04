@@ -171,7 +171,7 @@ public class SecurityContext {
     /**
      * Calculate the hashCode for the data.
      * 
-     * @see java.lang.Object#hashCode()
+     * @see Object#hashCode()
      */
     public int hashCode() {
         return Objects.hashCode(this.getGroupID(), this.getServerInformation(),
@@ -181,7 +181,7 @@ public class SecurityContext {
     /**
      * Overridden to control if the passed object equals the current one.
      * 
-     * @see java.lang.Object#equals(Object)
+     * @see Object#equals(Object)
      */
     public boolean equals(Object obj) {
         if (obj == null)

@@ -235,7 +235,7 @@ public interface SmartShape {
         public static Shape transformAwtShape(Shape shape, AffineTransform transform) {
             if (transform == null) return shape;
             final java.awt.geom.AffineTransform t = 
-                SmartShape.Util.getAwtTransform(transform);
+                Util.getAwtTransform(transform);
             return t.createTransformedShape(shape);
         }
         
@@ -301,11 +301,11 @@ public interface SmartShape {
     void areaPoints(PointCallback action);
 
     /**
-     * Converts the current {@link SmartShape} to a {@link java.awt.Shape}. This
+     * Converts the current {@link SmartShape} to a {@link Shape}. This
      * is useful for determining paths and included points.
      * @return the AWT shape
      */
-    java.awt.Shape asAwtShape();
+    Shape asAwtShape();
 
     /**
      * Provides some, possibly lossy, bounding polygon of this

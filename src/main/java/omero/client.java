@@ -76,7 +76,7 @@ import Ice.Current;
  * OmeroCpp omero::client class.
  *
  * In order to more closely map the destructors in Python and C++, this class
- * keeps a collection of {@link omero.client} instances, which
+ * keeps a collection of {@link client} instances, which
  * are destroyed on program termination.
  *
  * Typical usage: <code>
@@ -95,7 +95,7 @@ import Ice.Current;
 public class client {
 
     /**
-     * A {@link java.util.Collection} of all the {@link omero.client} instances
+     * A {@link java.util.Collection} of all the {@link client} instances
      * created so that we can guarantee that we at least <i>attempt</i> to shut
      * them down before exiting.
      */
@@ -148,14 +148,14 @@ public class client {
     private volatile Ice.ObjectAdapter __oa;
 
     /**
-     * Single communicator for this {@link omero.client}. Nullness is used as a
+     * Single communicator for this {@link client}. Nullness is used as a
      * test of what state the client is in, therefore all access is sychronized
      * by {@link #lock}
      */
     private volatile Ice.Communicator __ic;
 
     /**
-     * Single session for this {@link omero.client}. Nullness is used as a test
+     * Single session for this {@link client}. Nullness is used as a test
      * of what state the client is in, like {@link #__ic}, therefore all access
      * is synchronized by {@link #lock}
      *

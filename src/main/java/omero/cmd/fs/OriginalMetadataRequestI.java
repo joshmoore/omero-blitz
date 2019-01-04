@@ -226,7 +226,7 @@ public class OriginalMetadataRequestI extends OriginalMetadataRequest implements
      * @param keyValue the key = value string
      * @return the extracted key and value, or <code>null</code> if there is no '=' character
      */
-    private static Map.Entry<String, String> splitOnEquals(String keyValue) {
+    private static Entry<String, String> splitOnEquals(String keyValue) {
         Integer equalsIndex = null;
         Integer equalsSmallestDepth = null;
         int currentIndex = 0;
@@ -320,7 +320,7 @@ public class OriginalMetadataRequestI extends OriginalMetadataRequest implements
 
 	private static void printMap(String title, Map<String, RType> map) {
 		System.out.println(title);
-		for (Map.Entry<String, RType> entry : map.entrySet()) {
+		for (Entry<String, RType> entry : map.entrySet()) {
 			System.out.print(entry.getKey());
 			System.out.print("=");
 			System.out.print(entry.getValue());

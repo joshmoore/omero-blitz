@@ -132,7 +132,7 @@ public class ContainerI extends AbstractAmdServant implements _IContainerOperati
 
     public void getImagesBySplitFilesets_async(
             AMD_IContainer_getImagesBySplitFilesets __cb,
-            Map<java.lang.String, List<Long>> included, Parameters options,
+            Map<String, List<Long>> included, Parameters options,
             Current __current) throws ServerError {
         final Map<RClass, List<Long>> includedWithClasses =
                 new HashMap<RClass, List<Long>>(included.size());

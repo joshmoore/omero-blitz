@@ -14,7 +14,7 @@ import omero.util.ServantHolder;
  * {@link InternalMessage} raised when a servant should be removed from the
  * {@link Ice.ObjectAdapter adapter}. This is most likely a result of a call to
  * "service.close()" from within
- * {@link ome.services.blitz.util.IceMethodInvoker}
+ * {@link IceMethodInvoker}
  *
  * Though this instance is {@link java.io.Serializable} through inheritance, it
  * is not intended to be stored anywhere, but should be acted upon and discarded

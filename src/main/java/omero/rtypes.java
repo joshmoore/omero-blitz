@@ -30,7 +30,7 @@ import omero.util.ObjectFactoryRegistry;
 import Ice.Current;
 
 /**
- * Abstract class similar to {@link java.util.Arrays} or
+ * Abstract class similar to {@link Arrays} or
  * {@link java.util.Collections} which is responsible for creating RTypes from
  * static factory methods. Where possible, factory methods return cached values
  * (the fly-weight pattern) such that <code>rbool(true) == rbool(true)</code>
@@ -117,7 +117,7 @@ public abstract class rtypes {
             return cache.get(value);
         } else if (value.getClass().isArray()) {
             final int length = Array.getLength(value);
-            final RArray rv = omero.rtypes.rarray();
+            final RArray rv = rtypes.rarray();
             cache.put(value,  rv);
             for (int i = 0; i < length; i++) {
                 rv.getValue().add(
@@ -126,7 +126,7 @@ public abstract class rtypes {
             return rv;
         } else if (value instanceof List) {
             final List<?> list = (List<?>) value;
-            final RList rv = omero.rtypes.rlist();
+            final RList rv = rtypes.rlist();
             cache.put(value, rv);
             for (int i = 0; i < list.size(); i++) {
                 rv.getValue().add(wrap(list.get(i), cache));
@@ -134,7 +134,7 @@ public abstract class rtypes {
             return rv;
         } else if (value instanceof Map) {
             final Map<?, ?> map = (Map<?, ?>) value;
-            final RMap rv = omero.rtypes.rmap();
+            final RMap rv = rtypes.rmap();
             cache.put(value, rv);
             final Map<String, omero.RType> val = rv.getValue();
             for (final Object key : map.keySet()) {
@@ -143,14 +143,14 @@ public abstract class rtypes {
             return rv;
         } else if (value instanceof Set) {
             final Set<?> set = (Set<?>) value;
-            final RSet rv = omero.rtypes.rset();
+            final RSet rv = rtypes.rset();
             cache.put(value, rv);
             for (final Object element : set) {
                 rv.getValue().add(wrap(element, cache));
             }
             return rv;
         } else {
-            return omero.rtypes.rtype(value);
+            return rtypes.rtype(value);
         }
     }
 
@@ -816,7 +816,7 @@ public abstract class rtypes {
             val.add(value);
         }
 
-        public void addAll(java.util.List<RType> value, Ice.Current current) {
+        public void addAll(List<RType> value, Ice.Current current) {
             val.addAll(value);
         }
 
@@ -884,7 +884,7 @@ public abstract class rtypes {
             val.add(value);
         }
 
-        public void addAll(java.util.List<RType> value, Ice.Current current) {
+        public void addAll(List<RType> value, Ice.Current current) {
             val.addAll(value);
         }
 
@@ -951,7 +951,7 @@ public abstract class rtypes {
             val.add(value);
         }
 
-        public void addAll(java.util.List<RType> value, Ice.Current current) {
+        public void addAll(List<RType> value, Ice.Current current) {
             val.addAll(value);
         }
 

@@ -169,7 +169,7 @@ public class ServantHolder {
                 session, servantsPerSession);
             log.error(msg);
             omero.OverUsageException oue = new omero.OverUsageException();
-            omero.util.IceMapper.fillServerError(oue,
+            IceMapper.fillServerError(oue,
                 new ome.conditions.OverUsageException(msg));
             throw oue;
         }

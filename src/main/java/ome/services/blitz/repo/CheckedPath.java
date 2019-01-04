@@ -248,7 +248,7 @@ public class CheckedPath {
 
     /**
      * Check if this file actually exists on the underlying filesystem.
-     * Analogous to {@link java.io.File#exists()}.
+     * Analogous to {@link File#exists()}.
      * @return <code>true</code> if the file exists, <code>false</code> otherwise
      */
     public boolean exists() {
@@ -296,7 +296,7 @@ public class CheckedPath {
 
     /**
      * Check if this file is actually readable on the underlying filesystem.
-     * Analogous to {@link java.io.File#canRead()}.
+     * Analogous to {@link File#canRead()}.
      * @return <code>true</code> if the file is readable, <code>false</code> otherwise
      */
     public boolean canRead() {
@@ -361,7 +361,7 @@ public class CheckedPath {
 
     /**
      * Return the size of this file on the underlying filesystem.
-     * Analogous to {@link java.io.File#length()}.
+     * Analogous to {@link File#length()}.
      * @return the file size
      */
     public long size() {
@@ -370,7 +370,7 @@ public class CheckedPath {
 
     /**
      * Create this directory on the underlying filesystem.
-     * Analogous to {@link java.io.File#mkdir()}.
+     * Analogous to {@link File#mkdir()}.
      * @return <code>true</code> if the directory was created, <code>false</code> otherwise
      */
     public boolean mkdir() {
@@ -378,7 +378,7 @@ public class CheckedPath {
     }
 
     /**
-     * Mark the underlying {@link java.io.File} as read-only and return true
+     * Mark the underlying {@link File} as read-only and return true
      * if the operation was successful.
      **/
     public boolean setReadOnly() {
@@ -387,7 +387,7 @@ public class CheckedPath {
 
     /**
      * Create this directory, and parents if necessary, on the underlying filesystem.
-     * Analogous to {@link java.io.File#mkdirs()}.
+     * Analogous to {@link File#mkdirs()}.
      * @return <code>true</code> if the directory was created, <code>false</code> otherwise
      */
     public boolean mkdirs() {

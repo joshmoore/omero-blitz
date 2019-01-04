@@ -175,7 +175,7 @@ public class GraphHelper {
      * @throws ome.conditions.InternalException if any of the target object classes are illegal
      */
     public SetMultimap<String, Long> getTargetMultimap(Set<Class<? extends IObject>> legalClasses,
-            Map<String, java.util.List<Long>> targetObjects) {
+            Map<String, List<Long>> targetObjects) {
         /* if targetObjects were an IObjectList then this would need IceMapper.reverse */
         final SetMultimap<String, Long> targetMultimap = HashMultimap.create();
         for (final Map.Entry<String, List<Long>> oneClassToTarget : targetObjects.entrySet()) {
