@@ -16,10 +16,18 @@ repositories {
     maven { url 'https://artifacts.openmicroscopy.org/artifactory/maven/' }
 }
 
+ext {
+    if (slice.iceVersion.contains('3.7')) {
+        iceversion="-ice37"
+    } else if (slice.iceVersion.contains('3.6')) {
+        iceversion="-ice36"
+    }
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    api 'org.openmicroscopy:omero-server:5.5.0-SNAPSHOT'
+    api 'org.openmicroscopy:omero-server'+iceversion+':5.5.0-SNAPSHOT'
 
     implementation 'com.sun.activation:javax.activation:1.2.0'
 
@@ -160,6 +168,7 @@ compileSlice.dependsOn "copySliceFiles"
 compileJava.dependsOn "splitJava"
 
 jar {
+    archivesBaseName = rootProject.name + iceversion
     manifest {
         attributes(
                 'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),

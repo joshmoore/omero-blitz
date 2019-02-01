@@ -16,12 +16,14 @@ task pythonZip(type: Zip, dependsOn: "pythonTaskGroup") {
 publishing {
     publications {
         bltizJava(MavenPublication) {
+            artifactId = jar.baseName
             from components.java
             artifact sourceJar
             artifact javadocJar
         }
 
         blitzPython(MavenPublication) {
+            artifactId = jar.baseName
             artifact pythonZip
         }
     }
