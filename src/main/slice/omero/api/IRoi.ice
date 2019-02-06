@@ -11,6 +11,7 @@
 
 #include <omero/ServicesF.ice>
 #include <omero/Collections.ice>
+#include <omero/Tables.ice>
 
 // Items for a separate service:
 // -----------------------------
