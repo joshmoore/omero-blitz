@@ -6,7 +6,7 @@
 #ifndef OMERO_API_ISESSION_ICE
 #define OMERO_API_ISESSION_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/Session.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
 #include <omero/Collections.ice>

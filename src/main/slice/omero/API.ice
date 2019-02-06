@@ -11,7 +11,7 @@
 
 #include <omero/cmd/API.ice>
 #include <omero/ServerErrors.ice>
-#include <omero/ModelF.ice>
+#include <omero/model/IObject.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
 #include <omero/BaseCollections.ice>

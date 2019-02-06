@@ -7,7 +7,6 @@
 #define CLASS_PERMISSIONS
 
 #include <omero/RTypes.ice>
-#include <omero/ModelF.ice>
 #include <omero/BaseCollections.ice>
 
 module omero {

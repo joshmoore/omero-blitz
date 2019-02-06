@@ -9,7 +9,8 @@
 #ifndef OMERO_REPOSITORY_ICE
 #define OMERO_REPOSITORY_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/OriginalFile.ice>
+#include <omero/model/FilesetJobLink.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
 #include <omero/BaseCollections.ice>

@@ -9,9 +9,8 @@
 #ifndef OMERO_API_IPROJECTION_ICE
 #define OMERO_API_IPROJECTION_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/PixelsType.ice>
 #include <omero/ServicesF.ice>
-#include <omero/Collections.ice>
 #include <omero/Constants.ice>
 
 

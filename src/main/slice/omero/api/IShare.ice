@@ -9,9 +9,13 @@
 #ifndef OMERO_API_ISHARE_ICE
 #define OMERO_API_ISHARE_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/Experimenter.ice>
+#include <omero/model/IObject.ice>
+#include <omero/model/Share.ice>
+#include <omero/model/TextAnnotation.ice>
 #include <omero/ServicesF.ice>
 #include <omero/Collections.ice>
+
 ["deprecate:IShare is deprecated."]
 module omero {
 

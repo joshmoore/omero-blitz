@@ -9,6 +9,10 @@
 #ifndef OMERO_SCRIPTS_ICE
 #define OMERO_SCRIPTS_ICE
 
+
+#include <omero/model/Experimenter.ice>
+#include <omero/model/Job.ice>
+#include <omero/model/ScriptJob.ice>
 #include <omero/RTypes.ice>
 #include <omero/System.ice>
 #include <omero/ServerErrors.ice>

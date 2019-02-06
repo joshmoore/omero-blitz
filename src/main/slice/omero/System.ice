@@ -6,7 +6,7 @@
 #ifndef OMERO_SYSTEM_ICE
 #define OMERO_SYSTEM_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/Permissions.ice>
 #include <omero/SystemF.ice>
 #include <omero/BaseCollections.ice>
 

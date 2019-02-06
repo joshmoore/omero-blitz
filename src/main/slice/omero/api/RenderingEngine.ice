@@ -9,7 +9,10 @@
 #ifndef OMERO_API_RENDERINGENGINE_ICE
 #define OMERO_API_RENDERINGENGINE_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/Family.ice>
+#include <omero/model/Pixels.ice>
+#include <omero/model/QuantumDef.ice>
+#include <omero/model/RenderingModel.ice>
 #include <omero/Collections.ice>
 #include <omero/ROMIO.ice>
 #include <omero/Constants.ice>

@@ -9,6 +9,10 @@
 #ifndef OMERO_API_ICONFIG_ICE
 #define OMERO_API_ICONFIG_ICE
 
+#include <omero/model/IObject.ice>
+#include <omero/model/Pixels.ice>
+#include <omero/model/PixelsType.ice>
+#include <omero/model/RenderingDef.ice>
 #include <omero/Collections.ice>
 #include <omero/ServicesF.ice>
 

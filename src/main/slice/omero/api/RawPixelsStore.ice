@@ -9,7 +9,7 @@
 #ifndef OMERO_API_RAWPIXELSSTORE_ICE
 #define OMERO_API_RAWPIXELSSTORE_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/Pixels.ice>
 #include <omero/Collections.ice>
 #include <omero/ROMIO.ice>
 #include <omero/api/PyramidService.ice>

@@ -9,7 +9,7 @@
 #ifndef OMERO_TABLES_ICE
 #define OMERO_TABLES_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/OriginalFile.ice>
 #include <omero/RTypes.ice>
 #include <omero/System.ice>
 #include <omero/BaseCollections.ice>

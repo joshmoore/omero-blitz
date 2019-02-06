@@ -9,7 +9,7 @@
 #ifndef OMERO_API_ITYPES_ICE
 #define OMERO_API_ITYPES_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/IObject.ice>
 #include <omero/ServicesF.ice>
 #include <omero/Collections.ice>
 
@@ -89,7 +89,7 @@ module omero {
                  * contained objects.
                  *
                  * @return map of classes that extend IEnum
-                 * @throws RuntimeExceptionif xml parsing failure.
+                 * @throws RuntimeException if xml parsing failure.
                  */
                 idempotent IObjectListMap getEnumerationsWithEntries() throws ServerError;
 

@@ -10,7 +10,8 @@
 #define OMERO_METADATASTORE_ICE
 
 #include <Ice/BuiltinSequences.ice>
-#include <omero/ModelF.ice>
+#include <omero/model/IObject.ice>
+#include <omero/BaseCollections.ice>
 #include <omero/ServicesF.ice>
 #include <omero/Scripts.ice>
 #include <omero/Repositories.ice>

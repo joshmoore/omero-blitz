@@ -9,7 +9,7 @@
 #ifndef OMERO_API_RAWFILESTORE_ICE
 #define OMERO_API_RAWFILESTORE_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/OriginalFile.ice>
 #include <omero/ServicesF.ice>
 #include <omero/Collections.ice>
 

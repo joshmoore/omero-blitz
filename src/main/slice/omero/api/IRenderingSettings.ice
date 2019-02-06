@@ -9,10 +9,12 @@
 #ifndef OMERO_API_IRENDERINGSETTINGS_ICE
 #define OMERO_API_IRENDERINGSETTINGS_ICE
 
-#include <omero/ModelF.ice>
+
+#include <omero/model/Pixels.ice>
+#include <omero/model/RenderingDef.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
-#include <omero/Collections.ice>
+#include <omero/BaseCollections.ice>
 
 
 module omero {

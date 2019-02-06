@@ -9,6 +9,7 @@
 #ifndef OMERO_API_IUPDATE_ICE
 #define OMERO_API_IUPDATE_ICE
 
+#include <omero/model/IObject.ice>
 #include <omero/cmd/API.ice>
 #include <omero/ServicesF.ice>
 #include <omero/Collections.ice>

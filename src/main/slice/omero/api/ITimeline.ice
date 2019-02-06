@@ -6,7 +6,6 @@
 #ifndef OMERO_API_ITIMELINE_ICE
 #define OMERO_API_ITIMELINE_ICE
 
-#include <omero/ModelF.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
 #include <omero/Collections.ice>

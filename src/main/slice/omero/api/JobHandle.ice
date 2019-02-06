@@ -9,7 +9,8 @@
 #ifndef OMERO_API_JOBHANDLE_ICE
 #define OMERO_API_JOBHANDLE_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/Job.ice>
+#include <omero/model/JobStatus.ice>
 #include <omero/ServicesF.ice>
 #include <omero/Collections.ice>
 
