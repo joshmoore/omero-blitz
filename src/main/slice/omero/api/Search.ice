@@ -9,6 +9,7 @@
 #ifndef OMERO_API_SEARCH_ICE
 #define OMERO_API_SEARCH_ICE
 
+#include <omero/model/Details.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
 #include <omero/Collections.ice>
