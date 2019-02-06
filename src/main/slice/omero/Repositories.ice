@@ -10,6 +10,7 @@
 #define OMERO_REPOSITORY_ICE
 
 #include <omero/model/OriginalFile.ice>
+#include <omero/model/Fileset.ice>
 #include <omero/model/FilesetJobLink.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
@@ -17,6 +18,11 @@
 #include <omero/Collections.ice>
 #include <omero/ServerErrors.ice>
 #include <omero/cmd/API.ice>
+
+#include <omero/api/RawFileStore.ice>
+#include <omero/api/RawPixelsStore.ice>
+#include <omero/api/RenderingEngine.ice>
+#include <omero/api/ThumbnailStore.ice>
 
 module omero {
 

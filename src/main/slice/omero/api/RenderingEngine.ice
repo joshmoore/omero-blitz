@@ -12,6 +12,7 @@
 #include <omero/model/Family.ice>
 #include <omero/model/Pixels.ice>
 #include <omero/model/QuantumDef.ice>
+#include <omero/model/RenderingDef.ice>
 #include <omero/model/RenderingModel.ice>
 #include <omero/Collections.ice>
 #include <omero/ROMIO.ice>
