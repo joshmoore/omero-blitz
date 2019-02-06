@@ -8,7 +8,7 @@
 
 #include <omero/RTypes.ice>
 #include <omero/ModelF.ice>
-#include <omero/Collections.ice>
+#include <omero/BaseCollections.ice>
 
 module omero {
 

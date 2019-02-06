@@ -11,8 +11,7 @@
 
 #include <omero/ServerErrors.ice>
 #include <Ice/BuiltinSequences.ice>
-#include <omero/Collections.ice>
-
+#include <omero/BaseCollections.ice>
 module omero
 {
 

@@ -12,7 +12,7 @@
 #include <omero/ModelF.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
-#include <omero/Collections.ice>
+#include <omero/BaseCollections.ice>
 #include <omero/ServerErrors.ice>
 #include <omero/cmd/API.ice>
 

@@ -8,7 +8,7 @@
 
 #include <omero/ModelF.ice>
 #include <omero/SystemF.ice>
-#include <omero/Collections.ice>
+#include <omero/BaseCollections.ice>
 
 /*
  * The omero::system module combines the ome.system and ome.parameters

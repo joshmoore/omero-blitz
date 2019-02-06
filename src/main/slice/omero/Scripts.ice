@@ -12,7 +12,7 @@
 #include <omero/RTypes.ice>
 #include <omero/System.ice>
 #include <omero/ServerErrors.ice>
-#include <omero/Collections.ice>
+#include <omero/BaseCollections.ice>
 
 /*
  * The Processor API is intended to provide an script runner

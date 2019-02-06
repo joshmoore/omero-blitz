@@ -10,7 +10,7 @@
 #define OMERO_SERVERERRORS_ICE
 
 #include <Glacier2/Session.ice>
-#include <omero/Collections.ice>
+#include <omero/BaseCollections.ice>
 
 /**
  * Exceptions thrown by OMERO server components. Exceptions thrown client side
