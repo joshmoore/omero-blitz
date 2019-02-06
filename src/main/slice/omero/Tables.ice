@@ -15,7 +15,7 @@
 #include <omero/BaseCollections.ice>
 #include <omero/Repositories.ice>
 #include <omero/ServerErrors.ice>
-
+#include <omero/API.ice>
 
 /*
  * The Tables API is intended to provide a storage mechanism
@@ -24,14 +24,6 @@
  * See https://docs.openmicroscopy.org/latest/omero/developers/Tables.html
  */
 module omero {
-
-
-    /*
-     * Forward declaration
-     */
-    module api {
-        interface ServiceFactory;
-    };
 
     module grid {
 
