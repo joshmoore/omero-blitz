@@ -9,6 +9,32 @@
 #ifndef OMERO_API_ICE
 #define OMERO_API_ICE
 
+#include <omero/api/IAdmin.ice>
+#include <omero/api/IConfig.ice>
+#include <omero/api/IContainer.ice>
+#include <omero/api/ILdap.ice>
+#include <omero/api/IPixels.ice>
+#include <omero/api/IProjection.ice>
+#include <omero/api/IQuery.ice>
+#include <omero/api/IRenderingSettings.ice>
+#include <omero/api/IRepositoryInfo.ice>
+#include <omero/api/IRoi.ice>
+#include <omero/api/IScript.ice>
+#include <omero/api/ISession.ice>
+#include <omero/api/IShare.ice>
+#include <omero/api/ITimeline.ice>
+#include <omero/api/ITypes.ice>
+#include <omero/api/IUpdate.ice>
+#include <omero/api/IMetadata.ice>
+#include <omero/api/Exporter.ice>
+#include <omero/api/JobHandle.ice>
+#include <omero/api/RawFileStore.ice>
+#include <omero/api/RawPixelsStore.ice>
+#include <omero/api/RenderingEngine.ice>
+#include <omero/api/Search.ice>
+#include <omero/api/ThumbnailStore.ice>
+
+
 #include <omero/cmd/API.ice>
 #include <omero/ServerErrors.ice>
 #include <omero/model/IObject.ice>
