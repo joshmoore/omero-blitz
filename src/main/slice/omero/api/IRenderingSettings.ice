@@ -14,7 +14,7 @@
 #include <omero/model/RenderingDef.ice>
 #include <omero/ServicesF.ice>
 #include <omero/System.ice>
-#include <omero/BaseCollections.ice>
+#include <omero/Collections.ice>
 
 
 module omero {

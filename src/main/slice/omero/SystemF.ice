@@ -45,8 +45,6 @@ module omero {
 
         // END: TRANSFERRED FROM COLLECTIONS
 
-        class EventContext;
-
     };
 
 };

@@ -7,7 +7,6 @@
 #ifndef OMERO_BASE_COLLECTIONS_ICE
 #define OMERO_BASE_COLLECTIONS_ICE
 
-#include <omero/SystemF.ice>
 #include <omero/RTypes.ice>
 #include <omero/model/IObject.ice>
 #include <omero/model/NamedValue.ice>
@@ -100,7 +99,6 @@ module omero {
         dictionary<string, Ice::LongSeq>               IdListMap;
         dictionary<string, LongList>                   StringLongListMap;
         dictionary<bool,   LongList>                   BooleanLongListMap;
-        dictionary<bool,   omero::sys::LongList>       BooleanIdListMap;
         dictionary<string, IObjectList>                IObjectListMap;
         dictionary<long,   IObjectList>                LongIObjectListMap;
         dictionary<long,   BooleanLongListMap>         IdBooleanLongListMapMap;

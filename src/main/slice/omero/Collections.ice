@@ -123,6 +123,8 @@ module omero {
         dictionary<int,    ShapeList>                  IntShapeListMap;
         dictionary<long,   AnnotationList>             LongAnnotationListMap;
 
+         dictionary<bool,   omero::sys::LongList>       BooleanIdListMap;
+
     };
 
 };
