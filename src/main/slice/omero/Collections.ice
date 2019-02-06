@@ -9,7 +9,24 @@
 #ifndef OMERO_COLLECTIONS_ICE
 #define OMERO_COLLECTIONS_ICE
 
-#include <omero/ModelF.ice>
+#include <omero/model/Annotation.ice>
+#include <omero/model/Experimenter.ice>
+#include <omero/model/ExperimenterGroup.ice>
+#include <omero/model/Event.ice>
+#include <omero/model/EventLog.ice>
+#include <omero/model/Session.ice>
+#include <omero/model/Project.ice>
+#include <omero/model/Dataset.ice>
+#include <omero/model/Image.ice>
+#include <omero/model/LogicalChannel.ice>
+#include <omero/model/OriginalFile.ice>
+#include <omero/model/Pixels.ice>
+#include <omero/model/PixelsType.ice>
+#include <omero/model/Roi.ice>
+#include <omero/model/ScriptJob.ice>
+#include <omero/model/Shape.ice>
+#include <omero/model/ChecksumAlgorithm.ice>
+
 #include <omero/SystemF.ice>
 #include <omero/RTypes.ice>
 #include <Ice/BuiltinSequences.ice>
