@@ -15,6 +15,7 @@
 #include <omero/BaseCollections.ice>
 #include <omero/Repositories.ice>
 #include <omero/ServerErrors.ice>
+#include <omero/API.ice>
 
 
 /*

@@ -33,7 +33,7 @@
 #include <omero/api/RenderingEngine.ice>
 #include <omero/api/Search.ice>
 #include <omero/api/ThumbnailStore.ice>
-
+#include <omero/SharedResources.ice>
 
 #include <omero/cmd/API.ice>
 #include <omero/ServerErrors.ice>
