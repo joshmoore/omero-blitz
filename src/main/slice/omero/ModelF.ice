@@ -17,6 +17,10 @@ module omero {
     module model {
 
         class Details;
+        class Experimenter;
+        class ExperimenterGroup;
+        class Event;
+        class ExternalInfo;
     };
 
 };

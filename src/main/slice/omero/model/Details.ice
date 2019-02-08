@@ -9,6 +9,7 @@
 #ifndef CLASS_DETAILS
 #define CLASS_DETAILS
 
+#include <omero/ModelF.ice>
 #include <omero/model/Event.ice>
 #include <omero/model/Experimenter.ice>
 #include <omero/model/ExperimenterGroup.ice>
