@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef OMERO_API_ICONFIG_ICE
-#define OMERO_API_ICONFIG_ICE
+#ifndef OMERO_API_IPIXELS_ICE
+#define OMERO_API_IPIXELS_ICE
 
 #include <omero/model/IObject.ice>
 #include <omero/model/Pixels.ice>
