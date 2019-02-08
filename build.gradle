@@ -124,7 +124,9 @@ slice {
     java {
         include = [file("src/generated/slice")]
         files = fileTree(dir: file("src/generated/slice"), include: '**/*.ice')
-        args = "--tie"
+        if (slice.iceVersion.contains('3.6')) {
+            args = "--tie"
+        }
     }
 }
 
