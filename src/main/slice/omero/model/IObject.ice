@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef omero_model_IObject
-#define omero_model_IObject
+#ifndef CLASS_IOBJECT
+#define CLASS_IOBJECT
 
 #include <omero/RTypes.ice>
 #include <omero/ModelF.ice>
