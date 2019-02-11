@@ -11,9 +11,12 @@
 
 #include <omero/RTypes.ice>
 #include <omero/ModelF.ice>
+#include <omero/System.ice>
+#include <Ice/Current.ice>
 
 module omero {
   module model {
+    class Details;
 
     /**
      * Base class of all model types. On the
@@ -151,4 +154,75 @@ module omero {
     };
   };
 };
+
+#include <omero/model/Event.ice>
+#include <omero/model/Experimenter.ice>
+#include <omero/model/ExperimenterGroup.ice>
+#include <omero/model/ExternalInfo.ice>
+#include <omero/model/Permissions.ice>
+module omero {
+  module model {
+
+    /**
+     * Embedded component of every OMERO.blitz type. Since this is
+     * not an IObject subclass, no attempt is made to hide the state
+     * of this object, since it cannot be ""unloaded"".
+     **/
+    ["protected"] class Details
+    {
+
+      //  ome.model.meta.Experimenter owner;
+      omero::model::Experimenter owner;
+      omero::model::Experimenter getOwner();
+      void setOwner(omero::model::Experimenter theOwner);
+
+      //  ome.model.meta.ExperimenterGroup group;
+      omero::model::ExperimenterGroup group;
+      omero::model::ExperimenterGroup getGroup();
+      void setGroup(omero::model::ExperimenterGroup theGroup);
+
+      //  ome.model.meta.Event creationEvent;
+      omero::model::Event creationEvent;
+      omero::model::Event getCreationEvent();
+      void setCreationEvent(omero::model::Event theCreationEvent);
+
+      //  ome.model.meta.Event updateEvent;
+      omero::model::Event updateEvent;
+      omero::model::Event getUpdateEvent();
+      void setUpdateEvent(omero::model::Event theUpdateEvent);
+
+      //  ome.model.internal.Permissions permissions;
+      omero::model::Permissions permissions;
+      omero::model::Permissions getPermissions();
+      void setPermissions(omero::model::Permissions thePermissions);
+
+      //  ome.model.meta.ExternalInfo externalInfo;
+      omero::model::ExternalInfo externalInfo;
+      omero::model::ExternalInfo getExternalInfo();
+      void setExternalInfo(omero::model::ExternalInfo theExternalInfo);
+
+      //
+      // Context parameters
+      //
+
+      /**
+       * Context which was active during the call which
+       * returned this object. This context is set as
+       * the last (optional) argument of any remote
+       * Ice invocation. This is used to change the
+       * user, group, share, etc. of the current session.
+       **/
+      Ice::Context call;
+    };
+  };
+};
+module omero {
+  module api {
+    ["java:type:java.util.ArrayList<omero.model.IObject>:java.util.List<omero.model.IObject>"]
+    sequence<omero::model::IObject> IObjectList;
+    dictionary<string, IObjectList> IObjectListMap;
+    dictionary<long, IObjectList> LongIObjectListMap;
+  };
+};
+
 #endif
