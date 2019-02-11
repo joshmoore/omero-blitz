@@ -19,6 +19,6 @@ import omero.ServerError;
  */
 public interface TieAware {
 
-    void setTie(com.zeroc.Ice.TieBase tie) throws ServerError;
+    //void setTie(com.zeroc.Ice.TieBase tie) throws ServerError;
 
 }
