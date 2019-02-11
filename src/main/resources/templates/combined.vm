@@ -113,6 +113,19 @@ DECLARATION BLOCK:
 [$cpp] #   define OMERO_CLIENT_EXPORTS
 [$cpp] #endif
 
+#foreach( $property in $type.propertyClosure )
+#if($property.type.startsWith("ome"))
+#if($property.isLink)
+[$ice] \#include <omero/model/${property.shortType}.ice> // Impl. since instantiated
+#if($property.shortTarget)
+[$ice] \#include <omero/model/${property.shortTarget}.ice>
+#end
+#else
+[$ice] \#include <omero/model/${property.shortType}.ice>
+#end##link
+#end##ome
+#end##foreach
+
 [$ice] module omero {
 [$ice]   module model {
 
