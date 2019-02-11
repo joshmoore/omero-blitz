@@ -1267,7 +1267,7 @@ public class client {
             execute(onHeartbeat, "heartbeat");
         }
 
-        public void shutdownIn(long milliseconds, Current __current) {
+        public void shutdownIn(long milliseconds, com.zeroc.Ice.Current __current) {
             execute(onShutdown, "shutdown");
         }
 

@@ -11,7 +11,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 import ome.services.procs.scripts.ScriptProcess;
 

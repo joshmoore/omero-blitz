@@ -9,7 +9,7 @@ package ome.services.blitz.impl;
 
 import java.util.List;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 import ome.api.ServiceInterface;
 import ome.services.blitz.util.BlitzExecutor;
 import ome.services.blitz.util.BlitzOnly;

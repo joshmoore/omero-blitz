@@ -31,7 +31,7 @@ import omero.api.AMD_ThumbnailStore_setRenderingDefId;
 import omero.api.AMD_ThumbnailStore_thumbnailExists;
 import omero.api._ThumbnailStoreOperations;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the ThumbnailStore service.

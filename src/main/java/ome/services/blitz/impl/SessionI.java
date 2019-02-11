@@ -34,7 +34,7 @@ import omero.model.Session;
 import omero.sys.Principal;
 import omero.util.IceMapper;
 import omero.util.RTypeMapper;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the ISession service.

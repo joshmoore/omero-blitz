@@ -21,8 +21,7 @@ import omero.api.AMD_IUpdate_saveObject;
 import omero.api._IUpdateOperations;
 import omero.model.IObject;
 
-import Ice.Current;
-
+import com.zeroc.Ice.Current;
 /**
  * Implementation of the IUpdate service.
  *

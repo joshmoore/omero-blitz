@@ -31,8 +31,9 @@ import omero.api.AMD_ITypes_updateEnumerations;
 import omero.api._ITypesOperations;
 import omero.model.IObject;
 import omero.util.IceMapper;
-import Ice.Current;
-import Ice.UserException;
+import com.zeroc.Ice.Current;
+
+import com.zeroc.Ice.UserException;
 
 /**
  * Implementation of the ITypes service.

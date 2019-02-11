@@ -64,7 +64,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * implementation of the IRoi service interface.

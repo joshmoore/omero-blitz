@@ -38,8 +38,8 @@ import omero.api._IContainerOperations;
 import omero.model.IObject;
 import omero.sys.Parameters;
 import omero.util.IceMapper;
-import Ice.Current;
-import Ice.UserException;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.UserException;
 
 /**
  * Implementation of the IContainer service.

@@ -15,7 +15,7 @@ import omero.api.AMD_IRepositoryInfo_removeUnusedFiles;
 import omero.api.AMD_IRepositoryInfo_sanityCheckRepository;
 import omero.api._IRepositoryInfoOperations;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the IRepositoryInfo service.

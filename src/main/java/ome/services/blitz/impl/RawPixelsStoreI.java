@@ -49,7 +49,7 @@ import omero.api.AMD_RawPixelsStore_setTile;
 import omero.api.AMD_RawPixelsStore_setTimepoint;
 import omero.api._RawPixelsStoreOperations;
 import omero.romio.PlaneDef;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the RawPixelsStore service.

@@ -41,12 +41,12 @@ public class RequestObjectFactoryRegistry extends
         this.ctx = (OmeroContext) ctx;
     }
 
-    public Map<String, ObjectFactory> createFactories(Ice.Communicator ic) {
+    public Map<String, ObjectFactory> createFactories(com.zeroc.Ice.Communicator ic) {
         Map<String, ObjectFactory> factories = new HashMap<String, ObjectFactory>();
         factories.put(SaveI.ice_staticId(), new ObjectFactory(
                 SaveI.ice_staticId()) {
             @Override
-            public Ice.Object create(String name) {
+            public com.zeroc.Ice.Object create(String name) {
                 return new SaveI();
             }
 

@@ -26,7 +26,7 @@ import omero.sys.Filter;
 import omero.sys.Parameters;
 import omero.util.IceMapper;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the IQuery service.

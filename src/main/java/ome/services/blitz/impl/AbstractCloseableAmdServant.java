@@ -30,7 +30,7 @@ import omero.ShutdownInProgress;
 import omero.api.AMD_StatefulServiceInterface_close;
 import omero.util.CloseableServant;
 import omero.util.IceMapper;
-import Ice.ObjectAdapterDeactivatedException;
+import com.zeroc.Ice.ObjectAdapterDeactivatedException;
 
 /**
  * Base class for all servants that must guarantee proper clean-up of held

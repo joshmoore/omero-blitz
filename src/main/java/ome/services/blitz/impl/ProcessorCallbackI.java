@@ -29,7 +29,7 @@ import omero.model.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Callback used to lookup active processors via IceStorm.

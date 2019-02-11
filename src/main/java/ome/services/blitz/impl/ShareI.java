@@ -61,7 +61,7 @@ import omero.model.Annotation;
 import omero.model.Experimenter;
 import omero.model.IObject;
 import omero.model.TextAnnotation;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the IShare service.

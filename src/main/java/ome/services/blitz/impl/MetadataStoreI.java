@@ -64,7 +64,7 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 public class MetadataStoreI extends AbstractCloseableAmdServant implements
         _MetadataStoreOperations, ServiceFactoryAware, BlitzOnly {

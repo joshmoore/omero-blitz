@@ -83,7 +83,7 @@ import omero.util.IceMapper;
 import org.perf4j.StopWatch;
 import org.perf4j.slf4j.Slf4JStopWatch;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the RenderingEngine service.

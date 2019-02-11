@@ -35,7 +35,7 @@ import omero.api._IRenderingSettingsOperations;
 import omero.model.Pixels;
 import omero.model.RenderingDef;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the IRenderingSettings service.

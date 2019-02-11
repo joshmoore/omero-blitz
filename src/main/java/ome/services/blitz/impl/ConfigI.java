@@ -23,7 +23,7 @@ import omero.api.AMD_IConfig_getVersion;
 import omero.api.AMD_IConfig_setConfigValue;
 import omero.api.AMD_IConfig_setConfigValueIfEquals;
 import omero.api._IConfigOperations;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the IConfig service.

@@ -44,7 +44,7 @@ public class ServantHolder {
      * Note: servants are stored by String since {@link com.zeroc.Ice.Identity} does not
      * behave properly as a key.
      */
-    private final Map<String, Ice.Object> servants;
+    private final Map<String, com.zeroc.Ice.Object> servants;
 
     /**
      * A lock cache that returns a {@link Lock} for each given name, constructing it only if necessary.
@@ -153,12 +153,7 @@ public class ServantHolder {
     }
 
     public Object getUntied(com.zeroc.Ice.Identity id) {
-        com.zeroc.Ice.Object servantOrTie = get(id.name);
-         if (servantOrTie instanceof com.zeroc.Ice.TieBase) {
-             return ((com.zeroc.Ice.TieBase) servantOrTie).ice_delegate();
-         } else {
-             return servantOrTie;
-         }
+        return get(id.name);
     }
 
     public void put(com.zeroc.Ice.Identity id, com.zeroc.Ice.Object servant)

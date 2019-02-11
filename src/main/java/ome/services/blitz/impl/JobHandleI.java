@@ -24,7 +24,7 @@ import omero.api.AMD_JobHandle_setStatusAndMessage;
 import omero.api.AMD_JobHandle_submit;
 import omero.api._JobHandleOperations;
 import omero.model.Job;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the JobHandle service.

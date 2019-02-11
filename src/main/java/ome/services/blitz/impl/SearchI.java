@@ -67,7 +67,7 @@ import omero.model.Annotation;
 import omero.model.Details;
 import omero.sys.Parameters;
 import omero.util.IceMapper;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the Search service.

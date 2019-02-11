@@ -44,7 +44,7 @@ import omero.api.AMD_IMetadata_loadTagSets;
 import omero.api._IMetadataOperations;
 import omero.sys.Parameters;
 import omero.util.IceMapper;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /** 
  * Implementation of the <code>IMetadata</code> service.

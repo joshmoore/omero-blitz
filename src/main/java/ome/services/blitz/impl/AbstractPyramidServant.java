@@ -21,7 +21,7 @@ import omero.api.ResolutionDescription;
 import omero.util.IceMapper;
 import omero.util.IceMapper.ReturnMapping;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Specialization of {@link AbstractAmdServant} to be used by any services which

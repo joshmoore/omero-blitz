@@ -74,8 +74,8 @@ import omero.model.ExperimenterGroup;
 import omero.model.IObject;
 import omero.model.Permissions;
 import omero.util.IceMapper;
-import Ice.Current;
-import Ice.UserException;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.UserException;
 
 /**
  * Implementation of the {@link omero.api.IAdmin} service.

@@ -44,11 +44,6 @@ import org.springframework.aop.framework.Advised;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
-import Ice.ConnectTimeoutException;
-import Ice.ConnectionLostException;
-import Ice.ConnectionRefusedException;
-import Ice.Current;
-
 /**
  *
  * @author Josh Moore, josh at glencoesoftware.com
@@ -96,12 +91,12 @@ public class SessionI implements _SessionOperations {
 
     public final OmeroContext context;
 
-    public final Ice.ObjectAdapter adapter;
+    public final com.zeroc.Ice.ObjectAdapter adapter;
 
     /** Token in the form of a UUID for securing method invocations. */
     public final String token;
 
-    public SessionI(boolean reusedSession, Ice.Current current,
+    public SessionI(boolean reusedSession, com.zeroc.Ice.Current current,
             ServantHolder holder, Glacier2.SessionControlPrx control,
             OmeroContext context, SessionManager sessionManager,
             Executor executor, Principal principal, String token) throws ApiUsageException {
@@ -130,7 +125,7 @@ public class SessionI implements _SessionOperations {
         }
     }
 
-    public Ice.ObjectAdapter getAdapter() {
+    public com.zeroc.Ice.ObjectAdapter getAdapter() {
         return this.adapter;
     }
 
@@ -146,7 +141,7 @@ public class SessionI implements _SessionOperations {
     // =========================================================================
 
     public void submit_async(AMD_Session_submit __cb, omero.cmd.Request req,
-            Ice.Current current) {
+                             com.zeroc.Ice.Current current) {
         final Executor.Priority priority;
         if (req instanceof GraphQuery) {
             priority = Executor.Priority.BACKGROUND;
@@ -158,7 +153,7 @@ public class SessionI implements _SessionOperations {
     }
 
     public void submit_async(AMD_Session_submit __cb, omero.cmd.Request req,
-            Ice.Current current, Executor.Priority priority) {
+                             com.zeroc.Ice.Current current, Executor.Priority priority) {
         try {
 
             if (req == null || !IRequest.class.isAssignableFrom(req.getClass())) {
@@ -168,7 +163,7 @@ public class SessionI implements _SessionOperations {
 
             }
 
-            Ice.Object servant = null;
+            com.zeroc.Ice.Object servant = null;
             for (String key : Arrays.asList(req.ice_id(),
                     _HandleTie.ice_staticId())) {
                 try {
@@ -183,13 +178,7 @@ public class SessionI implements _SessionOperations {
 
             IHandle handle = null;
             if (servant != null) {
-                if (servant instanceof Ice.TieBase) {
-                    Ice.TieBase tie = (Ice.TieBase) servant;
-                    Object delegate = tie.ice_delegate();
-                    if (IHandle.class.isAssignableFrom(delegate.getClass())) {
-                        handle = (IHandle) delegate;
-                    }
-                } else if (servant instanceof IHandle) {
+                if (servant instanceof IHandle) {
                     handle = (IHandle) servant;
                 }
             }
@@ -203,7 +192,7 @@ public class SessionI implements _SessionOperations {
             }
 
             // ID
-            Ice.Identity id = holder.getIdentity("IHandle" + UUID.randomUUID().toString());
+            com.zeroc.Ice.Identity id = holder.getIdentity("IHandle" + UUID.randomUUID().toString());
 
             // Tie
             _HandleTie tie = (_HandleTie) servant;
@@ -245,9 +234,9 @@ public class SessionI implements _SessionOperations {
      * thrown when this method tries to clean up the session. Therefore all
      * session access must be guarded by a try/finally block.
      */
-    public void destroy(Ice.Current current) {
+    public void destroy(com.zeroc.Ice.Current current) {
 
-        Ice.Identity sessionId = sessionId();
+        com.zeroc.Ice.Identity sessionId = sessionId();
         log.debug("destroy(" + this + ")");
 
         // Remove this instance from the adapter: 1) to prevent
@@ -259,14 +248,14 @@ public class SessionI implements _SessionOperations {
             adapter.remove(sessionId); // OK ADAPTER USAGE
             // If not in adapter, then SessionManagerI won't be able to find it.
             holder.removeClientId(clientId);
-        } catch (Ice.NotRegisteredException nre) {
+        } catch (com.zeroc.Ice.NotRegisteredException nre) {
             // It's possible that another thread tried to remove
             // this session first. Logging the fact, but we will
             // continue with the closing which should be safe
             // to call multiple times.
             log.warn("NotRegisteredException: "
-                    + Ice.Util.identityToString(sessionId()));
-        } catch (Ice.ObjectAdapterDeactivatedException oade) {
+                    + com.zeroc.Ice.Util.identityToString(sessionId()));
+        } catch (com.zeroc.Ice.ObjectAdapterDeactivatedException oade) {
             log.warn("Adapter already deactivated. Cannot remove: "
                     + sessionId());
         } catch (Throwable t) {
@@ -296,7 +285,7 @@ public class SessionI implements _SessionOperations {
             callback = null;
             if (copy != null) {
                 try {
-                    Ice.ObjectPrx prx = copy.ice_oneway();
+                    com.zeroc.Ice.ObjectPrx prx = copy.ice_oneway();
                     ClientCallbackPrx oneway = ClientCallbackPrxHelper
                             .uncheckedCast(prx);
                     oneway.sessionClosed();
@@ -328,7 +317,7 @@ public class SessionI implements _SessionOperations {
      * communication with clients during callback notification.
      */
     public void handleCallbackException(Exception e) {
-        if (e instanceof Ice.NotRegisteredException) {
+        if (e instanceof com.zeroc.Ice.NotRegisteredException) {
             log.warn(clientId + "'s callback not registered -"
                     + " perhaps wrong proxy?");
         } else if (e instanceof ConnectionRefusedException) {
@@ -338,7 +327,7 @@ public class SessionI implements _SessionOperations {
             log.debug(clientId + "'s connection lost as expected");
         } else if (e instanceof ConnectTimeoutException) {
             log.warn("ConnectTimeoutException on callback:" + clientId);
-        } else if (e instanceof Ice.SocketException ) {
+        } else if (e instanceof com.zeroc.Ice.SocketException ) {
             log.warn("SocketException on callback: " + clientId);
         } else {
             log.error(
@@ -382,7 +371,7 @@ public class SessionI implements _SessionOperations {
     }
 
     /**
-     * Use {@link #cleanServants(boolean, String, ServantHolder, Ice.ObjectAdapter)}
+     * Use {@link #cleanServants(boolean, String, ServantHolder, com.zeroc.Ice.ObjectAdapter)}
      * to clean up.
      *
      * @param all if stateful sessions should be shut down such that other clients cannot reattach (the servant is cleaned up)
@@ -411,7 +400,7 @@ public class SessionI implements _SessionOperations {
         try {
             List<String> servants = holder.getServantList();
             for (final String idName : servants) {
-                final Ice.Identity id = holder.getIdentity(idName);
+                final com.zeroc.Ice.Identity id = holder.getIdentity(idName);
                 final Object servant = holder.getUntied(id);
 
                 if (servant == null) {
@@ -476,9 +465,9 @@ public class SessionI implements _SessionOperations {
         }
     }
 
-    public static Ice.Current newCurrent(Ice.Identity id, String method,
-            Ice.ObjectAdapter adapter, String clientId) {
-        final Ice.Current __curr = new Ice.Current();
+    public static com.zeroc.Ice.Current newCurrent(com.zeroc.Ice.Identity id, String method,
+                                                   com.zeroc.Ice.ObjectAdapter adapter, String clientId) {
+        final com.zeroc.Ice.Current __curr = new com.zeroc.Ice.Current();
         __curr.id = id;
         __curr.adapter = adapter;
         __curr.operation = method;
@@ -487,14 +476,14 @@ public class SessionI implements _SessionOperations {
         return __curr;
     }
 
-    public Ice.Current newCurrent(Ice.Identity id, String method) {
+    public com.zeroc.Ice.Current newCurrent(com.zeroc.Ice.Identity id, String method) {
         return newCurrent(id, method, adapter, clientId);
     }
 
-    public void allow(Ice.ObjectPrx prx) {
+    public void allow(com.zeroc.Ice.ObjectPrx prx) {
         if (prx != null && control != null) {
             control.identities().add(
-                    new Ice.Identity[] { prx.ice_getIdentity() });
+                    new com.zeroc.Ice.Identity[] { prx.ice_getIdentity() });
         }
     }
 
@@ -512,12 +501,12 @@ public class SessionI implements _SessionOperations {
      * wrapped in {@link Advisor} instances and will be returned by
      * {@link Advised#getAdvisors()}.
      */
-    protected Ice.Object createServantDelegate(String name) throws ServerError {
+    protected com.zeroc.Ice.Object createServantDelegate(String name) throws ServerError {
 
-        Ice.Object servant = null;
+        com.zeroc.Ice.Object servant = null;
         try {
 
-            servant = (Ice.Object) context.getBean(name);
+            servant = (com.zeroc.Ice.Object) context.getBean(name);
             configureServant(servant);
             return servant;
         } catch (ClassCastException cce) {
@@ -542,12 +531,13 @@ public class SessionI implements _SessionOperations {
      * @param servant the servant
      * @throws ServerError if the configuration or tying failed
      */
-    public void configureServant(Ice.Object servant) throws ServerError {
+    public void configureServant(com.zeroc.Ice.Object servant) throws ServerError {
         // Now setup the servant
         // ---------------------------------------------------------------------
         internalServantConfig(servant);
         Object real = servant;
 
+        /**
         if (servant instanceof Ice.TieBase) {
             Ice.TieBase tie = (Ice.TieBase) servant;
             real = tie.ice_delegate();
@@ -556,7 +546,7 @@ public class SessionI implements _SessionOperations {
             if (real instanceof TieAware) {
                 ((TieAware) real).setTie(tie);
             }
-        }
+        }*/
     }
 
     /**
@@ -564,7 +554,7 @@ public class SessionI implements _SessionOperations {
      * already registered) as well as configures the servant in any post-Spring
      * way necessary, based on the type of the servant.
      */
-    public Ice.ObjectPrx registerServant(Ice.Identity id, Ice.Object servant)
+    public com.zeroc.Ice.ObjectPrx registerServant(com.zeroc.Ice.Identity id, com.zeroc.Ice.Object servant)
             throws ServerError {
         return registerServant(id, servant, null);
     }
@@ -576,14 +566,14 @@ public class SessionI implements _SessionOperations {
      * re-send the information or even for values which clients should not
      * know.
      */
-    public Ice.ObjectPrx registerServant(Ice.Identity id, Ice.Object servant,
+    public com.zeroc.Ice.ObjectPrx registerServant(com.zeroc.Ice.Identity id, com.zeroc.Ice.Object servant,
             Ice.Current current)
             throws ServerError {
 
-        Ice.ObjectPrx prx = null;
+        com.zeroc.Ice.ObjectPrx prx = null;
         try {
             servant = callContextWrapper(servant, current);
-            Ice.Object already = adapter.find(id);
+            com.zeroc.Ice.Object already = adapter.find(id);
             if (null == already) {
                 adapter.add(servant, id); // OK ADAPTER USAGE
                 prx = adapter.createDirectProxy(id);
@@ -599,7 +589,7 @@ public class SessionI implements _SessionOperations {
         } catch (Exception e) {
             if (e instanceof omero.InternalException) {
                 throw (omero.InternalException) e;
-            } else if (e instanceof Ice.ObjectAdapterDeactivatedException) {
+            } else if (e instanceof com.zeroc.Ice.ObjectAdapterDeactivatedException) {
                 // ticket:1251
                 ShutdownInProgress sip = new ShutdownInProgress(null, null,
                         "ObjectAdapter deactivated");
@@ -622,8 +612,9 @@ public class SessionI implements _SessionOperations {
     }
 
 
-    protected Ice.Object callContextWrapper(Ice.Object servant, Ice.Current current) {
+    protected com.zeroc.Ice.Object callContextWrapper(com.zeroc.Ice.Object servant, com.zeroc.Ice.Current current) {
         // If this isn't a tie, then we can't do any wrapping.
+        /*
         if (!(Ice.TieBase.class.isAssignableFrom(servant.getClass()))) {
             return servant;
         }
@@ -634,24 +625,25 @@ public class SessionI implements _SessionOperations {
         ProxyFactory wrapper = new ProxyFactory(delegate);
         wrapper.addAdvice(0, new CallContext(context, token, current));
         tie.ice_delegate(wrapper.getProxy());
+        */
         return servant;
     }
 
     /**
-     * Calls {@link #unregisterServant(Ice.Identity, Ice.ObjectAdapter, ServantHolder)}
+     * Calls {@link #unregisterServant(com.zeroc.Ice.Identity, com.zeroc.Ice.ObjectAdapter, ServantHolder)}
      */
-    public void unregisterServant(Ice.Identity id) {
+    public void unregisterServant(com.zeroc.Ice.Identity id) {
         unregisterServant(id, adapter, holder);
     }
 
     /**
      * Reverts all the additions made by
-     * {@link #registerServant(Ice.Identity, Ice.Object)}
+     * {@link #registerServant(com.zeroc.Ice.Identity, com.zeroc.Ice.Object)}
      *
      * Now called by {@link ome.services.blitz.fire.SessionManagerI} in response
      * to an {@link ome.services.blitz.util.UnregisterServantMessage}.
      */
-    public static void unregisterServant(Ice.Identity id, Ice.ObjectAdapter adapter,
+    public static void unregisterServant(com.zeroc.Ice.Identity id, com.zeroc.Ice.ObjectAdapter adapter,
         ServantHolder holder) {
 
         // If this is not found ignore.
@@ -664,7 +656,7 @@ public class SessionI implements _SessionOperations {
         // which case unregisterServant() is being closed via
         // onApplicationEvent().
         // Otherwise, it is being called directly by SF.close().
-        final Ice.Object obj = adapter.remove(id); // OK ADAPTER USAGE
+        final com.zeroc.Ice.Object obj = adapter.remove(id); // OK ADAPTER USAGE
         final String str = servantString(id, obj);
 
         if (holder == null) {
@@ -680,8 +672,8 @@ public class SessionI implements _SessionOperations {
         }
     }
 
-    private static String servantString(Ice.Identity id, Object obj) {
-        StringBuilder sb = new StringBuilder(Ice.Util.identityToString(id));
+    private static String servantString(com.zeroc.Ice.Identity id, Object obj) {
+        StringBuilder sb = new StringBuilder(Icom.zeroc.Icece.Util.identityToString(id));
         sb.append("(");
         sb.append(obj);
         sb.append(")");
@@ -693,25 +685,25 @@ public class SessionI implements _SessionOperations {
     // Used for naming service factory instances and creating Ice.Identities
     // from Ice.Currents, etc.
 
-    public Ice.Identity getIdentity(String name) {
+    public com.zeroc.Ice.Identity getIdentity(String name) {
         return holder.getIdentity(name);
     }
 
     /**
      * Definition of session ids: {@code "session-<CLIENTID>/<UUID>"}
      */
-    public static Ice.Identity sessionId(String clientId, String uuid) {
-        Ice.Identity id = new Ice.Identity();
+    public static com.zeroc.Ice.Identity sessionId(String clientId, String uuid) {
+        com.zeroc.Ice.Identity id = new com.zeroc.Ice.Identity();
         id.category = "session-" + clientId;
         id.name = uuid;
         return id;
     }
 
     /**
-     * Returns the {@link Ice.Identity} for this instance as defined by
+     * Returns the {@link com.zeroc.Ice.Identity} for this instance as defined by
      * {@link #sessionId(String, String)}
      */
-    public Ice.Identity sessionId() {
+    public com.zeroc.Ice.Identity sessionId() {
         return sessionId(clientId, principal.getName());
     }
 
@@ -722,7 +714,7 @@ public class SessionI implements _SessionOperations {
      *
      * (Typically done in our SDKs)
      */
-    public static String clientId(Ice.Current current) throws ApiUsageException {
+    public static String clientId(com.zeroc.Ice.Current current) throws ApiUsageException {
         String clientId = null;
         if (current.ctx != null) {
             clientId = current.ctx.get(omero.constants.CLIENTUUID.value);

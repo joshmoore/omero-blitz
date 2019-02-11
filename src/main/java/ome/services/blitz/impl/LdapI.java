@@ -28,7 +28,7 @@ import omero.api.AMD_ILdap_searchByDN;
 import omero.api.AMD_ILdap_searchDnInGroups;
 import omero.api.AMD_ILdap_setDN;
 import omero.api._ILdapOperations;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the ILdap service.

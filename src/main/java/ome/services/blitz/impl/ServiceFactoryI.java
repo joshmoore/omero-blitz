@@ -120,14 +120,11 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
-import Ice.ObjectPrx;
-
 /**
  * Responsible for maintaining all servants for a single session.
  *
- * In general, try to reduce access to the {@link Ice.Current} and
- * {@link Ice.Util} objects.
+ * In general, try to reduce access to the {@link com.zeroc.Ice.Current} and
+ * {@link com.zeroc.Ice.Util} objects.
  *
  * @author Josh Moore, josh at glencoesoftware.com
  * @since 3.0-Beta2
@@ -155,7 +152,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     // ~ Initialization and context methods
     // =========================================================================
 
-    public ServiceFactoryI(Ice.Current current,
+    public ServiceFactoryI(com.zeroc.Ice.Current current,
             ServantHolder holder,
             Glacier2.SessionControlPrx control, OmeroContext context,
             SessionManager manager, Executor executor, Principal p,
@@ -167,7 +164,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     }
 
     public ServiceFactoryI(boolean reusedSession,
-            Ice.Current current,
+                           com.zeroc.Ice.Current current,
             ServantHolder holder,
             Glacier2.SessionControlPrx control, OmeroContext context,
             SessionManager manager, Executor executor, Principal p,
@@ -227,7 +224,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
         return (List<IObject>) mapper.map(objs);
     }
 
-    public IObject setSecurityContext(IObject obj, Current __current)
+    public IObject setSecurityContext(IObject obj, com.zeroc.Ice.Current __current)
             throws ServerError {
 
         IceMapper mapper = new IceMapper();
@@ -242,7 +239,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
 
     }
 
-    public void setSecurityPassword(final String password, Current __current)
+    public void setSecurityPassword(final String password, com.zeroc.Ice.Current __current)
             throws ServerError {
 
         final EventContext ec = getEventContext();
@@ -259,7 +256,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
 
     protected omero.ServerError handleException(Throwable t) {
         IceMapper mapper = new IceMapper();
-        Ice.UserException iue = mapper.handleException(t, context);
+        com.zeroc.Ice.UserException iue = mapper.handleException(t, context);
         if (iue instanceof ServerError) {
             return (ServerError) iue;
         } else { // This may not be necessary
@@ -273,93 +270,93 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     // ~ Stateless
     // =========================================================================
 
-    public IAdminPrx getAdminService(Ice.Current current) throws ServerError {
+    public IAdminPrx getAdminService(com.zeroc.Ice.Current current) throws ServerError {
         return IAdminPrxHelper.uncheckedCast(getByName(ADMINSERVICE.value,
                 current, true));
     }
 
-    public IConfigPrx getConfigService(Ice.Current current) throws ServerError {
+    public IConfigPrx getConfigService(com.zeroc.Ice.Current current) throws ServerError {
         return IConfigPrxHelper.uncheckedCast(getByName(CONFIGSERVICE.value,
                 current, true));
     }
 
-    public ILdapPrx getLdapService(Ice.Current current) throws ServerError {
+    public ILdapPrx getLdapService(com.zeroc.Ice.Current current) throws ServerError {
         return ILdapPrxHelper.uncheckedCast(getByName(LDAPSERVICE.value,
                 current));
     }
 
-    public IPixelsPrx getPixelsService(Ice.Current current) throws ServerError {
+    public IPixelsPrx getPixelsService(com.zeroc.Ice.Current current) throws ServerError {
         return IPixelsPrxHelper.uncheckedCast(getByName(PIXELSSERVICE.value,
                 current));
     }
 
-    public IContainerPrx getContainerService(Ice.Current current)
+    public IContainerPrx getContainerService(com.zeroc.Ice.Current current)
             throws ServerError {
         return IContainerPrxHelper.uncheckedCast(getByName(
                 CONTAINERSERVICE.value, current));
     }
 
-    public IProjectionPrx getProjectionService(Ice.Current current)
+    public IProjectionPrx getProjectionService(com.zeroc.Ice.Current current)
             throws ServerError {
         return IProjectionPrxHelper.uncheckedCast(getByName(
                 PROJECTIONSERVICE.value, current));
     }
 
-    public IQueryPrx getQueryService(Ice.Current current) throws ServerError {
+    public IQueryPrx getQueryService(com.zeroc.Ice.Current current) throws ServerError {
         return IQueryPrxHelper.uncheckedCast(getByName(QUERYSERVICE.value,
                 current));
     }
 
-    public IRoiPrx getRoiService(Ice.Current current) throws ServerError {
+    public IRoiPrx getRoiService(com.zeroc.Ice.Current current) throws ServerError {
         Ice.ObjectPrx prx = getByName(ROISERVICE.value, current);
         return IRoiPrxHelper.uncheckedCast(prx);
     }
 
-    public IScriptPrx getScriptService(Ice.Current current) throws ServerError {
+    public IScriptPrx getScriptService(com.zeroc.Ice.Current current) throws ServerError {
         Ice.ObjectPrx prx = getByName(SCRIPTSERVICE.value, current);
         return IScriptPrxHelper.uncheckedCast(prx);
     }
 
-    public ISessionPrx getSessionService(Current current) throws ServerError {
+    public ISessionPrx getSessionService(com.zeroc.Ice.Current current) throws ServerError {
         return ISessionPrxHelper.uncheckedCast(getByName(SESSIONSERVICE.value,
                 current, true));
     }
 
-    public ISharePrx getShareService(Current current) throws ServerError {
+    public ISharePrx getShareService(com.zeroc.Ice.Current current) throws ServerError {
         return ISharePrxHelper.uncheckedCast(getByName(SHARESERVICE.value,
                 current));
     }
 
-    public ITimelinePrx getTimelineService(Ice.Current current)
+    public ITimelinePrx getTimelineService(com.zeroc.Ice.Current current)
             throws ServerError {
         return ITimelinePrxHelper.uncheckedCast(getByName(
                 TIMELINESERVICE.value, current));
     }
 
-    public ITypesPrx getTypesService(Ice.Current current) throws ServerError {
+    public ITypesPrx getTypesService(com.zeroc.Ice.Current current) throws ServerError {
         return ITypesPrxHelper.uncheckedCast(getByName(TYPESSERVICE.value,
                 current));
     }
 
-    public IUpdatePrx getUpdateService(Ice.Current current) throws ServerError {
+    public IUpdatePrx getUpdateService(com.zeroc.Ice.Current current) throws ServerError {
         Ice.ObjectPrx prx = getByName(UPDATESERVICE.value, current);
         return IUpdatePrxHelper.uncheckedCast(prx);
 
     }
 
-    public IRenderingSettingsPrx getRenderingSettingsService(Ice.Current current)
+    public IRenderingSettingsPrx getRenderingSettingsService(com.zeroc.Ice.Current current)
             throws ServerError {
         return IRenderingSettingsPrxHelper.uncheckedCast(getByName(
                 RENDERINGSETTINGS.value, current));
     }
 
-    public IRepositoryInfoPrx getRepositoryInfoService(Ice.Current current)
+    public IRepositoryInfoPrx getRepositoryInfoService(com.zeroc.Ice.Current current)
             throws ServerError {
         return IRepositoryInfoPrxHelper.uncheckedCast(getByName(
                 REPOSITORYINFO.value, current));
     }
 
-    public IMetadataPrx getMetadataService(Ice.Current current)
+    public IMetadataPrx getMetadataService(com.zeroc.Ice.Current current)
             throws ServerError {
         return IMetadataPrxHelper.uncheckedCast(getByName(
                 METADATASERVICE.value, current));
@@ -368,41 +365,41 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     // ~ Stateful
     // =========================================================================
 
-    public ExporterPrx createExporter(Current current) throws ServerError {
+    public ExporterPrx createExporter(com.zeroc.Ice.Current current) throws ServerError {
         return ExporterPrxHelper.uncheckedCast(createByName(
                 EXPORTERSERVICE.value, current));
     }
 
-    public JobHandlePrx createJobHandle(Ice.Current current) throws ServerError {
+    public JobHandlePrx createJobHandle(com.zeroc.Ice.Current current) throws ServerError {
         return JobHandlePrxHelper.uncheckedCast(createByName(JOBHANDLE.value,
                 current));
     }
 
-    public RenderingEnginePrx createRenderingEngine(Ice.Current current)
+    public RenderingEnginePrx createRenderingEngine(com.zeroc.Ice.Current current)
             throws ServerError {
         return RenderingEnginePrxHelper.uncheckedCast(createByName(
                 RENDERINGENGINE.value, current));
     }
 
-    public omero.api.RawFileStorePrx createRawFileStore(Ice.Current current)
+    public omero.api.RawFileStorePrx createRawFileStore(com.zeroc.Ice.Current current)
             throws ServerError {
         return omero.api.RawFileStorePrxHelper.uncheckedCast(createByName(
                 RAWFILESTORE.value, current));
     }
 
-    public RawPixelsStorePrx createRawPixelsStore(Ice.Current current)
+    public RawPixelsStorePrx createRawPixelsStore(com.zeroc.Ice.Current current)
             throws ServerError {
         return RawPixelsStorePrxHelper.uncheckedCast(createByName(
                 RAWPIXELSSTORE.value, current));
     }
 
-    public SearchPrx createSearchService(Ice.Current current)
+    public SearchPrx createSearchService(com.zeroc.Ice.Current current)
             throws ServerError {
         return SearchPrxHelper
                 .uncheckedCast(createByName(SEARCH.value, current));
     }
 
-    public ThumbnailStorePrx createThumbnailStore(Ice.Current current)
+    public ThumbnailStorePrx createThumbnailStore(com.zeroc.Ice.Current current)
             throws ServerError {
         return ThumbnailStorePrxHelper.uncheckedCast(createByName(
                 THUMBNAILSTORE.value, current));
@@ -411,27 +408,23 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     // ~ Other interface methods
     // =========================================================================
 
-    public SharedResourcesPrx sharedResources(Current current)
+    public SharedResourcesPrx sharedResources(com.zeroc.Ice.Current current)
             throws ServerError {
         return SharedResourcesPrxHelper.uncheckedCast(getByName(
                 SHAREDRESOURCES.value, current));
     }
 
-    public Ice.TieBase getTie(Ice.Identity id) {
-        return (Ice.TieBase) holder.get(id);
-    }
-
-    public Object getServant(Ice.Identity id) {
+    public Object getServant(com.zeroc.Ice.Identity id) {
         return holder.getUntied(id);
     }
 
-    public ServiceInterfacePrx getByName(String blankname, Current dontUse)
+    public ServiceInterfacePrx getByName(String blankname, com.zeroc.Ice.Current dontUse)
             throws ServerError {
         return getByName(blankname, dontUse, false);
 
     }
 
-    public ServiceInterfacePrx getByName(String blankname, Current dontUse,
+    public ServiceInterfacePrx getByName(String blankname, com.zeroc.Ice.Current dontUse,
             boolean allowGuest) throws ServerError {
 
         if (!allowGuest) {
@@ -450,12 +443,12 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
         // for each stateless service, we need to attach modify the id.
         // idName is just the value id.name not Ice.Util.identityToString(id)
         String idName = clientId + blankname;
-        Ice.Identity id = holder.getIdentity(idName);
+        com.zeroc.Ice.Identity id = holder.getIdentity(idName);
 
         holder.acquireLock(idName);
         try {
-            Ice.ObjectPrx prx;
-            Ice.Object servant = holder.get(id);
+            com.zeroc.Ice.ObjectPrx prx;
+            com.zeroc.Ice.Object servant = holder.get(id);
             if (servant == null) {
                 servant = createServantDelegate(blankname);
                 // Previously we checked for stateful services here,
@@ -471,30 +464,30 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
         }
     }
 
-    public StatefulServiceInterfacePrx createByName(String name, Current current)
+    public StatefulServiceInterfacePrx createByName(String name, com.zeroc.Ice.Current current)
             throws ServerError {
         return createByName(name, current, false);
     }
 
-    public StatefulServiceInterfacePrx createByName(String name, Current current,
+    public StatefulServiceInterfacePrx createByName(String name, com.zeroc.Ice.Current current,
             boolean allowGuest) throws ServerError {
 
         if (!allowGuest) {
             disallowGuest(name);
         }
 
-        Ice.Identity id = holder.getIdentity(UUID.randomUUID().toString() + name);
+        com.zeroc.Ice.Identity id = holder.getIdentity(UUID.randomUUID().toString() + name);
         if (null != adapter.find(id)) {
             omero.InternalException ie = new omero.InternalException();
             ie.message = name + " already registered for this adapter.";
         }
 
-        Ice.Object servant = createServantDelegate(name);
-        Ice.ObjectPrx prx = registerServant(id, servant);
+        com.zeroc.Ice.Object servant = createServantDelegate(name);
+        com.zeroc.Ice.ObjectPrx prx = registerServant(id, servant);
         return StatefulServiceInterfacePrxHelper.uncheckedCast(prx);
     }
 
-    public void subscribe(String topicName, ObjectPrx prx, Current __current)
+    public void subscribe(String topicName, com.zeroc.Ice.ObjectPrx prx, com.zeroc.Ice.Current __current)
             throws ServerError {
 
         if (topicName == null || !topicName.startsWith("/public/")) {
@@ -505,7 +498,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
         log.info("Registered " + prx + " for " + topicName);
     }
 
-    public void setCallback(ClientCallbackPrx callback, Ice.Current current)
+    public void setCallback(ClientCallbackPrx callback, com.zeroc.Ice.Current current)
             throws ServerError {
         if (false) { // ticket:2558, disabling because of long logins. See also
                      // #2485
@@ -531,11 +524,11 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
         }
     }
 
-    public void detachOnDestroy(Ice.Current current) {
+    public void detachOnDestroy(com.zeroc.Ice.Current current) {
         doClose = false;
     }
 
-    public void closeOnDestroy(Ice.Current current) {
+    public void closeOnDestroy(com.zeroc.Ice.Current current) {
         doClose = true;
     }
 
@@ -547,7 +540,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
         return holder.getStatefulServiceCount();
     }
 
-    public List<String> activeServices(Current __current) {
+    public List<String> activeServices(com.zeroc.Ice.Current __current) {
         return holder.getServantList();
     }
 
@@ -557,7 +550,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     }
 
     /** Takes current into account */
-    public EventContext getEventContext(final Ice.Current current) {
+    public EventContext getEventContext(final com.zeroc.Ice.Current current) {
         return executor.execute(current.ctx, this.principal,
                 new Executor.SimpleWork<EventContext>(this, "getEventContext") {
                     @Transactional(readOnly=true)
@@ -635,7 +628,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
             if (proxy == null) {
                 return false;
             }
-            Ice.Identity id = proxy.ice_getIdentity();
+            com.zeroc.Ice.Identity id = proxy.ice_getIdentity();
             return null != holder.get(id);
         } catch (Throwable t) {
             throw handleException(t);

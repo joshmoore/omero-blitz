@@ -36,7 +36,7 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * {@link ThrottlingStrategy throttled} implementation base class which can be

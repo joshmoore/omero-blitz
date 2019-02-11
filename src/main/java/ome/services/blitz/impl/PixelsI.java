@@ -28,7 +28,7 @@ import omero.api._IPixelsOperations;
 import omero.model.PixelsType;
 import omero.model.RenderingDef;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Implementation of the IPixels service.

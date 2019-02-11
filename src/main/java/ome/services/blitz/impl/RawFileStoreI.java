@@ -34,12 +34,9 @@ import omero.grid.RepositoryPrx;
 import omero.grid.RepositoryPrxHelper;
 import omero.model.OriginalFile;
 import omero.util.IceMapper;
-import omero.util.TieAware;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
-import Ice.TieBase;
 
 /**
  * Implementation of the RawFileStore service.
@@ -49,7 +46,7 @@ import Ice.TieBase;
  * @see ome.api.RawFileStore
  */
 public class RawFileStoreI extends AbstractCloseableAmdServant implements
-_RawFileStoreOperations, ServiceFactoryAware, TieAware {
+_RawFileStoreOperations, ServiceFactoryAware {
 
     private ServiceFactoryI sf;
 
@@ -66,13 +63,6 @@ _RawFileStoreOperations, ServiceFactoryAware, TieAware {
 
     public ServiceFactoryI getServiceFactory() throws ServerError {
         return this.sf;
-    }
-
-    public void setTie(TieBase tie) throws ServerError {
-        if (!(tie instanceof _RawFileStoreTie)) {
-            throw new RuntimeException("Bad tie: " + tie);
-        }
-        this.tie = (_RawFileStoreTie) tie;
     }
 
     // Interface methods
@@ -157,7 +147,7 @@ _RawFileStoreOperations, ServiceFactoryAware, TieAware {
     //
 
     public boolean __redirect(final long fileId, final _RawFileStoreTie rfsTie,
-            final Ice.Current current) throws ServerError {
+            final com.zeroc.Ice.Current current) throws ServerError {
 
         final String repo = (String) sf.executor
                 .executeSql(new Executor.SimpleSqlWork(this,

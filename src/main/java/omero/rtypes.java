@@ -27,7 +27,6 @@ import org.springframework.util.ReflectionUtils;
 import omero.model.IObject;
 import omero.util.IceMapper;
 import omero.util.ObjectFactoryRegistry;
-import Ice.Current;
 
 /**
  * Abstract class similar to {@link java.util.Arrays} or
@@ -361,7 +360,7 @@ public abstract class rtypes {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -398,11 +397,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public double getValue(Current __current) {
+        public double getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice..Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -438,11 +437,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public float getValue(Current __current) {
+        public float getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -477,11 +476,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public int getValue(Current __current) {
+        public int getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -516,11 +515,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public long getValue(Current __current) {
+        public long getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -555,11 +554,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public long getValue(Current __current) {
+        public long getValue(com.zeroc.Ice. __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -597,11 +596,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public omero.Internal getValue(Current __current) {
+        public omero.Internal getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -640,11 +639,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public omero.model.IObject getValue(Current __current) {
+        public omero.model.IObject getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -679,11 +678,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public String getValue(Current __current) {
+        public String getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -718,11 +717,11 @@ public abstract class rtypes {
             super(value);
         }
 
-        public String getValue(Current __current) {
+        public String getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -775,7 +774,7 @@ public abstract class rtypes {
             }
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -800,23 +799,23 @@ public abstract class rtypes {
             }
         }
 
-        public List<RType> getValue(Current __current) {
+        public List<RType> getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public RType get(int index, Ice.Current current) {
+        public RType get(int index, com.zeroc.Ice.Current current) {
             return val.get(index);
         }
 
-        public int size(Ice.Current current) {
+        public int size(com.zeroc.Ice.Current current) {
             return val.size();
         }
 
-        public void add(RType value, Ice.Current current) {
+        public void add(RType value, com.zeroc.Ice.Current current) {
             val.add(value);
         }
 
-        public void addAll(java.util.List<RType> value, Ice.Current current) {
+        public void addAll(java.util.List<RType> value, com.zeroc.Ice.Current current) {
             val.addAll(value);
         }
 
@@ -856,7 +855,7 @@ public abstract class rtypes {
             }
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -868,23 +867,23 @@ public abstract class rtypes {
             return mapper.reverse(val, List.class);
         }
 
-        public List<RType> getValue(Current __current) {
+        public List<RType> getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public RType get(int index, Ice.Current current) {
+        public RType get(int index, com.zeroc.Ice.Current current) {
             return val.get(index);
         }
 
-        public int size(Ice.Current current) {
+        public int size(com.zeroc.Ice.Current current) {
             return val.size();
         }
 
-        public void add(RType value, Ice.Current current) {
+        public void add(RType value, com.zeroc.Ice.Current current) {
             val.add(value);
         }
 
-        public void addAll(java.util.List<RType> value, Ice.Current current) {
+        public void addAll(java.util.List<RType> value, com.zeroc.Ice.Current current) {
             val.addAll(value);
         }
 
@@ -923,7 +922,7 @@ public abstract class rtypes {
             }
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -935,23 +934,23 @@ public abstract class rtypes {
             return mapper.reverse(val, Set.class);
         }
 
-        public List<RType> getValue(Current __current) {
+        public List<RType> getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public RType get(int index, Ice.Current current) {
+        public RType get(int index, com.zeroc.Ice.Current current) {
             return val.get(index);
         }
 
-        public int size(Ice.Current current) {
+        public int size(com.zeroc.Ice.Current current) {
             return val.size();
         }
 
-        public void add(RType value, Ice.Current current) {
+        public void add(RType value, com.zeroc.Ice.Current current) {
             val.add(value);
         }
 
-        public void addAll(java.util.List<RType> value, Ice.Current current) {
+        public void addAll(java.util.List<RType> value, com.zeroc.Ice.Current current) {
             val.addAll(value);
         }
 
@@ -983,7 +982,7 @@ public abstract class rtypes {
             }
         }
 
-        public int compare(RType rhs, Ice.Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -995,19 +994,19 @@ public abstract class rtypes {
             return mapper.reverse(val);
         }
 
-        public Map<String, RType> getValue(Current __current) {
+        public Map<String, RType> getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
-        public RType get(String key, Current __current) {
+        public RType get(String key, com.zeroc.Ice.Current __current) {
             return val.get(key);
         }
 
-        public void put(String key, RType value, Current __current) {
+        public void put(String key, RType value, com.zeroc.Ice.Current __current) {
             val.put(key, value);
         }
 
-        public int size(Current __current) {
+        public int size(com.zeroc.Ice.Current __current) {
             return val.size();
         }
 
