@@ -72,7 +72,6 @@ import omero.sys.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.UserException;
 
 /**
  * Responsible for the mapping of ome.* types to omero.* types and back again.
@@ -104,7 +103,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public interface ReturnMapping {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException;
+                throws com.zeroc.Ice.UserException;
 
     }
 
@@ -345,7 +344,7 @@ public class IceMapper extends ome.util.ModelMapper implements
      * Convert the given Object via the set {@link ReturnMapping}. Throws a
      * {@link NullPointerException} if no mapping is set.
      */
-    public Object mapReturnValue(Object value) throws Ice.UserException {
+    public Object mapReturnValue(Object value) throws com.zeroc.Ice.UserException {
         return mapping.mapReturnValue(this, value);
     }
 
@@ -1300,7 +1299,7 @@ public class IceMapper extends ome.util.ModelMapper implements
 
     }
 
-    public Ice.UserException handleException(Throwable t, OmeroContext ctx) {
+    public com.zeroc.Ice.UserException handleException(Throwable t, OmeroContext ctx) {
 
         // Getting rid of the reflection wrapper.
         if (InvocationTargetException.class.isAssignableFrom(t.getClass())) {

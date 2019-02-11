@@ -29,8 +29,8 @@ import com.google.common.collect.MapMaker;
 /**
  * Manager for all active servants in a single session.
  *
- * To reduce the need of using {@link Ice.Util#stringToIdentity(String)} and
- * {@link Ice.Util#identityToString(Ice.Identity)} the servant tries to make the
+ * To reduce the need of using {@link com.zeroc.Ice.Util#stringToIdentity(String)} and
+ * {@link com.zeroc.Ice.Util#identityToString(com.zeroc.Ice.Identity)} the servant tries to make the
  * two usages equivalent.
  *
  * @author Josh Moore, josh at glencoesoftware.com
@@ -41,7 +41,7 @@ public class ServantHolder {
     private final static Logger log = LoggerFactory.getLogger(ServantHolder.class);
 
     /**
-     * Note: servants are stored by String since {@link Ice.Identity} does not
+     * Note: servants are stored by String since {@link com.zeroc.Ice.Identity} does not
      * behave properly as a key.
      */
     private final Map<String, Ice.Object> servants;
@@ -59,7 +59,7 @@ public class ServantHolder {
 
     /**
      * An internal mapping to all client ids from {@link omero.cmd.SessionI} for a given
-     * DB session since there is no method on {@link Ice.ObjectAdapter} to retrieve
+     * DB session since there is no method on {@link com.zeroc.Ice.ObjectAdapter} to retrieve
      * all servants.
      */
     protected final Map<String, Object> clientIds;
@@ -96,12 +96,12 @@ public class ServantHolder {
     }
 
     /**
-     * Constructs an {@link Ice.Identity} from the current session
+     * Constructs an {@link com.zeroc.Ice.Identity} from the current session
      * and from the given {@link String} which for
      * stateful services are defined by UUIDs.
      */
-    public Ice.Identity getIdentity(String idName) {
-        Ice.Identity id = new Ice.Identity();
+    public com.zeroc.Ice.Identity getIdentity(String idName) {
+        com.zeroc.Ice.Identity id = new com.zeroc.Ice.Identity();
         id.category = this.session;
         id.name = idName;
         return id;
@@ -148,20 +148,20 @@ public class ServantHolder {
         lock.unlock();
     }
 
-    public Ice.Object get(Ice.Identity id) {
+    public com.zeroc.Ice.Object get(com.zeroc.Ice.Identity id) {
         return get(id.name);
     }
 
-    public Object getUntied(Ice.Identity id) {
-        Ice.Object servantOrTie = get(id.name);
-         if (servantOrTie instanceof Ice.TieBase) {
-             return ((Ice.TieBase) servantOrTie).ice_delegate();
+    public Object getUntied(com.zeroc.Ice.Identity id) {
+        com.zeroc.Ice.Object servantOrTie = get(id.name);
+         if (servantOrTie instanceof com.zeroc.Ice.TieBase) {
+             return ((com.zeroc.Ice.TieBase) servantOrTie).ice_delegate();
          } else {
              return servantOrTie;
          }
     }
 
-    public void put(Ice.Identity id, Ice.Object servant)
+    public void put(com.zeroc.Ice.Identity id, com.zeroc.Ice.Object servant)
         throws omero.OverUsageException {
         final int size = servants.size();
         if (size >= servantsPerSession) {
@@ -182,7 +182,7 @@ public class ServantHolder {
         put(id.name, servant);
     }
 
-    public Ice.Object remove(Ice.Identity id) {
+    public com.zeroc.Ice.Object remove(com.zeroc.Ice.Identity id) {
         return remove(id.name);
     }
 
@@ -194,7 +194,7 @@ public class ServantHolder {
         String list = "";
         final List<String> servants = getServantList();
         for (final String idName : servants) {
-            final Ice.Identity id = getIdentity(idName);
+            final com.zeroc.Ice.Identity id = getIdentity(idName);
             final Object servant = getUntied(id);
             if (servant != null) {
                 try {
@@ -213,7 +213,7 @@ public class ServantHolder {
     // Implementation
     //
 
-    private void put(String key, Ice.Object servant) {
+    private void put(String key, com.zeroc.Ice.Object servant) {
         Object old = servants.put(key, servant);
         if (old == null) {
             log.debug(String.format("Added %s to %s as %s", servant, this, key));
@@ -222,13 +222,13 @@ public class ServantHolder {
         }
     }
 
-    private Ice.Object remove(String key) {
-        Ice.Object servant = servants.remove(key);
+    private com.zeroc.Ice.Object remove(String key) {
+        com.zeroc.Ice.Object servant = servants.remove(key);
         log.debug(String.format("Removed %s from %s as %s", servant, this, key));
         return servant;
     }
 
-    private Ice.Object get(String key) {
+    private com.zeroc.Ice.Object get(String key) {
         return servants.get(key);
     }
 

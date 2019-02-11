@@ -9,7 +9,7 @@ package omero.util;
 
 /**
  * Marker interface which distinguishes a servant which wants to have
- * {@link #close(Ice.Current)} called on
+ * {@link #close(com.zeroc.Ice.Current)} called on
  * {@link ome.services.blitz.impl.ServiceFactoryI#doDestroy()}
  *
  * @author Josh Moore, josh at glencoesoftware.com
@@ -17,6 +17,6 @@ package omero.util;
  */
 public interface CloseableServant {
 
-    void close(Ice.Current current) throws Exception;
+    void close(com.zeroc.Ice.Current current) throws Exception;
 
 }

@@ -11,7 +11,7 @@ package omero.util;
 import omero.ServerError;
 
 /**
- * Servant which is aware of the {@link Ice.TieBase}-instance which it
+ * Servant which is aware of the {@link com.zeroc.Ice.TieBase}-instance which it
  * belongs to and will have it injected on instantiation.
  *
  * @author Josh Moore, josh at glencoesoftware.com
@@ -19,6 +19,6 @@ import omero.ServerError;
  */
 public interface TieAware {
 
-    void setTie(Ice.TieBase tie) throws ServerError;
+    void setTie(com.zeroc.Ice.TieBase tie) throws ServerError;
 
 }

@@ -64,10 +64,6 @@ import omero.model.enums.ChecksumAlgorithmSHA1160;
 import omero.util.ModelObjectFactoryRegistry;
 import omero.util.Resources;
 import omero.util.Resources.Entry;
-import Glacier2.CannotCreateSessionException;
-import Glacier2.PermissionDeniedException;
-import Glacier2.SessionNotExistException;
-import Ice.Current;
 
 /**
  * Central client-side blitz entry point. This class uses solely Ice
@@ -136,23 +132,23 @@ public class client {
     private volatile String __uuid;
 
     /**
-     * {@link Ice.InitializationData} from the last communicator used to create
+     * {@link com.zeroc.Ice.InitializationData} from the last communicator used to create
      * the {@link #__ic} if nulled after {@link #closeSession()}.
      */
-    private volatile Ice.InitializationData __previous;
+    private volatile com.zeroc.Ice.InitializationData __previous;
 
     /**
-     * {@link Ice.ObjectAdapter} containing the {@link ClientCallback} for this
+     * {@link com.zeroc.Ice.ObjectAdapter} containing the {@link ClientCallback} for this
      * instance.
      */
-    private volatile Ice.ObjectAdapter __oa;
+    private volatile com.zeroc.Ice.ObjectAdapter __oa;
 
     /**
      * Single communicator for this {@link omero.client}. Nullness is used as a
      * test of what state the client is in, therefore all access is sychronized
      * by {@link #lock}
      */
-    private volatile Ice.Communicator __ic;
+    private volatile com.zeroc.Ice.Communicator __ic;
 
     /**
      * Single session for this {@link omero.client}. Nullness is used as a test
@@ -205,25 +201,25 @@ public class client {
     }
 
     /**
-     * Calls {@link #client(Ice.InitializationData)} with a new
-     * {@link Ice.InitializationData}
+     * Calls {@link #client(com.zeroc.Ice.InitializationData)} with a new
+     * {@link com.zeroc.Ice.InitializationData}
      */
     public client() {
-        this(new Ice.InitializationData());
+        this(new com.zeroc.Ice.InitializationData());
     }
 
     /**
-     * Creates an {@link Ice.Communicator} from a {@link Ice.InitializationData}
+     * Creates an {@link com.zeroc.Ice.Communicator} from a {@link com.zeroc.Ice.InitializationData}
      * instance. Cannot be null.
      * @param id the Ice initialization data
      */
-    public client(Ice.InitializationData id) {
+    public client(com.zeroc.Ice.InitializationData id) {
         insecure = false;
         init(id);
     }
 
     /**
-     * Creates an {@link Ice.Communicator} pointing at the given server using
+     * Creates an {@link com.zeroc.Ice.Communicator} pointing at the given server using
      * the {@link ome.system.Server#DEFAULT_PORT}.
      * @param host the server host name
      */
@@ -232,7 +228,7 @@ public class client {
     }
 
     /**
-     * Creates an {@link Ice.Communicator} pointing at the given server with the
+     * Creates an {@link com.zeroc.Ice.Communicator} pointing at the given server with the
      * non-standard port.
      * @param host the server host name
      * @param port the server port number
@@ -242,25 +238,25 @@ public class client {
     }
 
     /**
-     * Calls {@link #client(String[], Ice.InitializationData)} with a new
-     * {@link Ice.InitializationData}
+     * Calls {@link #client(String[], com.zeroc.Ice.InitializationData)} with a new
+     * {@link com.zeroc.Ice.InitializationData}
      * @param args command-line arguments
      */
     public client(String[] args) {
-        this(args, new Ice.InitializationData());
+        this(args, new com.zeroc.Ice.InitializationData());
     }
 
     /**
-     * Creates an {@link Ice.Communicator} from command-line arguments. These
+     * Creates an {@link com.zeroc.Ice.Communicator} from command-line arguments. These
      * are parsed via Ice.Properties.parseIceCommandLineOptions(args) and
      * Ice.Properties.parseCommandLineOptions("omero", args)
      * @param args command-line arguments
      * @param id the Ice initialization data
      */
-    public client(String[] args, Ice.InitializationData id) {
+    public client(String[] args, com.zeroc.Ice.InitializationData id) {
         insecure = false;
         if (id.properties == null) {
-            id.properties = Ice.Util.createProperties(args);
+            id.properties = com.zeroc.Ice.Util.createProperties(args);
         }
         args = id.properties.parseIceCommandLineOptions(args);
         args = id.properties.parseCommandLineOptions("omero", args);
@@ -273,8 +269,8 @@ public class client {
      */
     public client(File... files) {
         insecure = false;
-        Ice.InitializationData id = new Ice.InitializationData();
-        id.properties = Ice.Util.createProperties(new String[] {});
+        com.zeroc.Ice.InitializationData id = new com.zeroc.Ice.InitializationData();
+        id.properties = com.zeroc.Ice.Util.createProperties(new String[] {});
         for (File file : files) {
             id.properties.load(file.getAbsolutePath());
         }
@@ -282,9 +278,9 @@ public class client {
     }
 
     /**
-     * Creates an {@link Ice.Communicator} from a {@link Map} instance. The
+     * Creates an {@link com.zeroc.Ice.Communicator} from a {@link Map} instance. The
      * {@link String} representation of each member is added to the
-     * {@link Ice.Properties} under the {@link String} representation of the
+     * {@link com.zeroc.Ice.Properties} under the {@link String} representation of the
      * key.
      * @param p properties
      */
@@ -294,8 +290,8 @@ public class client {
 
     private client(Map p, boolean secure) {
         this.insecure = !secure;
-        Ice.InitializationData id = new Ice.InitializationData();
-        id.properties = Ice.Util.createProperties(new String[] {});
+        com.zeroc.Ice.InitializationData id = new com.zeroc.Ice.InitializationData();
+        id.properties = com.zeroc.Ice.Util.createProperties(new String[] {});
         if (p != null) {
             for (Object key : p.keySet()) {
                 id.properties
@@ -305,7 +301,7 @@ public class client {
         init(id);
     }
 
-    private void optionallySetProperty(Ice.InitializationData id, String key, String def) {
+    private void optionallySetProperty(com.zeroc.Ice.InitializationData id, String key, String def) {
         String val = id.properties.getProperty(key);
         if (val == null || val.length() == 0) {
             val = def;
@@ -314,19 +310,19 @@ public class client {
     }
 
     /**
-     * Initializes the current client via an {@link Ice.InitializationData}
+     * Initializes the current client via an {@link com.zeroc.Ice.InitializationData}
      * instance. This is called by all of the constructors, but may also be
      * called on {@link #createSession(String, String)} if a previous call to
-     * {@link #closeSession()} has nulled the {@link Ice.Communicator}
+     * {@link #closeSession()} has nulled the {@link com.zeroc.Ice.Communicator}
      */
-    private void init(Ice.InitializationData id) {
+    private void init(com.zeroc.Ice.InitializationData id) {
 
         if (id == null) {
             throw new ClientError("No initialization data provided.");
         }
 
         if (id.properties == null) {
-            id.properties = Ice.Util.createProperties(new String[] {});
+            id.properties = com.zeroc.Ice.Util.createProperties(new String[] {});
         }
 
         // Strictly necessary for this class to work
@@ -392,8 +388,8 @@ public class client {
         }
 
         try {
-            __ic = Ice.Util.initialize(id);
-        } catch (Ice.EndpointParseException epe) {
+            __ic = com.zeroc.Ice.Util.initialize(id);
+        } catch (com.zeroc.Ice.EndpointParseException epe) {
             throw new ClientError("No host specified. " +
                 "Use omero.client(HOSTNAME), ICE_CONFIG, or similar.");
         }
@@ -409,7 +405,7 @@ public class client {
 
         // Define our unique identifer (used during close/detach)
         __uuid = UUID.randomUUID().toString();
-        Ice.ImplicitContext ctx = __ic.getImplicitContext();
+        com.zeroc.Ice.ImplicitContext ctx = __ic.getImplicitContext();
         if (ctx == null) {
             throw new ClientError("Ice.ImplicitContext not set to Shared");
         }
@@ -518,12 +514,12 @@ public class client {
     }
 
     /**
-     * Returns the {@link Ice.Communicator} for this instance or throws an
+     * Returns the {@link com.zeroc.Ice.Communicator} for this instance or throws an
      * exception if null.
-     * @return this client's {@link Ice.Communicator}
+     * @return this client's {@link com.zeroc.Ice.Communicator}
      */
-    public Ice.Communicator getCommunicator() {
-        Ice.Communicator ic = __ic;
+    public com.zeroc.Ice.Communicator getCommunicator() {
+        com.zeroc.Ice.Communicator ic = __ic;
         if (ic == null) {
             throw new ClientError(
                     "No Ice.Communicator active; call createSession() or create a new client instance.");
@@ -531,8 +527,8 @@ public class client {
         return ic;
     }
 
-    public Ice.ObjectAdapter getAdapter() {
-        Ice.ObjectAdapter oa = __oa;
+    public com.zeroc.Ice.ObjectAdapter getAdapter() {
+        com.zeroc.Ice.ObjectAdapter oa = __oa;
         if (oa == null) {
             throw new ClientError("No ObjectAdapter; call createSession()");
         }
@@ -573,19 +569,19 @@ public class client {
     }
 
     /**
-     * Returns the {@link Ice.ImplicitContext} which defines what properties
+     * Returns the {@link com.zeroc.Ice.ImplicitContext} which defines what properties
      * will be sent on every method invocation.
-     * @return the {@link Ice.ImplicitContext}
+     * @return the {@link com.zeroc.Ice.ImplicitContext}
      */
-    public Ice.ImplicitContext getImplicitContext() {
+    public com.zeroc.Ice.ImplicitContext getImplicitContext() {
         return getCommunicator().getImplicitContext();
     }
 
     /**
-     * Returns the {@link Ice.Properties active properties} for this instance.
+     * Returns the {@link com.zeroc.Ice.Properties active properties} for this instance.
      * @return the active properties
      */
-    public Ice.Properties getProperties() {
+    public com.zeroc.Ice.Properties getProperties() {
             return getCommunicator().getProperties();
     }
 
@@ -612,7 +608,7 @@ public class client {
      * @param properties some Ice properties
      * @return the "omero." and "Ice." properties
      */
-    public Map<String, String> getPropertyMap(Ice.Properties properties) {
+    public Map<String, String> getPropertyMap(com.zeroc.Ice.Properties properties) {
         Map<String, String> rv = new HashMap<String, String>();
         for (String prefix : Arrays.asList("omero", "Ice")) {
             Map<String, String> prefixed = properties
@@ -659,8 +655,8 @@ public class client {
 
     /**
      * Performs the actual logic of logging in, which is done via the
-     * {@link #getRouter(Ice.Communicator)}. Disallows an extant {@link ServiceFactoryPrx}
-     * and tries to re-create a null {@link Ice.Communicator}. A null or empty
+     * {@link #getRouter(com.zeroc.Ice.Communicator)}. Disallows an extant {@link ServiceFactoryPrx}
+     * and tries to re-create a null {@link com.zeroc.Ice.Communicator}. A null or empty
      * username will throw an exception, but an empty password is allowed.
      */
     public ServiceFactoryPrx createSession(String username, String password)
@@ -698,7 +694,7 @@ public class client {
         }
 
         // Acquire router and get the proxy
-        Glacier2.SessionPrx prx = null;
+        com.zeroc.Glacier2.SessionPrx prx = null;
         int retries = 0;
         while (retries < 3) {
             String reason = null;
@@ -710,7 +706,7 @@ public class client {
                 Map<String, String> ctx = new HashMap<String, String>(getImplicitContext().getContext());
                 ctx.put(AGENT.value, __agent);
                 ctx.put(IP.value, __ip);
-                Glacier2.RouterPrx rtr = getRouter(__ic);
+                com.zeroc.Glacier2.RouterPrx rtr = getRouter(__ic);
                 prx = rtr.createSession(username, password, ctx);
 
                 // Create the adapter.
@@ -730,7 +726,7 @@ public class client {
                 }
                 reason = wrapped.type + ":" + wrapped.reason;
                 retries++;
-            } catch (Ice.ConnectTimeoutException cte) {
+            } catch (com.zeroc.Ice.ConnectTimeoutException cte) {
                 reason = "Ice.ConnectTimeoutException:" + cte.getMessage();
                 retries++;
             }
@@ -760,7 +756,7 @@ public class client {
         // Set the client callback on the session
         // and pass it to icestorm
         try {
-            Ice.ObjectPrx raw = __oa.createProxy(__cb.id);
+            com.zeroc.Ice.ObjectPrx raw = __oa.createProxy(__cb.id);
             __sf.setCallback(ClientCallbackPrxHelper.uncheckedCast(raw));
         } catch (RuntimeException e) {
             __del__();
@@ -777,39 +773,39 @@ public class client {
     }
 
     /**
-     * Acquires the {@link Ice.Communicator#getDefaultRouter default router},
+     * Acquires the {@link com.zeroc.Ice.Communicator#getDefaultRouter default router},
      * and throws an exception if it is not of type {Glacier2.RouterPrx}. Also
-     * sets the {@link Ice.ImplicitContext} on the router proxy.
+     * sets the {@link com.zeroc.Ice.ImplicitContext} on the router proxy.
      * @param comm the Ice communicator
      * @return the communicator's router
      */
-    public static Glacier2.RouterPrx getRouter(Ice.Communicator comm) {
-        Ice.RouterPrx prx = comm.getDefaultRouter();
+    public static com.zeroc.Glacier2.RouterPrx getRouter(com.zeroc.Ice.Communicator comm) {
+        com.zeroc.Ice.RouterPrx prx = comm.getDefaultRouter();
         if (prx == null) {
             throw new ClientError("No default router found.");
         }
 
-        Glacier2.RouterPrx router = Glacier2.RouterPrxHelper.checkedCast(prx);
+        com.zeroc.Glacier2.RouterPrx router = com.zeroc.Glacier2.RouterPrxHelper.checkedCast(prx);
         if (router == null) {
             throw new ClientError("Error obtaining Glacier2 router");
         }
 
         // For whatever reason, we have to set the context
         // on the router context here as well
-        router = Glacier2.RouterPrxHelper.uncheckedCast(router.ice_context(comm
+        router = com.zeroc.Glacier2.RouterPrxHelper.uncheckedCast(router.ice_context(comm
                 .getImplicitContext().getContext()));
         return router;
     }
 
     /**
      * Resets the "omero.keep_alive" property on the current
-     * {@link Ice.Communicator} which is used on initialization to determine the
+     * {@link com.zeroc.Ice.Communicator} which is used on initialization to determine the
      * time-period between {@link omero.util.Resources.Entry#check() checks}.
      */
     public void enableKeepAlive(int seconds) {
 
         // A communicator must be configured!
-        Ice.Communicator ic = getCommunicator();
+        com.zeroc.Ice.Communicator ic = getCommunicator();
         // Setting this here guarantees that after closeSession(), the
         // next createSession() will use the new value despite what was
         // in the configuration file.
@@ -823,7 +819,7 @@ public class client {
                 // Return true unless prx.keepAlive() throws an exception.
                 public boolean check() {
                     ServiceFactoryPrx prx = __sf;
-                    Ice.Communicator ic = __ic;
+                    com.zeroc.Ice.Communicator ic = __ic;
                     if (prx != null) {
                         try {
                             prx.keepAlive(null);
@@ -881,10 +877,10 @@ public class client {
         ServiceFactoryPrx oldSf = this.__sf;
         this.__sf = null;
 
-        Ice.ObjectAdapter oldOa = this.__oa;
+        com.zeroc.Ice.ObjectAdapter oldOa = this.__oa;
         this.__oa = null;
 
-        Ice.Communicator oldIc = this.__ic;
+        com.zeroc.Ice.Communicator oldIc = this.__ic;
         this.__ic = null;
 
         // Only possible if improperly configured
@@ -901,7 +897,7 @@ public class client {
             }
         }
 
-        __previous = new Ice.InitializationData();
+        __previous = new com.zeroc.Ice.InitializationData();
         __previous.properties = oldIc.getProperties()._clone();
         __previous.logger = oldIc.getLogger();
         // ThreadHook is not support since not available from ic
@@ -926,15 +922,15 @@ public class client {
                     getRouter(oldIc).destroySession();
                 }
             }
-        } catch (Ice.ConnectionLostException cle) {
+        } catch (com.zeroc.Ice.ConnectionLostException cle) {
             // ok. Exception will always be thrown
-        } catch (Ice.ConnectionRefusedException cle) {
+        } catch (com.zeroc.Ice.ConnectionRefusedException cle) {
             // ok. Server probably went down
-        } catch (Ice.ConnectTimeoutException cte) {
+        } catch (com.zeroc.Ice.ConnectTimeoutException cte) {
             // ok. Server probably went down
-        } catch (Ice.DNSException dns) {
+        } catch (com.zeroc.Ice.DNSException dns) {
             // ok. client is having network issues
-        } catch (Ice.SocketException se) {
+        } catch (com.zeroc.Ice.SocketException se) {
             // ok. client is having network issues
         } catch (SessionNotExistException e) {
             // ok. we don't want the session to exist
@@ -1180,7 +1176,7 @@ public class client {
     // Helpers
     // =========================================================================
 
-    protected String parseAndSetInt(Ice.InitializationData data, String key,
+    protected String parseAndSetInt(com.zeroc.Ice.InitializationData data, String key,
             int newValue) {
         String currentValue = data.properties.getProperty(key);
         if (currentValue == null || currentValue.length() == 0) {
@@ -1233,11 +1229,11 @@ public class client {
      */
     private static class CallbackI extends _ClientCallbackDisp {
 
-        private final Ice.Identity id;
+        private final com.zeroc.Ice.Identity id;
 
-        private final Ice.Communicator ic;
+        private final com.zeroc.Ice.Communicator ic;
 
-        private final Ice.ObjectAdapter oa;
+        private final com.zeroc.Ice.ObjectAdapter oa;
 
         private Runnable _noop = new Runnable() {
             public void run() {
@@ -1261,7 +1257,7 @@ public class client {
         private Runnable onSessionClosed = _noop;
         private Runnable onShutdown = _noop;
 
-        public CallbackI(Ice.Identity id, Ice.Communicator ic, Ice.ObjectAdapter oa) {
+        public CallbackI(com.zeroc.Ice.Identity id, com.zeroc.Ice.Communicator ic, com.zeroc.Ice.ObjectAdapter oa) {
             this.id = id;
             this.ic = ic;
             this.oa = oa;
