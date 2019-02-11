@@ -8,7 +8,6 @@
 #define OMERO_BASE_COLLECTIONS_ICE
 
 #include <omero/RTypes.ice>
-#include <omero/model/IObject.ice>
 #include <omero/model/NamedValue.ice>
 #include <Ice/BuiltinSequences.ice>
 
@@ -40,9 +39,6 @@ module omero {
         //
         // Object lists
         //
-        ["java:type:java.util.ArrayList<omero.model.IObject>:java.util.List<omero.model.IObject>"]
-            sequence<omero::model::IObject> IObjectList;
-
         ["java:type:java.util.ArrayList<omero.model.NamedValue>:java.util.List<omero.model.NamedValue>"]
         sequence<omero::model::NamedValue> NamedValueList;
 
@@ -99,8 +95,6 @@ module omero {
         dictionary<string, Ice::LongSeq>               IdListMap;
         dictionary<string, LongList>                   StringLongListMap;
         dictionary<bool,   LongList>                   BooleanLongListMap;
-        dictionary<string, IObjectList>                IObjectListMap;
-        dictionary<long,   IObjectList>                LongIObjectListMap;
         dictionary<long,   BooleanLongListMap>         IdBooleanLongListMapMap;
 
     };
