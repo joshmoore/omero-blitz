@@ -706,7 +706,7 @@ public class client {
                 Map<String, String> ctx = new HashMap<String, String>(getImplicitContext().getContext());
                 ctx.put(AGENT.value, __agent);
                 ctx.put(IP.value, __ip);
-                com.zeroc.Glacier2.RouterPrx rtr = getRouter(__ic);
+                Glacier2.RouterPrx rtr = getRouter(__ic);
                 prx = rtr.createSession(username, password, ctx);
 
                 // Create the adapter.
@@ -779,20 +779,20 @@ public class client {
      * @param comm the Ice communicator
      * @return the communicator's router
      */
-    public static com.zeroc.Glacier2.RouterPrx getRouter(com.zeroc.Ice.Communicator comm) {
+    public static Glacier2.RouterPrx getRouter(com.zeroc.Ice.Communicator comm) {
         com.zeroc.Ice.RouterPrx prx = comm.getDefaultRouter();
         if (prx == null) {
             throw new ClientError("No default router found.");
         }
 
-        com.zeroc.Glacier2.RouterPrx router = com.zeroc.Glacier2.RouterPrxHelper.checkedCast(prx);
+        Glacier2.RouterPrx router = Glacier2.RouterPrxHelper.checkedCast(prx);
         if (router == null) {
             throw new ClientError("Error obtaining Glacier2 router");
         }
 
         // For whatever reason, we have to set the context
         // on the router context here as well
-        router = com.zeroc.Glacier2.RouterPrxHelper.uncheckedCast(router.ice_context(comm
+        router = Glacier2.RouterPrxHelper.uncheckedCast(router.ice_context(comm
                 .getImplicitContext().getContext()));
         return router;
     }

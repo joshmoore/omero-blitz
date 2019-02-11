@@ -30,8 +30,8 @@ import omero.grid.monitors._MonitorServerDisp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zeroc.Glacier2.SessionManagerPrx;
-import com.zeroc.Glacier2.SessionPrx;
+import Glacier2.SessionManagerPrx;
+import Glacier2.SessionPrx;
 import com.zeroc.IceGrid.PermissionDeniedException;
 
 /**
