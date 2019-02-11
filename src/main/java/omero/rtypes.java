@@ -401,7 +401,7 @@ public abstract class rtypes {
             return val;
         }
 
-        public int compare(RType rhs, com.zeroc.Ice..Current current) {
+        public int compare(RType rhs, com.zeroc.Ice.Current current) {
             throw new UnsupportedOperationException();
         }
 
@@ -554,7 +554,7 @@ public abstract class rtypes {
             super(value);
         }
 
-        public long getValue(com.zeroc.Ice. __current) {
+        public long getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
