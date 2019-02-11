@@ -331,7 +331,7 @@
       <constructor-arg ref="securitySystem"/>
       <constructor-arg ref="passwordProvider"/>
       <constructor-arg ref="graphRequestFactory"/>
-      <property name="iceCommunicator" ref="Ice.Communicator"/>
+      <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
   </bean>
 
   <bean id="graphRequestFactory" class="omero.cmd.graphs.GraphRequestFactory">
@@ -379,7 +379,7 @@
 
   <bean class="ome.services.blitz.impl.commands.RequestObjectFactoryRegistry"
     lazy-init="false">
-      <property name="iceCommunicator" ref="Ice.Communicator"/>
+      <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
   </bean>
 
   <bean class="ome.services.blitz.repo.RequestObjectFactoryRegistry"
@@ -389,7 +389,7 @@
      <constructor-arg ref="repositoryDao"/>
      <constructor-arg ref="ring"/>
      <constructor-arg ref="/OMERO/Pixels"/>
-     <property name="iceCommunicator" ref="Ice.Communicator"/>
+     <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
      <constructor-arg ref="resources"/>
   </bean>
 
@@ -399,14 +399,14 @@
       <constructor-arg ref="currentDetails"/>
       <constructor-arg ref="sessionManager"/>
       <constructor-arg ref="securitySystem"/>
-     <property name="iceCommunicator" ref="Ice.Communicator"/>
+     <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
   </bean>
 
   <bean class="omero.cmd.admin.CurrentSessionsRequestI$Factory" lazy-init="false">
       <constructor-arg ref="currentDetails"/>
       <constructor-arg ref="sessionManager"/>
       <constructor-arg ref="sessionProvider"/>
-     <property name="iceCommunicator" ref="Ice.Communicator"/>
+     <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
   </bean>
 
   <!-- Other data objects
