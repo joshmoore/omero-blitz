@@ -1263,7 +1263,7 @@ public class client {
             this.oa = oa;
         }
 
-        public void requestHeartbeat(Current __current) {
+        public void requestHeartbeat(com.zeroc.Ice.Current __current) {
             execute(onHeartbeat, "heartbeat");
         }
 
@@ -1271,7 +1271,7 @@ public class client {
             execute(onShutdown, "shutdown");
         }
 
-        public void sessionClosed(Current __current) {
+        public void sessionClosed(com.zeroc.Ice.Current __current) {
             execute(onSessionClosed, "sessionClosed");
         }
 

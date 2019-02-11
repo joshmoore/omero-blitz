@@ -357,7 +357,7 @@ public abstract class rtypes {
             super(value);
         }
 
-        public boolean getValue(Current __current) {
+        public boolean getValue(com.zeroc.Ice.Current __current) {
             return val;
         }
 
