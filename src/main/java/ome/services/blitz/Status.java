@@ -15,10 +15,10 @@ package ome.services.blitz;
  */
 public class Status implements Runnable {
 
-    Ice.Communicator ic;
+    com.zeroc.Ice.Communicator ic;
 
     /**
-     * Uses the passed args to create an {@link Ice.Communicator}.
+     * Uses the passed args to create an {@link com.zeroc.Ice.Communicator}.
      */
     public static void main(final String[] args) {
         Status status = new Status(args);
@@ -32,18 +32,18 @@ public class Status implements Runnable {
     }
 
     public Status(String[] args) {
-        ic = Ice.Util.initialize(args);
+        ic = com.zeroc.Ice.Util.initialize(args);
     }
 
     public void run() {
-        Ice.ObjectPrx base = ic.propertyToProxy("StatusCheck");
+        com.zeroc.Ice.ObjectPrx base = ic.propertyToProxy("StatusCheck");
         try {
             Glacier2.SessionManagerPrx mgr = Glacier2.SessionManagerPrxHelper
                     .checkedCast(base);
             if (mgr == null) {
                 throw new StatusException("Null proxy.", 1);
             }
-        } catch (Ice.ConnectionRefusedException cre) {
+        } catch (com.zeroc.Ice.ConnectionRefusedException cre) {
             throw new StatusException("Connection refused.", 2);
         }
 

@@ -10,7 +10,7 @@ import java.util.Set;
 import Glacier2.CannotCreateSessionException;
 import Glacier2.SessionControlPrx;
 import Glacier2.SessionPrx;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * {@link Redirector} implementation to effectively disable redirects.

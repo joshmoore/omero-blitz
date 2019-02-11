@@ -14,8 +14,8 @@ import static ome.model.internal.Permissions.EDITRESTRICTION;
 import static ome.model.internal.Permissions.LINKRESTRICTION;
 import java.util.Arrays;
 import ome.util.Utils;
-import Ice.Current;
-import Ice.Object;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.Object;
 
 /**
  * Blitz wrapper around the {@link ome.model.internal.Permissions} class.
@@ -32,7 +32,7 @@ public class PermissionsI extends Permissions implements ome.model.ModelBased {
 
     private static final long serialVersionUID = 89928049580980928L;
 
-    public final static Ice.ObjectFactory Factory = new Ice.ObjectFactory() {
+    public final static com.zeroc.Ice.ObjectFactory Factory = new com.zeroc.Ice.ObjectFactory() {
 
         public Object create(String arg0) {
             return new PermissionsI();
@@ -87,34 +87,34 @@ public class PermissionsI extends Permissions implements ome.model.ModelBased {
         return false;
     }
 
-    public boolean isDisallow(final int restriction, final Ice.Current c) {
+    public boolean isDisallow(final int restriction, final Current c) {
         return ome.model.internal.Permissions
             .isDisallow(restrictions, restriction);
     }
 
-    public boolean canAnnotate(final Ice.Current c) {
+    public boolean canAnnotate(final Current c) {
         return !isDisallow(ANNOTATERESTRICTION, c);
     }
 
     @Override
-    public boolean canChgrp(final Ice.Current c) {
+    public boolean canChgrp(final Current c) {
         return !isDisallow(CHGRPRESTRICTION, c);
     }
 
     @Override
-    public boolean canChown(final Ice.Current c) {
+    public boolean canChown(final Current c) {
         return !isDisallow(CHOWNRESTRICTION, c);
     }
 
-    public boolean canDelete(final Ice.Current c) {
+    public boolean canDelete(final Current c) {
         return !isDisallow(DELETERESTRICTION, c);
     }
 
-    public boolean canEdit(final Ice.Current c) {
+    public boolean canEdit(final Current c) {
         return !isDisallow(EDITRESTRICTION, c);
     }
 
-    public boolean canLink(final Ice.Current c) {
+    public boolean canLink(final Current c) {
         return !isDisallow(LINKRESTRICTION, c);
     }
 
@@ -130,11 +130,11 @@ public class PermissionsI extends Permissions implements ome.model.ModelBased {
                 Arrays.<String>asList(extRestr);
     }
 
-    public long getPerm1(Ice.Current current) {
+    public long getPerm1(Current current) {
         return this.perm1;
     }
 
-    public void setPerm1(long perm1, Ice.Current current) {
+    public void setPerm1(long perm1, Current current) {
         throwIfImmutable();
         this.perm1 = perm1;
     }
@@ -154,88 +154,88 @@ public class PermissionsI extends Permissions implements ome.model.ModelBased {
         throw new UnsupportedOperationException();
     }
 
-    public void unload(Ice.Current c) {
+    public void unload(Current c) {
         this.setPerm1(null);
     }
 
     // shift 8; mask 4
-    public boolean isUserRead(Ice.Current c) {
+    public boolean isUserRead(Current c) {
         return granted(4, 8);
     }
 
-    public void setUserRead(boolean value, Ice.Current c) {
+    public void setUserRead(boolean value, Current c) {
         set(4, 8, value);
     }
 
     // shift 8; mask 2
-    public boolean isUserWrite(Ice.Current c) {
+    public boolean isUserWrite(Current c) {
         return granted(2, 8);
     }
 
-    public void setUserWrite(boolean value, Ice.Current c) {
+    public void setUserWrite(boolean value, Current c) {
         set(2, 8, value);
     }
 
     // shift 8; mask 1
-    public boolean isUserAnnotate(Ice.Current c) {
+    public boolean isUserAnnotate(Current c) {
         return granted(1, 8);
     }
 
-    public void setUserAnnotate(boolean value, Ice.Current c) {
+    public void setUserAnnotate(boolean value, Current c) {
         set(1, 8, value);
     }
 
     // shift 4; mask 4
-    public boolean isGroupRead(Ice.Current c) {
+    public boolean isGroupRead(Current c) {
         return granted(4, 4);
     }
 
-    public void setGroupRead(boolean value, Ice.Current c) {
+    public void setGroupRead(boolean value, Current c) {
         set(4, 4, value);
     }
 
     // shift 4; mask 2
-    public boolean isGroupWrite(Ice.Current c) {
+    public boolean isGroupWrite(Current c) {
         return granted(2, 4);
     }
 
-    public void setGroupWrite(boolean value, Ice.Current c) {
+    public void setGroupWrite(boolean value, Current c) {
         set(2, 4, value);
     }
 
     // shift 4; mask 1
-    public boolean isGroupAnnotate(Ice.Current c) {
+    public boolean isGroupAnnotate(Current c) {
         return granted(1, 4);
     }
 
-    public void setGroupAnnotate(boolean value, Ice.Current c) {
+    public void setGroupAnnotate(boolean value, Current c) {
         set(1, 4, value);
     }
 
     // shift 0; mask 4
-    public boolean isWorldRead(Ice.Current c) {
+    public boolean isWorldRead(Current c) {
         return granted(4, 0);
     }
 
-    public void setWorldRead(boolean value, Ice.Current c) {
+    public void setWorldRead(boolean value, Current c) {
         set(4, 0, value);
     }
 
     // shift 0; mask 2
-    public boolean isWorldWrite(Ice.Current c) {
+    public boolean isWorldWrite(Current c) {
         return granted(2, 0);
     }
 
-    public void setWorldWrite(boolean value, Ice.Current c) {
+    public void setWorldWrite(boolean value, Current c) {
         set(2, 0, value);
     }
 
     // shift 0; mask 1
-    public boolean isWorldAnnotate(Ice.Current c) {
+    public boolean isWorldAnnotate(Current c) {
         return granted(1, 0);
     }
 
-    public void setWorldAnnotate(boolean value, Ice.Current c) {
+    public void setWorldAnnotate(boolean value, Current c) {
         set(1, 0, value);
     }
 

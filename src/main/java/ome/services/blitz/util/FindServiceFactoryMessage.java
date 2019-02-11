@@ -31,28 +31,28 @@ public class FindServiceFactoryMessage extends InternalMessage {
 
     private static final long serialVersionUID = 345845093802L;
 
-    protected final transient Ice.Current curr;
+    protected final transient com.zeroc.Ice.Current curr;
 
-    protected transient Ice.Identity id;
+    protected transient com.zeroc.Ice.Identity id;
 
     protected transient ServiceFactoryI sf;
 
-    public FindServiceFactoryMessage(Object source, Ice.Identity id) {
+    public FindServiceFactoryMessage(Object source, com.zeroc.Ice.Identity id) {
         super(source);
         this.id = id;
         this.curr = null;
     }
 
-    public FindServiceFactoryMessage(Object source, Ice.Current current) {
+    public FindServiceFactoryMessage(Object source, com.zeroc.Ice.Current current) {
         super(source);
         this.curr = current;
     }
 
-    public Ice.Identity getIdentity() {
+    public com.zeroc.Ice.Identity getIdentity() {
         return this.id;
     }
 
-    public Ice.Current getCurrent() {
+    public com.zeroc.Ice.Current getCurrent() {
         if (this.curr == null) {
             throw new RuntimeException(
                     "This instance was initialized with an Identity");
@@ -66,7 +66,7 @@ public class FindServiceFactoryMessage extends InternalMessage {
      * @throws omero.ServerError
      *      so that subclasses can make use of remote methods.
      */
-    public void setServiceFactory(Ice.Identity id, ServiceFactoryI sf)
+    public void setServiceFactory(com.zeroc.Ice.Identity id, ServiceFactoryI sf)
         throws omero.ServerError {
         this.sf = sf;
         this.id = id;

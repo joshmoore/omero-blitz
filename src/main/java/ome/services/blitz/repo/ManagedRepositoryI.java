@@ -92,7 +92,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -198,7 +198,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
     }
 
     @Override
-    public Ice.Object tie() {
+    public com.zeroc.Ice.Object tie() {
         return new _ManagedRepositoryTie(this);
     }
 
@@ -214,10 +214,10 @@ public class ManagedRepositoryI extends PublicRepositoryI
 
     /**
      * Return a template based directory path. The path will be created
-     * by calling {@link #makeDir(String, boolean, Ice.Current)}.
+     * by calling {@link #makeDir(String, boolean, Current)}.
      */
     public ImportProcessPrx uploadFileset(Fileset fs, ImportSettings settings,
-            Ice.Current __current) throws omero.ServerError {
+            Current __current) throws omero.ServerError {
 
         ImportLocation location = internalImport(fs, settings, __current);
         return createUploadProcess(fs, location, settings, __current, true);
@@ -226,10 +226,10 @@ public class ManagedRepositoryI extends PublicRepositoryI
 
     /**
      * Return a template based directory path. The path will be created
-     * by calling {@link #makeDir(String, boolean, Ice.Current)}.
+     * by calling {@link #makeDir(String, boolean, Current)}.
      */
     public ImportProcessPrx importFileset(Fileset fs, ImportSettings settings,
-            Ice.Current __current) throws omero.ServerError {
+            Current __current) throws omero.ServerError {
 
         ImportLocation location = internalImport(fs, settings, __current);
         return createImportProcess(fs, location, settings, __current);
@@ -237,7 +237,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
     }
 
     private ImportLocation internalImport(Fileset fs, ImportSettings settings,
-            Ice.Current __current) throws omero.ServerError {
+            Current __current) throws omero.ServerError {
 
         if (fs == null || fs.sizeOfUsedFiles() < 1) {
             throw new omero.ApiUsageException(null, null, "No paths provided");
@@ -274,7 +274,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
     }
 
     public ImportProcessPrx importPaths(List<String> paths,
-            Ice.Current __current) throws ServerError {
+            Current __current) throws ServerError {
 
         if (paths == null || paths.size() < 1) {
             throw new omero.ApiUsageException(null, null, "No paths provided");
@@ -297,7 +297,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
         return importFileset(fs, settings, __current);
     }
 
-    public List<ImportProcessPrx> listImports(Ice.Current __current) throws omero.ServerError {
+    public List<ImportProcessPrx> listImports(Current __current) throws omero.ServerError {
 
         final List<Long> filesetIds = new ArrayList<Long>();
         final List<ImportProcessPrx> proxies = new ArrayList<ImportProcessPrx>();
@@ -619,7 +619,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
         private final omero.sys.EventContext ctx;
         private final Object consistentData;
         private final boolean createDirectories;
-        private final Ice.Current current;
+        private final Current current;
         private final ServiceFactory sf;
         private final Deque<String> remaining;
         private final List<String> done;
@@ -1270,7 +1270,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
      * @return the expanded template path
      * @throws ServerError if the new path could not be created
      */
-    protected FsFile createTemplatePath(Object consistentData, Ice.Current __current) throws ServerError {
+    protected FsFile createTemplatePath(Object consistentData, Current __current) throws ServerError {
         final omero.sys.EventContext ctx = repositoryDao.getEventContext(__current);
 
         final FsFile rootOwnedExpanded;
@@ -1371,7 +1371,7 @@ public class ManagedRepositoryI extends PublicRepositoryI
      * @return {@link ImportLocation} instance
      */
     protected ImportLocation suggestImportPaths(FsFile relPath, FsFile basePath, List<FsFile> paths,
-            Class<? extends FormatReader> reader, ChecksumAlgorithm checksumAlgorithm, Ice.Current __current)
+            Class<? extends FormatReader> reader, ChecksumAlgorithm checksumAlgorithm, Current __current)
                     throws omero.ServerError {
         final Paths trimmedPaths = trimPaths(basePath, paths, reader);
         basePath = trimmedPaths.basePath;

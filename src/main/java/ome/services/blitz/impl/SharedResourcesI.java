@@ -147,7 +147,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
     }
 
     @Override
-    protected void preClose(Ice.Current current) {
+    protected void preClose(Current current) {
         synchronized (tableIds) {
             for (String id : tableIds) {
                 TablePrx table =
@@ -155,7 +155,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
                             sf.adapter.getCommunicator().stringToProxy(id));
                 try {
                     table.close();
-                } catch (Ice.NotRegisteredException e) {
+                } catch (com.zeroc.Ice.NotRegisteredException e) {
                     log.debug("Table already gone: " + id);
                 } catch (Exception e) {
                     log.error("Exception while closing table " + id, e);
@@ -178,7 +178,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
         if (prx != null) {
             synchronized(tableIds) {
                 tableIds.add(
-                    Ice.Util.identityToString(prx.ice_getIdentity()));
+                        com.zeroc.Ice.Util.identityToString(prx.ice_getIdentity()));
             }
         }
     }
@@ -197,16 +197,16 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
      *
      * @see {@link ProcessorCheck}
      */
-    private interface RepeatTask<U extends Ice.ObjectPrx> {
-        void requestService(Ice.ObjectPrx server, ResultHolder<U> holder)
+    private interface RepeatTask<U extends com.zeroc.Ice.ObjectPrx> {
+        void requestService(com.zeroc.Ice.ObjectPrx server, ResultHolder<U> holder)
                 throws ServerError;
     }
 
-    private <U extends Ice.ObjectPrx> U lookup(long millis, List<Ice.ObjectPrx> objectPrxs,
+    private <U extends com.zeroc.Ice.ObjectPrx> U lookup(long millis, List<com.zeroc.Ice.ObjectPrx> objectPrxs,
             RepeatTask<U> task) throws ServerError {
 
         ResultHolder<U> holder = new ResultHolder<U>(millis);
-        for (Ice.ObjectPrx prx : objectPrxs) {
+        for (com.zeroc.Ice.ObjectPrx prx : objectPrxs) {
             if (prx != null) {
                 task.requestService(prx, holder);
             }
@@ -277,7 +277,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
                 map.proxies.add(proxy);
                 found.add(desc.getId().getValue());
                 sf.allow(proxy);
-            } catch (Ice.LocalException e) {
+            } catch (com.zeroc.Ice.LocalException e) {
                 // Ok.
             }
         }
@@ -294,9 +294,9 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
 
     public boolean areTablesEnabled(Current __current) throws ServerError {
         TablesPrx[] tables = registry.lookupTables();
-        return null != lookup(waitMillis, Arrays.<Ice.ObjectPrx> asList(tables),
+        return null != lookup(waitMillis, Arrays.<com.zeroc.Ice.ObjectPrx> asList(tables),
                 new RepeatTask<TablesPrx>() {
-                    public void requestService(Ice.ObjectPrx prx,
+                    public void requestService(com.zeroc.Ice.ObjectPrx prx,
                             final ResultHolder<TablesPrx> holder) {
                         final TablesPrx server = TablesPrxHelper
                                 .checkedCast(prx);
@@ -382,9 +382,9 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
         // Okay. All's valid.
         TablesPrx[] tables = registry.lookupTables();
         TablePrx tablePrx = (TablePrx) lookup(waitMillis,
-                Arrays.<Ice.ObjectPrx> asList(tables),
+                Arrays.<com.zeroc.Ice.ObjectPrx> asList(tables),
                 new RepeatTask<TablePrx>() {
-                    public void requestService(Ice.ObjectPrx prx,
+                    public void requestService(com.zeroc.Ice.ObjectPrx prx,
                             final ResultHolder holder) throws ServerError {
                        final TablesPrx server = TablesPrxHelper
                           .uncheckedCast(prx);
@@ -393,7 +393,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
                        ctx.put("omero.group", "-1");
                        server.begin_getTable(file, sf.proxy(), ctx,
                            new Ice.Callback() {
-                               public void completed(Ice.AsyncResult r) {
+                               public void completed(com.zeroc.Ice.AsyncResult r) {
                                    try {
                                        holder.set(server.end_getTable(r));
                                    } catch (Exception e) {
@@ -447,8 +447,8 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
                 sf.control, paramsCache,
                 new ParamsHelper(this, sf.getExecutor(), sf.getPrincipal()),
                 helper, current);
-        Ice.Identity procId = sessionedID("InteractiveProcessor");
-        Ice.ObjectPrx rv = sf.registerServant(procId, new _InteractiveProcessorTie(ip));
+        com.zeroc.Ice.Identity procId = sessionedID("InteractiveProcessor");
+        com.zeroc.Ice.ObjectPrx rv = sf.registerServant(procId, new _InteractiveProcessorTie(ip));
         sf.allow(rv);
         return InteractiveProcessorPrxHelper.uncheckedCast(rv);
     }
@@ -456,7 +456,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
     public void addProcessor(ProcessorPrx proc, Current __current)
             throws ServerError {
         topicManager.register(PROCESSORACCEPTS.value, proc, false);
-        processorIds.add(Ice.Util.identityToString(proc.ice_getIdentity()));
+        processorIds.add(com.zeroc.Ice.Util.identityToString(proc.ice_getIdentity()));
         if (sf.control != null) {
             sf.control.categories().add(
                     new String[]{PROCESSORCALLBACK.value, PROCESSCALLBACK.value});
@@ -466,7 +466,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
     public void removeProcessor(ProcessorPrx proc, Current __current)
             throws ServerError {
         topicManager.unregister(PROCESSORACCEPTS.value, proc);
-        processorIds.remove(Ice.Util.identityToString(proc.ice_getIdentity()));
+        processorIds.remove(com.zeroc.Ice.Util.identityToString(proc.ice_getIdentity()));
     }
 
     //
@@ -475,13 +475,13 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
     // =========================================================================
 
 
-    private Ice.Identity sessionedID(String type) {
+    private com.zeroc.Ice.Identity sessionedID(String type) {
         String key = type + "-" + UUID.randomUUID();
         return sf.getIdentity(key);
     }
 
     private ome.model.jobs.Job saveJob(final Job submittedJob,
-            final IceMapper mapper, final Ice.Current current) {
+            final IceMapper mapper, final com.zeroc.Ice.Current current) {
         // First create the job with a status of WAITING.
         // The InteractiveProcessor will be responsible for its
         // further lifetime.
@@ -515,7 +515,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
         return savedJob;
     }
 
-    private void updateJob(final long id, final String status, final String message, final Ice.Current current) {
+    private void updateJob(final long id, final String status, final String message, final com.zeroc.Ice.Current current) {
         sf.executor.execute(current.ctx, sf.principal, new Executor.SimpleWork(this, "updateJob") {
             @Transactional(readOnly = false)
             public Object doWork(Session session,

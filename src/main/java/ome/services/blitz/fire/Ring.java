@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Glacier2.CannotCreateSessionException;
 import Glacier2.SessionPrx;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Distributed ring of {@link BlitzConfiguration} objects which manages lookups
@@ -65,14 +65,14 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
 
     private final NodeProvider nodeProvider;
 
-    private/* final */Ice.Communicator communicator;
+    private/* final */com.zeroc.Ice.Communicator communicator;
 
     private/* final */ Registry registry;
 
     /**
      * Standard blitz adapter which is used for the callback.
      */
-    private/* final */Ice.ObjectAdapter adapter;
+    private/* final */com.zeroc.Ice.ObjectAdapter adapter;
 
     /**
      * Direct proxy value to the {@link SessionManager} in this blitz instance.
@@ -125,7 +125,7 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
         return this.directProxy;
     }
 
-    public Ice.Communicator getCommunicator() {
+    public com.zeroc.Ice.Communicator getCommunicator() {
         return this.communicator;
     }
 
@@ -136,7 +136,7 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
      * Typically called from within {@link BlitzConfiguration} after the
      * communicator and adapter have been properly setup.
      */
-    public void init(Ice.ObjectAdapter adapter, String directProxy) {
+    public void init(com.zeroc.Ice.ObjectAdapter adapter, String directProxy) {
         this.adapter = adapter;
         this.communicator = adapter.getCommunicator();
         this.directProxy = directProxy;
@@ -150,7 +150,7 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
         
         try {
             // Now our checking is done, add ourselves.
-            Ice.Identity clusterNode = this.communicator
+            com.zeroc.Ice.Identity clusterNode = this.communicator
                     .stringToIdentity("ClusterNode/" + uuid);
             this.adapter.add(this, clusterNode); // OK ADAPTER USAGE
             nodeProvider.addManager(uuid, directProxy);
@@ -209,7 +209,7 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
 
     public void destroy() {
         try {
-            Ice.Identity id = this.communicator.stringToIdentity("ClusterNode/"
+            com.zeroc.Ice.Identity id = this.communicator.stringToIdentity("ClusterNode/"
                     + uuid);
             registry.removeObjectSafely(id);
             redirector.handleRingShutdown(this, this.uuid);
@@ -281,7 +281,7 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
      * instance.
      */
     public SessionPrx getProxyOrNull(String userId,
-            Glacier2.SessionControlPrx control, Ice.Current current)
+            Glacier2.SessionControlPrx control, com.zeroc.Ice.Current current)
             throws CannotCreateSessionException {
         return redirector.getProxyOrNull(this, userId, control, current);
     }
@@ -311,7 +311,7 @@ public class Ring extends _ClusterNodeDisp implements Redirector.Context {
     protected void purgeNode(String manager) {
         log.info("Purging node: " + manager);
         try {
-            Ice.Identity id = this.communicator.stringToIdentity("ClusterNode/"
+            com.zeroc.Ice.Identity id = this.communicator.stringToIdentity("ClusterNode/"
                     + manager);
             registry.removeObjectSafely(id);
             final int count = nodeProvider.closeSessionsForManager(manager);

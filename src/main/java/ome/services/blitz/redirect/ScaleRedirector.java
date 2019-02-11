@@ -27,7 +27,7 @@ public class ScaleRedirector extends AbstractRedirector {
     }
 
     public SessionPrx getProxyOrNull(Context ctx, String userId,
-            Glacier2.SessionControlPrx control, Ice.Current current)
+            Glacier2.SessionControlPrx control, com.zeroc.Ice.Current current)
             throws CannotCreateSessionException {
 
         // First, give the abstract class a chance to handle common cases
@@ -62,7 +62,7 @@ public class ScaleRedirector extends AbstractRedirector {
 
     /**
      * Does nothing since all redirects are chosen during
-     * {@link #getProxyOrNull(Context, String, Glacier2.SessionControlPrx, Ice.Current)}
+     * {@link #getProxyOrNull(Context, String, Glacier2.SessionControlPrx, com.zeroc.Ice.Current)}
      */
     public void chooseNextRedirect(Context context, Set<String> nodeUuids) {
 
@@ -71,7 +71,7 @@ public class ScaleRedirector extends AbstractRedirector {
     /**
      * Nothing needs to be done on shutdown, since the Ring implementation will
      * properly disable the {@link Node} table queried during the next call to
-     * {@link #getProxyOrNull(Context, String, Glacier2.SessionControlPrx, Ice.Current)}
+     * {@link #getProxyOrNull(Context, String, Glacier2.SessionControlPrx, com.zeroc.Ice.Current)}
      */
     public void handleRingShutdown(Context context, String uuid) {
 

@@ -29,7 +29,7 @@ public class Callback extends Task {
 
     public Callback(Boolean io, Boolean db, ServiceInterface service,
             IceMethodInvoker invoker, Object cb, IceMapper mapper,
-            Ice.Current current, Object... args) {
+                    com.zeroc.Ice.Current current, Object... args) {
         
         super(cb, current, invoker.isVoid(current));
 
@@ -47,7 +47,7 @@ public class Callback extends Task {
     }
 
     public Callback(ServiceInterface service, IceMethodInvoker invoker,
-            IceMapper mapper, Object cb, Ice.Current current, Object... args) {
+            IceMapper mapper, Object cb, com.zeroc.Ice.Current current, Object... args) {
         this(null, null, service, invoker, cb, mapper, current, args);
     }
 

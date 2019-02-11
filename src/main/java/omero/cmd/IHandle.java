@@ -31,6 +31,6 @@ public interface IHandle extends Runnable, CloseableServant {
      *            Possibly null call context which will be passed to
      *            {@link Executor#execute(Map, ome.system.Principal, ome.services.util.Executor.Work)}
      */
-    void initialize(Ice.Identity id, IRequest req, Map<String, String> ctx);
+    void initialize(com.zeroc.Ice.Identity id, IRequest req, Map<String, String> ctx);
 
 }

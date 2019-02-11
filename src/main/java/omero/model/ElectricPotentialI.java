@@ -663,11 +663,11 @@ public class ElectricPotentialI extends ElectricPotential implements ModelBased 
         return SYMBOLS.get(unit);
     }
 
-    public static final Ice.ObjectFactory makeFactory(final omero.client client) {
+    public static final com.zeroc.Ice.ObjectFactory makeFactory(final omero.client client) {
 
-        return new Ice.ObjectFactory() {
+        return new com.zeroc.Ice.ObjectFactory() {
 
-            public Ice.Object create(String arg0) {
+            public com.zeroc.Ice.Object create(String arg0) {
                 return new ElectricPotentialI();
             }
 
@@ -730,7 +730,7 @@ public class ElectricPotentialI extends ElectricPotential implements ModelBased 
     // REGULAR ICE CLASS
     //
 
-    public final static Ice.ObjectFactory Factory = makeFactory(null);
+    public final static com.zeroc.Ice.ObjectFactory Factory = makeFactory(null);
 
     public ElectricPotentialI() {
         super();
@@ -816,27 +816,27 @@ public class ElectricPotentialI extends ElectricPotential implements ModelBased 
         setUnit(ul);
     }
 
-    public double getValue(Ice.Current current) {
+    public double getValue(com.zeroc.Ice.Current current) {
         return this.value;
     }
 
-    public void setValue(double value , Ice.Current current) {
+    public void setValue(double value , com.zeroc.Ice.Current current) {
         this.value = value;
     }
 
-    public UnitsElectricPotential getUnit(Ice.Current current) {
+    public UnitsElectricPotential getUnit(com.zeroc.Ice.Current current) {
         return this.unit;
     }
 
-    public void setUnit(UnitsElectricPotential unit, Ice.Current current) {
+    public void setUnit(UnitsElectricPotential unit, com.zeroc.Ice.Current current) {
         this.unit = unit;
     }
 
-    public String getSymbol(Ice.Current current) {
+    public String getSymbol(com.zeroc.Ice.Current current) {
         return SYMBOLS.get(this.unit);
     }
 
-    public ElectricPotential copy(Ice.Current ignore) {
+    public ElectricPotential copy(com.zeroc.Ice.Current ignore) {
         ElectricPotentialI copy = new ElectricPotentialI();
         copy.setValue(getValue());
         copy.setUnit(getUnit());

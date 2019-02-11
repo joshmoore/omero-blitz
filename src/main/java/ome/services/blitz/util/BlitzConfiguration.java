@@ -23,11 +23,11 @@ import org.springframework.util.ResourceUtils;
 
 import Glacier2.PermissionsVerifier;
 import Glacier2.SessionManager;
-import Ice.Util;
+import com.zeroc.Ice.Util;
 
 /**
- * Factory bean which creates an {@link Ice.Communicator} instance as well as the
- * proper {@link Ice.ObjectAdapter} and adds initial, well-known servants.
+ * Factory bean which creates an {@link com.zeroc.Ice.Communicator} instance as well as the
+ * proper {@link com.zeroc.Ice.ObjectAdapter} and adds initial, well-known servants.
  * 
  * @author Josh Moore
  * @since 3.0-Beta3.1
@@ -40,9 +40,9 @@ public class BlitzConfiguration {
 
     private final Ring blitzRing;
 
-    private final Ice.Communicator communicator;
+    private final com.zeroc.Ice.Communicator communicator;
 
-    private final Ice.ObjectAdapter blitzAdapter;
+    private final com.zeroc.Ice.ObjectAdapter blitzAdapter;
 
     private final SessionManagerI blitzManager;
 
@@ -52,9 +52,9 @@ public class BlitzConfiguration {
     
     private final TopicManager topicManager;
 
-    private final Ice.InitializationData id;
+    private final com.zeroc.Ice.InitializationData id;
 
-    private final Ice.ObjectPrx managerDirectProxy;
+    private final com.zeroc.Ice.ObjectPrx managerDirectProxy;
 
     private final int servantsPerSession;
 
@@ -66,7 +66,7 @@ public class BlitzConfiguration {
      * 
      * If any of the methods other than {@link #createCommunicator()} throws an
      * exception, then {@link #destroy()} will be called to properly shut down
-     * the {@link Ice.Communicator} instance. Therefore {@link #destroy()}
+     * the {@link com.zeroc.Ice.Communicator} instance. Therefore {@link #destroy()}
      * should be careful to check for nulls.
      */
     public BlitzConfiguration(Ring ring,
@@ -82,7 +82,7 @@ public class BlitzConfiguration {
      * Like
      * {@link #BlitzConfiguration(Ring, ome.services.sessions.SessionManager, SessionProvider, SecuritySystem, Executor, int)}
      * but allows properties to be specified via an
-     * {@link Ice.InitializationData} instance.
+     * {@link com.zeroc.Ice.InitializationData} instance.
      * 
      * @param id
      * @param ring
@@ -92,7 +92,7 @@ public class BlitzConfiguration {
      * @param servantsPerSession
      * @throws RuntimeException
      */
-    public BlitzConfiguration(Ice.InitializationData id, Ring ring,
+    public BlitzConfiguration(com.zeroc.Ice.InitializationData id, Ring ring,
             ome.services.sessions.SessionManager sessionManager, SessionProvider sessionProvider,
             SecuritySystem securitySystem, Executor executor,
             int servantsPerSession)
@@ -151,10 +151,10 @@ public class BlitzConfiguration {
         }
     }
 
-    protected Ice.Communicator createCommunicator() {
+    protected com.zeroc.Ice.Communicator createCommunicator() {
         throwIfInitialized(communicator);
 
-        Ice.Communicator ic;
+        com.zeroc.Ice.Communicator ic;
 
         String ICE_CONFIG = System.getProperty("ICE_CONFIG");
         if (ICE_CONFIG != null) {
@@ -164,11 +164,11 @@ public class BlitzConfiguration {
             // arguments.
             id.properties.load(ICE_CONFIG);
         }
-        ic = Ice.Util.initialize(id);
+        ic = Util.initialize(id);
         return ic;
     }
 
-    protected Ice.Communicator createCommunicator(String configFile,
+    protected com.zeroc.Ice.Communicator createCommunicator(String configFile,
             String[] arguments) {
 
         throwIfInitialized(communicator);
@@ -183,8 +183,8 @@ public class BlitzConfiguration {
             logger.info("Reading config file:" + configFile);
         }
 
-        Ice.Communicator ic = null;
-        Ice.InitializationData id = new Ice.InitializationData();
+        com.zeroc.Ice.Communicator ic = null;
+        com.zeroc.Ice.InitializationData id = new com.zeroc.Ice.InitializationData();
 
         if (arguments == null) {
             id.properties = Util.createProperties(new String[] {});
@@ -232,11 +232,11 @@ public class BlitzConfiguration {
      * Creates an adapter with the name "BlitzAdapter", which must be properly
      * configured via --Ice.Config or ICE_CONFIG or similar.
      */
-    protected Ice.ObjectAdapter createAdapter() {
+    protected com.zeroc.Ice.ObjectAdapter createAdapter() {
 
         throwIfInitialized(blitzAdapter);
 
-        Ice.ObjectAdapter adapter;
+        com.zeroc.Ice.ObjectAdapter adapter;
         try {
             adapter = communicator.createObjectAdapter("BlitzAdapter");
         } catch (Exception e) {
@@ -259,8 +259,8 @@ public class BlitzConfiguration {
         SessionManagerI manager = new SessionManagerI(blitzRing, blitzAdapter,
                 securitySystem, sessionManager, executor, topicManager, registry,
                 servantsPerSession);
-        Ice.Identity id = managerId();
-        Ice.ObjectPrx prx = this.blitzAdapter.add(manager, id);
+        com.zeroc.Ice.Identity id = managerId();
+        com.zeroc.Ice.ObjectPrx prx = this.blitzAdapter.add(manager, id);
         return manager;
     }
 
@@ -272,8 +272,7 @@ public class BlitzConfiguration {
 
         PermissionsVerifierI verifier = new PermissionsVerifierI(blitzRing,
                 sessionManager, sessionProvider, executor, blitzRing.uuid);
-        this.blitzAdapter.add(verifier, Ice.Util
-                .stringToIdentity("BlitzVerifier"));
+        this.blitzAdapter.add(verifier, Util.stringToIdentity("BlitzVerifier"));
         return verifier;
     }
 
@@ -304,14 +303,14 @@ public class BlitzConfiguration {
         return blitzRing;
     }
 
-    public Ice.Communicator getCommunicator() {
+    public com.zeroc.Ice.Communicator getCommunicator() {
         if (communicator == null) {
             throw new IllegalStateException("Communicator is null");
         }
         return communicator;
     }
 
-    public Ice.ObjectAdapter getBlitzAdapter() {
+    public com.zeroc.Ice.ObjectAdapter getBlitzAdapter() {
         if (blitzAdapter == null) {
             throw new IllegalStateException("Adapter is null");
         }
@@ -349,7 +348,7 @@ public class BlitzConfiguration {
     /**
      * Return a direct proxy to the session manager in this object adapter.
      */
-    public Ice.ObjectPrx getDirectProxy() {
+    public com.zeroc.Ice.ObjectPrx getDirectProxy() {
         if (managerDirectProxy == null) {
             throw new IllegalStateException("Direct proxy is null");
         }
@@ -358,15 +357,14 @@ public class BlitzConfiguration {
 
     // Helpers
 
-    private static Ice.InitializationData createId() {
-        Ice.InitializationData iData = new Ice.InitializationData();
-        iData.properties = Ice.Util.createProperties();
+    private static com.zeroc.Ice.InitializationData createId() {
+        com.zeroc.Ice.InitializationData iData = new com.zeroc.Ice.InitializationData();
+        iData.properties = Util.createProperties();
         return iData;
     }
 
-    private Ice.Identity managerId() {
-        Ice.Identity id = Ice.Util.stringToIdentity("BlitzManager");
-        return id;
+    private com.zeroc.Ice.Identity managerId() {
+        return Util.stringToIdentity("BlitzManager");
     }
 
 }

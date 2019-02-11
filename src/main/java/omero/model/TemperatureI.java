@@ -119,11 +119,11 @@ public class TemperatureI extends Temperature implements ModelBased {
         return SYMBOLS.get(unit);
     }
 
-    public static final Ice.ObjectFactory makeFactory(final omero.client client) {
+    public static final com.zeroc.Ice.ObjectFactory makeFactory(final omero.client client) {
 
-        return new Ice.ObjectFactory() {
+        return new com.zeroc.Ice.ObjectFactory() {
 
-            public Ice.Object create(String arg0) {
+            public com.zeroc.Ice.Object create(String arg0) {
                 return new TemperatureI();
             }
 
@@ -186,7 +186,7 @@ public class TemperatureI extends Temperature implements ModelBased {
     // REGULAR ICE CLASS
     //
 
-    public final static Ice.ObjectFactory Factory = makeFactory(null);
+    public final static com.zeroc.Ice.ObjectFactory Factory = makeFactory(null);
 
     public TemperatureI() {
         super();
@@ -272,27 +272,27 @@ public class TemperatureI extends Temperature implements ModelBased {
         setUnit(ul);
     }
 
-    public double getValue(Ice.Current current) {
+    public double getValue(com.zeroc.Ice.Current current) {
         return this.value;
     }
 
-    public void setValue(double value , Ice.Current current) {
+    public void setValue(double value , com.zeroc.Ice.Current current) {
         this.value = value;
     }
 
-    public UnitsTemperature getUnit(Ice.Current current) {
+    public UnitsTemperature getUnit(com.zeroc.Ice.Current current) {
         return this.unit;
     }
 
-    public void setUnit(UnitsTemperature unit, Ice.Current current) {
+    public void setUnit(UnitsTemperature unit, com.zeroc.Ice.Current current) {
         this.unit = unit;
     }
 
-    public String getSymbol(Ice.Current current) {
+    public String getSymbol(com.zeroc.Ice.Current current) {
         return SYMBOLS.get(this.unit);
     }
 
-    public Temperature copy(Ice.Current ignore) {
+    public Temperature copy(com.zeroc.Ice.Current ignore) {
         TemperatureI copy = new TemperatureI();
         copy.setValue(getValue());
         copy.setUnit(getUnit());

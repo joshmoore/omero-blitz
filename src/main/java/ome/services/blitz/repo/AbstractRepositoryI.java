@@ -24,8 +24,6 @@ import org.hibernate.Session;
 import org.springframework.context.ApplicationListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
-import Ice.ObjectAdapter;
 import ome.services.blitz.fire.Registry;
 import ome.services.messages.DeleteLogMessage;
 import ome.services.messages.DeleteLogsMessage;
@@ -65,7 +63,7 @@ public abstract class AbstractRepositoryI extends _InternalRepositoryDisp
 
     private final static Logger log = LoggerFactory.getLogger(AbstractRepositoryI.class);
 
-    private final Ice.ObjectAdapter oa;
+    private final com.zeroc.Ice.ObjectAdapter oa;
 
     private final Registry reg;
 
@@ -92,25 +90,25 @@ public abstract class AbstractRepositoryI extends _InternalRepositoryDisp
     }
 
     @Deprecated
-    public AbstractRepositoryI(Ice.ObjectAdapter oa, Registry reg, Executor ex,
+    public AbstractRepositoryI(com.zeroc.Ice.ObjectAdapter oa, Registry reg, Executor ex,
             Principal p, String repoDir, PublicRepositoryI servant) {
         this(oa, reg, ex, p, repoDir, new ReadOnlyStatus(false, false), servant);
         log.info("assuming read-write repository");
     }
 
     @Deprecated
-    public AbstractRepositoryI(Ice.ObjectAdapter oa, Registry reg, Executor ex,
+    public AbstractRepositoryI(com.zeroc.Ice.ObjectAdapter oa, Registry reg, Executor ex,
             Principal p, FileMaker fileMaker, PublicRepositoryI servant) {
         this(oa, reg, ex, p, fileMaker, new ReadOnlyStatus(false, false), servant);
         log.info("assuming read-write repository");
     }
 
-    public AbstractRepositoryI(Ice.ObjectAdapter oa, Registry reg, Executor ex,
+    public AbstractRepositoryI(com.zeroc.Ice.ObjectAdapter oa, Registry reg, Executor ex,
             Principal p, String repoDir, ReadOnlyStatus readOnly, PublicRepositoryI servant) {
         this(oa, reg, ex, p, new FileMaker(repoDir), readOnly, servant);
     }
 
-    public AbstractRepositoryI(Ice.ObjectAdapter oa, Registry reg, Executor ex,
+    public AbstractRepositoryI(com.zeroc.Ice.ObjectAdapter oa, Registry reg, Executor ex,
             Principal p, FileMaker fileMaker, ReadOnlyStatus readOnly, PublicRepositoryI servant) {
         this.state.set(State.EAGER);
         this.p = p;
@@ -141,7 +139,7 @@ public abstract class AbstractRepositoryI extends _InternalRepositoryDisp
 
     private void handleDLMs(List<DeleteLogMessage> dlms) {
 
-        final Ice.Current rootCurrent = new Ice.Current();
+        final com.zeroc.Ice.Current rootCurrent = new com.zeroc.Ice.Current();
         rootCurrent.ctx = new HashMap<String, String>();
         rootCurrent.ctx.put(SESSIONUUID.value, p.toString());
         final RepositoryDao dao = servant.repositoryDao;
@@ -473,7 +471,7 @@ public abstract class AbstractRepositoryI extends _InternalRepositoryDisp
 
             servant.initialize(fileMaker, r.getId(), repoUuid);
 
-            LinkedList<Ice.ObjectPrx> objs = new LinkedList<Ice.ObjectPrx>();
+            LinkedList<com.zeroc.Ice.ObjectPrx> objs = new LinkedList<com.zeroc.Ice.ObjectPrx>();
             objs.add(addOrReplace("InternalRepository-", AbstractRepositoryI.this));
             objs.add(addOrReplace("PublicRepository-", servant.tie()));
             publicPrx = RepositoryPrxHelper.uncheckedCast(objs.getLast());
@@ -490,8 +488,8 @@ public abstract class AbstractRepositoryI extends _InternalRepositoryDisp
             log.info("Repository now active");
         }
 
-        private Ice.ObjectPrx addOrReplace(String prefix, Ice.Object obj) {
-            Ice.Identity id = Ice.Util.stringToIdentity(prefix + repoUuid);
+        private com.zeroc.Ice.ObjectPrx addOrReplace(String prefix, com.zeroc.Ice.Object obj) {
+            com.zeroc.Ice.Identity id = com.zeroc.Ice.Util.stringToIdentity(prefix + repoUuid);
             Object old = oa.find(id);
             if (old != null) {
                 oa.remove(id);

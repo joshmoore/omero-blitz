@@ -433,7 +433,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
 
         // First try to get the blankname as is in case a value from
         // activeServices is being passed back in.
-        Ice.Identity immediateId = holder.getIdentity(blankname);
+        com.zeroc.Ice.Identity immediateId = holder.getIdentity(blankname);
         if (holder.get(immediateId) != null) {
             return ServiceInterfacePrxHelper.uncheckedCast(adapter
                     .createDirectProxy(immediateId));

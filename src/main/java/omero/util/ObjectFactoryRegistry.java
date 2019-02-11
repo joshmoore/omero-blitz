@@ -34,7 +34,7 @@ public abstract class ObjectFactoryRegistry {
             if (strict) {
                 ic.addObjectFactory(this, id);
             } else {
-                final Ice.ObjectFactory of = ic.findObjectFactory(id);
+                final com.zeroc.Ice.ObjectFactory of = ic.findObjectFactory(id);
                 if (null == of) {
                     ic.addObjectFactory(this, id);
                 } else {

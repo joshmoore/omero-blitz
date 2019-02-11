@@ -21,7 +21,7 @@ package omero.model;
 
 import java.util.Map;
 
-import Ice.Object;
+import com.zeroc.Ice.Object;
 import ome.system.EventContext;
 
 
@@ -29,9 +29,9 @@ import ome.system.EventContext;
 
 public class DetailsI extends Details implements ome.model.ModelBased {
 
-    public static final Ice.ObjectFactory makeFactory(final omero.client client) {
+    public static final com.zeroc.Ice.ObjectFactory makeFactory(final omero.client client) {
 
-        return new Ice.ObjectFactory() {
+        return new com.zeroc.Ice.ObjectFactory() {
 
             public Object create(String arg0) {
                 return new DetailsI(client);
@@ -88,52 +88,52 @@ public class DetailsI extends Details implements ome.model.ModelBased {
 
     }
 
-    public omero.model.ExperimenterGroup getGroup(Ice.Current current) {
+    public omero.model.ExperimenterGroup getGroup(com.zeroc.Ice.Current current) {
         return this.group;
     }
 
     public void setGroup(omero.model.ExperimenterGroup group,
-            Ice.Current current) {
+                         com.zeroc.Ice.Current current) {
         this.group = group;
 
     }
 
-    public omero.model.Event getCreationEvent(Ice.Current current) {
+    public omero.model.Event getCreationEvent(com.zeroc.Ice.Current current) {
         return this.creationEvent;
     }
 
     public void setCreationEvent(omero.model.Event creationEvent,
-            Ice.Current current) {
+                                 com.zeroc.Ice.Current current) {
         this.creationEvent = creationEvent;
 
     }
 
-    public omero.model.Event getUpdateEvent(Ice.Current current) {
+    public omero.model.Event getUpdateEvent(com.zeroc.Ice.Current current) {
         return this.updateEvent;
     }
 
     public void setUpdateEvent(omero.model.Event updateEvent,
-            Ice.Current current) {
+                               com.zeroc.Ice.Current current) {
         this.updateEvent = updateEvent;
 
     }
 
-    public omero.model.Permissions getPermissions(Ice.Current current) {
+    public omero.model.Permissions getPermissions(com.zeroc.Ice.Current current) {
         return this.permissions;
     }
 
     public void setPermissions(omero.model.Permissions permissions,
-            Ice.Current current) {
+                               com.zeroc.Ice.Current current) {
         this.permissions = permissions;
 
     }
 
-    public omero.model.ExternalInfo getExternalInfo(Ice.Current current) {
+    public omero.model.ExternalInfo getExternalInfo(com.zeroc.Ice.Current current) {
         return this.externalInfo;
     }
 
     public void setExternalInfo(omero.model.ExternalInfo externalInfo,
-            Ice.Current current) {
+                                com.zeroc.Ice.Current current) {
         this.externalInfo = externalInfo;
 
     }
@@ -220,7 +220,7 @@ public class DetailsI extends Details implements ome.model.ModelBased {
         return target;
     }
 
-    public void unload(Ice.Current c) {
+    public void unload(com.zeroc.Ice.Current c) {
         this.setOwner(null);
         this.setGroup(null);
         this.setCreationEvent(null);

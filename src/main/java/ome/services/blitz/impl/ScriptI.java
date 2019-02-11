@@ -680,7 +680,7 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
      * @throws ServerError
      */
     private OriginalFile makeFile(final String path, final String script,
-            Ice.Current current) throws ServerError {
+            Current current) throws ServerError {
         OriginalFile file = new OriginalFile();
         file.setName(FilenameUtils.getName(path));
         file.setPath(FilenameUtils.getFullPath(path));
@@ -700,7 +700,7 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
      * @return updated file.
      * @throws ServerError
      */
-    private OriginalFile updateFile(final OriginalFile file, final Ice.Current current) throws ServerError {
+    private OriginalFile updateFile(final OriginalFile file, final Current current) throws ServerError {
         OriginalFile updatedFile = factory.executor.execute(
                 current.ctx, factory.principal, new Executor.SimpleWork<OriginalFile>(this, "updateFile") {
 
@@ -726,7 +726,7 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
      * @throws ServerError
      */
     private OriginalFile writeContent(final OriginalFile file, final String script,
-            final Ice.Current current) throws ServerError {
+            final Current current) throws ServerError {
         return factory.executor.execute(current.ctx, factory.principal, new Executor.SimpleWork<OriginalFile>(
                 this, "writeContent") {
             @Transactional(readOnly = false)
@@ -752,7 +752,7 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
      *            the original file.
      * 
      */
-    private void deleteOriginalFile(final OriginalFile file, final Ice.Current current)
+    private void deleteOriginalFile(final OriginalFile file, final Current current)
         throws ServerError {
 
         if (file == null) {
@@ -774,7 +774,7 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
      * @return original file or null if script does not exist or more than one
      *         script with name exists.
      */
-    private OriginalFile getOriginalFileOrNull(long id, final Ice.Current current) {
+    private OriginalFile getOriginalFileOrNull(long id, final Current current) {
 
         try {
             final QueryBuilder qb = new QueryBuilder();

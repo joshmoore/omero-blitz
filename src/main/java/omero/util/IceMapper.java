@@ -166,7 +166,7 @@ public class IceMapper extends ome.util.ModelMapper implements
 
     public final static ReturnMapping OBJECTARRAY_TO_RTYPESEQ = new ReturnMapping() {
         public Object mapReturnValue(IceMapper mapper, Object value)
-        throws Ice.UserException {
+        throws com.zeroc.Ice.UserException {
 
             if (value == null) {
                 return null;
@@ -185,7 +185,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     @SuppressWarnings("unchecked")
     public final static ReturnMapping LISTOBJECTARRAY_TO_RTYPESEQSEQ = new ReturnMapping() {
         public Object mapReturnValue(IceMapper mapper, Object value)
-        throws Ice.UserException {
+        throws com.zeroc.Ice.UserException {
 
             if (value == null) {
                 return null;
@@ -203,7 +203,7 @@ public class IceMapper extends ome.util.ModelMapper implements
 
     public final static ReturnMapping OBJECT_TO_RTYPE = new ReturnMapping() {
         public Object mapReturnValue(IceMapper mapper, Object value)
-        throws Ice.UserException {
+        throws com.zeroc.Ice.UserException {
             return mapper.toRType(value);
         }
     };
@@ -211,7 +211,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public final static ReturnMapping STRING_TO_RSTRING = new ReturnMapping() {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             String str = (String) value;
             return omero.rtypes.rstring(str);
         }
@@ -225,7 +225,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public final static ReturnMapping UNMAPPED = new ReturnMapping() {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             return value;
         }
     };
@@ -233,7 +233,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public final static ReturnMapping PRIMITIVE = new ReturnMapping() {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             if (value == null) {
                 return null;
             } else {
@@ -249,7 +249,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public final static ReturnMapping PRIMITIVE_MAP = new ReturnMapping() {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             if (value == null) {
                 return null;
             } else {
@@ -269,7 +269,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public final static ReturnMapping FILTERABLE_PRIMITIVE_MAP = new ReturnMapping() {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             if (value == null) {
                 return null;
             } else {
@@ -289,7 +289,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public final static ReturnMapping PRIMITIVE_FILTERABLE_COLLECTION_MAP = new ReturnMapping() {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             if (value == null) {
                 return null;
             } else {
@@ -309,7 +309,7 @@ public class IceMapper extends ome.util.ModelMapper implements
     public final static ReturnMapping RTYPEDICT = new ReturnMapping() {
 
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             if (value == null) {
                 return null;
             } else {
@@ -1289,7 +1289,7 @@ public class IceMapper extends ome.util.ModelMapper implements
      * {@link InternalException}.
      */
     public ServerError handleServerError(Throwable t, OmeroContext ctx) {
-        Ice.UserException ue = handleException(t, ctx);
+        com.zeroc.Ice.UserException ue = handleException(t, ctx);
         if (ue instanceof ServerError) {
             return (ServerError) ue;
         }
@@ -1330,8 +1330,8 @@ public class IceMapper extends ome.util.ModelMapper implements
 
         Class c = t.getClass();
 
-        if (Ice.UserException.class.isAssignableFrom(c)) {
-            return (Ice.UserException) t;
+        if (com.zeroc.Ice.UserException.class.isAssignableFrom(c)) {
+            return (com.zeroc.Ice.UserException) t;
         }
 
         // API USAGE

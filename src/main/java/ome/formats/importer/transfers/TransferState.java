@@ -250,7 +250,7 @@ public class TransferState implements TimeEstimator {
         if (prx != null) {
             try {
                 prx.close();
-            } catch (Ice.ObjectNotExistException onee) {
+            } catch (com.zeroc.Ice.ObjectNotExistException onee) {
                 // no-op
             } catch (Exception e) {
                 log.warn("Exception closing " + prx, e);

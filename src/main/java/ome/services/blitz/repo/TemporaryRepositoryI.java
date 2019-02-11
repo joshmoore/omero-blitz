@@ -15,7 +15,7 @@ import omero.model.OriginalFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Simple repository service to make the ${java.io.tmpdir} available at runtime.
@@ -30,7 +30,7 @@ public class TemporaryRepositoryI extends AbstractRepositoryI {
     private final static Logger log = LoggerFactory
             .getLogger(TemporaryRepositoryI.class);
 
-    public TemporaryRepositoryI(Ice.ObjectAdapter oa, Registry reg,
+    public TemporaryRepositoryI(com.zeroc.Ice.ObjectAdapter oa, Registry reg,
             Executor ex, Principal p, PublicRepositoryI servant) {
         super(oa, reg, ex, p, System.getProperty("java.io.tmpdir"), new ReadOnlyStatus(false, false), servant);
     }

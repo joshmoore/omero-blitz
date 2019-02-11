@@ -92,7 +92,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * support class for the proper usage of {@link OMEROMetadataStoreClient} and
@@ -146,7 +146,7 @@ public class ImportLibrary implements IObservable
     /**
      * Adapter for use with any callbacks created by the library.
      */
-    private final Ice.ObjectAdapter oa;
+    private final com.zeroc.Ice.ObjectAdapter oa;
 
     /**
      * Router category which allows callbacks to be accessed behind a firewall.
@@ -226,7 +226,7 @@ public class ImportLibrary implements IObservable
         // so we have to inspect various fields to get the adapter.
         sf = store.getServiceFactory();
         oa = sf.ice_getConnection().getAdapter();
-        final Ice.Communicator ic = oa.getCommunicator();
+        final com.zeroc.Ice.Communicator ic = oa.getCommunicator();
         category = omero.client.getRouter(ic).getCategoryForClient();
     }
 
@@ -721,7 +721,7 @@ public class ImportLibrary implements IObservable
         }
 
         @Override
-        public void step(int step, int total, Ice.Current current) {
+        public void step(int step, int total, Current current) {
             if (step == 1) {
                 notifyObservers(new ImportEvent.METADATA_IMPORTED(
                         0, container,

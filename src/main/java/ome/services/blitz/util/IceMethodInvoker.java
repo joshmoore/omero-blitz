@@ -22,7 +22,7 @@ import org.springframework.util.Assert;
  * {@link Method}-cache primed either with an {@link ServiceInterface} instance
  * or with a {@link Class} with generic type {@link ServiceInterface}. Actual
  * invocation happens via
- * {@link #invoke(Object, Ice.Current, IceMapper, Object[])}
+ * {@link #invoke(Object, com.zeroc.Ice.Current, IceMapper, Object[])}
  * 
  * No reference is held to the initial priming argument in
  * {@link IceMethodInvoker#IceMethodInvoker(ServiceInterface, OmeroContext)}
@@ -127,13 +127,13 @@ public class IceMethodInvoker {
      * Checks for a void return type, which is needed to know what type of
      * ice_response() method to invoke.
      */
-    public boolean isVoid(Ice.Current current) {
+    public boolean isVoid(com.zeroc.Ice.Current current) {
         Info info = map().get(current.operation);
         return info.retType.equals(void.class);
     }
 
     /**
-     * Calls the method named in {@link Ice.Current#operation} with the
+     * Calls the method named in {@link com.zeroc.Ice.Current#operation} with the
      * arguments provided mapped via the {@link IceMapper} instance. The return
      * value or any method which is thrown is equally mapped and returned.
      * Exceptions are handled by
@@ -153,8 +153,8 @@ public class IceMethodInvoker {
      * @return Either the return value of the invocation, or the exception if
      *         one was thrown.
      */
-    public Object invoke(Object obj, Ice.Current current, IceMapper mapper,
-            Object... args) throws Ice.UserException {
+    public Object invoke(Object obj, com.zeroc.Ice.Current current, IceMapper mapper,
+            Object... args) throws com.zeroc.Ice.UserException {
 
         Assert.notNull(mapper, "IceMapper cannot be null");
         Assert.notNull(current, "Ice.Current cannot be null");
@@ -195,7 +195,7 @@ public class IceMethodInvoker {
      * returnValueMapper is non-null. If it is null, then it is assumed that the
      * responsibility falls to this class.
      */
-    private Object[] arguments(Ice.Current current, IceMapper mapper,
+    private Object[] arguments(com.zeroc.Ice.Current current, IceMapper mapper,
             Info info, Object... args) throws ServerError {
 
         if (mapper.canMapReturnValue()) {

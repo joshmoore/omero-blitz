@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 import ome.api.RawFileStore;
 import ome.services.blitz.impl.RawFileStoreI;
@@ -84,7 +84,7 @@ public class RepoRawFileStoreI extends RawFileStoreI {
 
     private AtomicReference<Callback> cb = new AtomicReference<Callback>();
 
-    public RepoRawFileStoreI(BlitzExecutor be, RawFileStore service, Ice.Current curr) {
+    public RepoRawFileStoreI(BlitzExecutor be, RawFileStore service, Current curr) {
         super(service, be);
     }
 
@@ -135,7 +135,7 @@ public class RepoRawFileStoreI extends RawFileStoreI {
     }
 
     @Override
-    protected void postClose(Ice.Current c) {
+    protected void postClose(Current c) {
         try {
             super.postClose(c);
         } finally {

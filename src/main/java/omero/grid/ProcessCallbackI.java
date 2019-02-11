@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import omero.ServerError;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  *
@@ -28,9 +28,9 @@ public class ProcessCallbackI extends _ProcessCallbackDisp {
         KILLED;
     }
 
-    private final Ice.ObjectAdapter adapter;
+    private final com.zeroc.Ice.ObjectAdapter adapter;
 
-    private final Ice.Identity id;
+    private final com.zeroc.Ice.Identity id;
 
     private final BlockingQueue<Action> q = new LinkedBlockingQueue<Action>();
 
@@ -56,22 +56,22 @@ public class ProcessCallbackI extends _ProcessCallbackDisp {
         this(client.getAdapter(), client.getCategory(), process, poll);
     }
 
-    public ProcessCallbackI(Ice.ObjectAdapter adapter, String category,
+    public ProcessCallbackI(com.zeroc.Ice.ObjectAdapter adapter, String category,
             ProcessPrx process) throws ServerError {
         this(adapter, category, process, true);
     }
 
-    public ProcessCallbackI(Ice.ObjectAdapter adapter, String category,
+    public ProcessCallbackI(com.zeroc.Ice.ObjectAdapter adapter, String category,
             ProcessPrx process, boolean poll)
         throws ServerError {
 
         this.adapter = adapter;
         this.poll = poll;
         this.process = process;
-        this.id = new Ice.Identity();
+        this.id = new com.zeroc.Ice.Identity();
         this.id.name = UUID.randomUUID().toString();
         this.id.category = category;
-        Ice.ObjectPrx prx = adapter.add(this, id);
+        com.zeroc.Ice.ObjectPrx prx = adapter.add(this, id);
         ProcessCallbackPrx cb = ProcessCallbackPrxHelper.uncheckedCast(prx);
         process.registerCallback(cb);
     }

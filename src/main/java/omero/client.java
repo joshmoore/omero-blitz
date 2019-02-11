@@ -694,7 +694,7 @@ public class client {
         }
 
         // Acquire router and get the proxy
-        com.zeroc.Glacier2.SessionPrx prx = null;
+        Glacier2.SessionPrx prx = null;
         int retries = 0;
         while (retries < 3) {
             String reason = null;

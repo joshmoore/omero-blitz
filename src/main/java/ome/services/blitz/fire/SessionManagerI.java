@@ -78,7 +78,7 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
 
     protected OmeroContext context;
 
-    protected final Ice.ObjectAdapter adapter;
+    protected final com.zeroc.Ice.ObjectAdapter adapter;
 
     protected final SecuritySystem securitySystem;
 
@@ -103,7 +103,7 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
      */
     protected final Cache<String, ServantHolder> sessionToHolder = CacheBuilder.newBuilder().build();
 
-    public SessionManagerI(Ring ring, Ice.ObjectAdapter adapter,
+    public SessionManagerI(Ring ring, com.zeroc.Ice.ObjectAdapter adapter,
             SecuritySystem secSys, SessionManager sessionManager,
             Executor executor, TopicManager topicManager, Registry reg,
             int servantsPerSession) {
@@ -125,7 +125,7 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
     }
 
     public Glacier2.SessionPrx create(String userId,
-            Glacier2.SessionControlPrx control, Ice.Current current)
+            Glacier2.SessionControlPrx control, com.zeroc.Ice.Current current)
             throws CannotCreateSessionException {
 
         if (!loaded.get()) {
@@ -201,7 +201,7 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
                     current, holder, control, context, sessionManager, executor,
                     sp, CPTORS, topicManager, registry, ring.uuid);
 
-            Ice.Identity id = session.sessionId();
+            com.zeroc.Ice.Identity id = session.sessionId();
             holder.addClientId(session.clientId);
 
             if (control != null) {
@@ -213,7 +213,7 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
             }
 
             _ServiceFactoryTie tie = new _ServiceFactoryTie(session);
-            Ice.ObjectPrx _prx = current.adapter.add(tie, id); // OK Usage
+            com.zeroc.Ice.ObjectPrx _prx = current.adapter.add(tie, id); // OK Usage
 
             // Logging & sessionToClientIds addition
 
@@ -292,16 +292,16 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
         try {
             if (event instanceof UnregisterServantMessage) {
                 UnregisterServantMessage msg = (UnregisterServantMessage) event;
-                Ice.Current curr = msg.getCurrent();
+                com.zeroc.Ice.Current curr = msg.getCurrent();
                 ServantHolder holder = msg.getHolder();
                 // Using static method since we may not have a clientId
                 // in order to look up the SessionI/ServiceFactoryI
                 SessionI.unregisterServant(curr.id, adapter, holder);
             } else if (event instanceof FindServiceFactoryMessage) {
                 FindServiceFactoryMessage msg = (FindServiceFactoryMessage) event;
-                Ice.Identity id = msg.getIdentity();
+                com.zeroc.Ice.Identity id = msg.getIdentity();
                 if (id == null) {
-                    Ice.Current curr = msg.getCurrent();
+                    com.zeroc.Ice.Current curr = msg.getCurrent();
                     id = getServiceFactoryIdentity(curr);
                 }
                 ServiceFactoryI sf = getServiceFactory(id);
@@ -374,11 +374,11 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
                     ServiceFactoryI sf = getServiceFactory(clientId, sessionId);
                     if (sf != null) {
                         sf.doDestroy();
-                        Ice.Identity id = sf.sessionId();
+                        com.zeroc.Ice.Identity id = sf.sessionId();
                         log.info("Removing " + sf);
                         adapter.remove(id); // OK ADAPTER USAGE
                     }
-                } catch (Ice.ObjectAdapterDeactivatedException oade) {
+                } catch (com.zeroc.Ice.ObjectAdapterDeactivatedException oade) {
                     // If the object adapter is deactivated, then
                     // there's basically nothing else we can do.
                     log.warn("Cannot reap session " + sessionId
@@ -404,13 +404,13 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
     // =========================================================================
 
     protected ServiceFactoryI getServiceFactory(String clientId, String sessionId) {
-        Ice.Identity iid = ServiceFactoryI.sessionId(clientId,
+        com.zeroc.Ice.Identity iid = ServiceFactoryI.sessionId(clientId,
                 sessionId);
         return getServiceFactory(iid);
     }
 
-    protected ServiceFactoryI getServiceFactory(Ice.Identity iid) {
-        Ice.Object obj = adapter.find(iid);
+    protected ServiceFactoryI getServiceFactory(com.zeroc.Ice.Identity iid) {
+        com.zeroc.Ice.Object obj = adapter.find(iid);
         if (obj == null) {
             log.debug(Ice.Util.identityToString(iid)
                     + " already removed.");
@@ -428,8 +428,8 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
 
     }
 
-    protected Ice.Identity getServiceFactoryIdentity(Ice.Current curr) {
-        Ice.Identity id;
+    protected com.zeroc.Ice.Identity getServiceFactoryIdentity(com.zeroc.Ice.Current curr) {
+        com.zeroc.Ice.Identity id;
         try {
             String clientId = ServiceFactoryI.clientId(curr);
             id = ServiceFactoryI.sessionId(clientId, curr.id.category);
@@ -437,35 +437,35 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
             throw new RuntimeException(
                     "Cannot create session id for servant:"
                     + String.format("\nInfo:\n\tId:%s\n\tOp:%s\n\tCtx:%s",
-                            Ice.Util.identityToString(curr.id),
+                            com.zeroc.Ice.Util.identityToString(curr.id),
                             curr.operation, curr.ctx),
                             e);
         }
         return id;
     }
 
-    protected String getGroup(Ice.Current current) {
+    protected String getGroup(com.zeroc.Ice.Current current) {
         if (current.ctx == null) {
             return null;
         }
         return current.ctx.get(GROUP.value);
     }
 
-    protected String getAgent(Ice.Current current) {
+    protected String getAgent(com.zeroc.Ice.Current current) {
         if (current.ctx == null) {
             return null;
         }
         return current.ctx.get("omero.agent");
     }
     
-    protected String getIP(Ice.Current current) {
+    protected String getIP(com.zeroc.Ice.Current current) {
         if (current.ctx == null) {
             return null;
         }
         return current.ctx.get("omero.ip");
     }
 
-    protected String getEvent(Ice.Current current) {
+    protected String getEvent(com.zeroc.Ice.Current current) {
         if (current.ctx == null) {
             return null;
         }

@@ -703,7 +703,7 @@ public class OMEROMetadataStoreClient
             try
             {
                 unsecure();
-            } catch (Ice.ConnectionRefusedException cre)
+            } catch (com.zeroc.Ice.ConnectionRefusedException cre)
             {
                 log.warn("Cannot fallback. Using secure connection", cre);
             }
@@ -1040,7 +1040,7 @@ public class OMEROMetadataStoreClient
         if (prx != null) {
             try {
                 prx.close();
-            } catch (Ice.CommunicatorDestroyedException cde) {
+            } catch (com.zeroc.Ice.CommunicatorDestroyedException cde) {
                 log.debug("Communicator already closed; cannot close " + prx);
             } catch (Exception e) {
                 log.warn("Exception closing " + prx, e);

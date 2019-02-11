@@ -992,7 +992,7 @@ public class CommandLineImporter {
                     transfer, exclusions, minutesToWait);
             c.setImportOutput(outputChoice);
             rc = c.start();
-        } catch (Ice.DNSException dnse) {
+        } catch (com.zeroc.Ice.DNSException dnse) {
             log.error("Failed to look up domain name: {}", dnse.host);
             rc = 2;
         } catch (Throwable t) {

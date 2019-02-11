@@ -18,8 +18,8 @@ import omero.model.OriginalFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
-import Ice.ObjectAdapter;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.ObjectAdapter;
 
 /**
  * Repository which makes the included script files available to users.

@@ -23,7 +23,7 @@ import Glacier2.SessionControlPrx;
 import Glacier2.SessionManagerPrx;
 import Glacier2.SessionManagerPrxHelper;
 import Glacier2.SessionPrx;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Base {@link Redirector}
@@ -43,7 +43,7 @@ public abstract class AbstractRedirector implements Redirector {
     }
 
     /**
-     * Returns null early if the {@link Ice.Current} has already once been
+     * Returns null early if the {@link Current} has already once been
      * routed by a {@link Redirector} implementation, returns an existing
      * session if it can be found, or returns a null.
      * 
@@ -71,7 +71,7 @@ public abstract class AbstractRedirector implements Redirector {
 
     }
 
-    protected boolean alreadyRouted(Ice.Current current) {
+    protected boolean alreadyRouted(Current current) {
         if (current != null) {
             if (current.ctx != null) {
                 return current.ctx.containsKey(ROUTED_FROM);
@@ -81,11 +81,11 @@ public abstract class AbstractRedirector implements Redirector {
     }
 
     protected SessionPrx obtainProxy(String proxyString, Context ctx,
-            String userId, SessionControlPrx control, Ice.Current current)
+            String userId, SessionControlPrx control, Current current)
             throws CannotCreateSessionException {
         if (proxyString != null) {
             current.ctx.put("omero.routed_from", ctx.getDirectProxy());
-            Ice.ObjectPrx remote = ctx.getCommunicator().stringToProxy(
+            com.zeroc.Ice.ObjectPrx remote = ctx.getCommunicator().stringToProxy(
                     proxyString);
             SessionManagerPrx sessionManagerPrx = SessionManagerPrxHelper
                     .checkedCast(remote);
@@ -106,7 +106,7 @@ public abstract class AbstractRedirector implements Redirector {
 
     /**
      * Returns the current redirect, to which all calls to
-     * {@link #getProxyOrNull(Context, String, Glacier2.SessionControlPrx, Ice.Current)}
+     * {@link #getProxyOrNull(Context, String, Glacier2.SessionControlPrx, Current)}
      * will be pointed. May be null, but is typically set to a non-null value
      * when the first {@link Ring} joins the cluster.
      */

@@ -23,7 +23,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
-import Ice.Communicator;
+import com.zeroc.Ice.Communicator;
 import ome.api.local.LocalQuery;
 import ome.api.local.LocalUpdate;
 import ome.model.meta.Session;
@@ -54,7 +54,7 @@ public class UpdateSessionTimeoutRequestI extends UpdateSessionTimeoutRequest
                 final SecuritySystem securitySystem) {
             factory = new ObjectFactory(ice_staticId()) {
                 @Override
-                public Ice.Object create(String name) {
+                public com.zeroc.Ice.Object create(String name) {
                     return new UpdateSessionTimeoutRequestI(
                             current, sessionManager, securitySystem);
                 }};

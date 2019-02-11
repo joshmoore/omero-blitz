@@ -47,9 +47,9 @@ public class Entry {
     volatile OmeroContext ctx = null;
 
     /**
-     * {@link Ice.Communicator} which will be waited on.
+     * {@link com.zeroc.Ice.Communicator} which will be waited on.
      */
-    volatile Ice.Communicator ic = null;
+    volatile com.zeroc.Ice.Communicator ic = null;
 
     private static void waitOnStartup() {
         int ms = 10000; // 10 seconds by default
@@ -72,7 +72,7 @@ public class Entry {
      * Entry point to the server. The first argument on the command line will be
      * used as the name for the {@link OmeroContext}. Other options include:
      * 
-     * -s Check status (all args passed to {@link Ice.Util#initialize(String[])}
+     * -s Check status (all args passed to {@link com.zeroc.Ice.Util#initialize(String[])}
      * 
      */
     public static void main(final String[] args) {
@@ -165,7 +165,7 @@ public class Entry {
     /**
      * Obtains the {@link #name named} {@link OmeroContext}, creating it if
      * necessary, and then delegates to
-     * {@link Ice.Communicator#waitForShutdown()} until either it is externally
+     * {@link com.zeroc.Ice.Communicator#waitForShutdown()} until either it is externally
      * shutdown, or until a signal is caught.
      */
     public void start() {
@@ -177,7 +177,7 @@ public class Entry {
             
             // Parse out any omero.* properties from ICE_CONFIG
             // and set them in the System
-            Ice.InitializationData id = new Ice.InitializationData();
+            com.zeroc.Ice.InitializationData id = new com.zeroc.Ice.InitializationData();
             id.properties = Ice.Util.createProperties();
             if (ICE_CONFIG != null) {
                 id.properties.load(ICE_CONFIG);
@@ -188,20 +188,20 @@ public class Entry {
             
             ctx = OmeroContext.getInstance(name);
             if (ctx.containsBean("Ice.Communicator")) {
-                ic = (Ice.Communicator) ctx.getBean("Ice.Communicator");
+                ic = (com.zeroc.Ice.Communicator) ctx.getBean("Ice.Communicator");
             } else {
                 // TODO This should be adapted to work for any process
                 // that doesn't need to add servants. Here "Indexer" could
                 // be replaced by omero.name or similar.
-                ic = Ice.Util.initialize(id);
+                ic = com.zeroc.Ice.Util.initialize(id);
                 String adapterName = ctx.getBean("adapterName", String.class);
-                Ice.ObjectAdapter oa = ic.createObjectAdapter(adapterName);
+                com.zeroc.Ice.ObjectAdapter oa = ic.createObjectAdapter(adapterName);
                 oa.activate();
             }
             log.info(name + " now accepting connections.");
             ic.waitForShutdown();
             status = 0;
-        } catch (Ice.LocalException e) {
+        } catch (com.zeroc.Ice.LocalException e) {
             log.error("Error on startup.", e);
             status = 1;
         } catch (Exception e) {

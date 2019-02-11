@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
-import Ice.ObjectAdapter;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.ObjectAdapter;
 
 /**
  *
@@ -44,7 +44,7 @@ public class CheckAllJobs extends OnContextRefreshedEventListener {
 
     private final TopicManager tm;
 
-    private final Ice.Identity id;
+    private final com.zeroc.Ice.Identity id;
 
     private final long waitMs;
 
@@ -69,7 +69,7 @@ public class CheckAllJobs extends OnContextRefreshedEventListener {
 
     public void run() {
         Callback cb = new Callback();
-        Ice.ObjectPrx prx = oa.add(cb, id); // OK ADAPTER USAGE
+        com.zeroc.Ice.ObjectPrx prx = oa.add(cb, id); // OK ADAPTER USAGE
         ProcessorCallbackPrx cbPrx = ProcessorCallbackPrxHelper.uncheckedCast(prx);
         tm.onApplicationEvent(new TopicManager.TopicMessage(this,
                 PROCESSORACCEPTS.value, new ProcessorPrxHelper(),

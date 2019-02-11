@@ -87,8 +87,8 @@ import omero.gateway.model.GroupData;
 import omero.gateway.util.PojoMapper;
 import Glacier2.CannotCreateSessionException;
 import Glacier2.PermissionDeniedException;
-import Ice.DNSException;
-import Ice.SocketException;
+import com.zeroc.Ice.DNSException;
+import com.zeroc.Ice.SocketException;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedListMultimap;

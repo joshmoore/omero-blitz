@@ -28,7 +28,7 @@ public interface BlitzExecutor {
      * the invoker is passed to the user.
      */
     void callInvokerOnRawArgs(ServiceInterface service,
-            IceMethodInvoker invoker, Object __cb, Ice.Current __current,
+            IceMethodInvoker invoker, Object __cb, com.zeroc.Ice.Current __current,
             Object... args);
 
     /**
@@ -39,10 +39,10 @@ public interface BlitzExecutor {
      */
     void callInvokerWithMappedArgs(ServiceInterface service,
             IceMethodInvoker invoker, IceMapper mapper, Object __cb,
-            Ice.Current __current, Object... args);
+                                   com.zeroc.Ice.Current __current, Object... args);
 
-    void runnableCall(Ice.Current __current, Task runnable);
+    void runnableCall(com.zeroc.Ice.Current __current, Task runnable);
 
-    <R> void safeRunnableCall(Ice.Current __current, Object cb, boolean isVoid,
+    <R> void safeRunnableCall(com.zeroc.Ice.Current __current, Object cb, boolean isVoid,
             Callable<R> callable);
 }

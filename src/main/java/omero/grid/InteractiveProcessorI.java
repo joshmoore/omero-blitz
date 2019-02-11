@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import Glacier2.IdentitySetPrx;
 import Glacier2.SessionControlPrx;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * {@link Processor} implementation which delegates to an omero.grid.Processor
@@ -141,7 +141,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
     public InteractiveProcessorI(Principal p, SessionManager mgr, Executor ex,
             ProcessorPrx prx, Job job, long timeout, SessionControlPrx control,
             ParamsCache paramsCache, ParamsHelper paramsHelper, ScriptRepoHelper scriptRepoHelper,
-            Ice.Current current)
+            Current current)
         throws ServerError {
         this.paramsCache = paramsCache;
         this.paramsHelper = paramsHelper;
@@ -165,7 +165,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
 
     }
 
-    private void setLauncher(Ice.Current __current) {
+    private void setLauncher(Current __current) {
         __current.ctx.put("omero.launcher", this.launcher);
         __current.ctx.put("omero.process", this.process);
     }
@@ -298,7 +298,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
                         // user won't be able to view it: ObjectNotExistException!
                         // ticket:1522
                         identities.add(
-                            new Ice.Identity[]{currentProcess.ice_getIdentity()});
+                            new com.zeroc.Ice.Identity[]{currentProcess.ice_getIdentity()});
                     }
                 }
 
@@ -452,7 +452,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
             + "join job.originalFileLinks links join links.child file "
             + "where file.name = :name and job.id = :id";
 
-    private OriginalFile loadFileOrNull(final String name, final Ice.Current current) {
+    private OriginalFile loadFileOrNull(final String name, final Current current) {
         return this.ex.execute(current.ctx, this.principal,
                 new Executor.SimpleWork<OriginalFile>(this, "optionallyLoadFile") {
             @Transactional(readOnly=true)
@@ -468,7 +468,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
     }
 
     private void optionallyLoadFile(final Map<String, RType> val,
-            final String name, final Ice.Current current) {
+            final String name, final Current current) {
 
         OriginalFile file = loadFileOrNull(name, current);
         if (file != null) {
@@ -477,7 +477,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
         }
     }
 
-    private void appendIfText(final OriginalFile file, final StringBuilder sb, final Ice.Current current) {
+    private void appendIfText(final OriginalFile file, final StringBuilder sb, final Current current) {
         if (file.getMimetype() != null && file.getMimetype().contains("text")) {
             this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork<Void>(this, "appendIfText", file) {
                 @Transactional(readOnly=true)
@@ -496,7 +496,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
         }
     }
 
-    private void failJob(final ValidationException ve, final Ice.Current current) {
+    private void failJob(final ValidationException ve, final Current current) {
         this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork<Void>(this, "failJob", job.getId().getValue()) {
             @Transactional(readOnly=false)
             public Void doWork(org.hibernate.Session session,
@@ -516,7 +516,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
         });
     }
 
-    private EventContext getEventContext(final Ice.Current current) {
+    private EventContext getEventContext(final Current current) {
         return this.ex.execute(current.ctx, this.principal, new Executor.SimpleWork<EventContext>(this, "getEventContext") {
             @Transactional(readOnly=true)
             public EventContext doWork(org.hibernate.Session session,
@@ -539,7 +539,7 @@ public class InteractiveProcessorI implements _InteractiveProcessorOperations,
         return newSession;
     }
 
-    private OriginalFile getScriptId(final Job job, final Ice.Current current) throws omero.ValidationException {
+    private OriginalFile getScriptId(final Job job, final Current current) throws omero.ValidationException {
         final QueryBuilder qb = new QueryBuilder();
         qb.select("o").from("Job", "j");
         qb.join("j.originalFileLinks", "links", false, false);

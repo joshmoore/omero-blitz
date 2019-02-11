@@ -27,7 +27,7 @@ public class Adapter extends Task {
     private final Principal p;
     private final IceMapper mapper;
 
-    public Adapter(Object callback, Ice.Current current, IceMapper mapper,
+    public Adapter(Object callback, com.zeroc.Ice.Current current, IceMapper mapper,
             Executor ex, Principal p, Executor.Work work) {
         super(callback, current, mapper.isVoid());
         this.p = p;

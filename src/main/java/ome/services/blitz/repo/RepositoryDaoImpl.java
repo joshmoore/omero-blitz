@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -161,7 +161,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     public RawFileStore getRawFileStore(final long fileId, final CheckedPath checked,
-            String mode, Ice.Current current) throws SecurityViolation {
+            String mode, Current current) throws SecurityViolation {
 
         final RawFileStore proxy = executor.getContext()
                 .getBean("managed-ome.api.RawFileStore", RawFileStore.class);
@@ -185,7 +185,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     public OriginalFile findRepoFile(final String uuid, final CheckedPath checked,
-            final String mimetype, Ice.Current current)
+            final String mimetype, Current current)
             throws omero.ServerError {
 
         try {
@@ -382,7 +382,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
         }
     }
 
-    public boolean canUpdate(final omero.model.IObject obj, Ice.Current current) {
+    public boolean canUpdate(final omero.model.IObject obj, Current current) {
         return executor.execute(current.ctx, currentUser(current),
                         new Executor.SimpleWork<Boolean>(this, "canUpdate") {
                     @Transactional(readOnly = true)
@@ -398,7 +398,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
                 });
     }
 
-    public List<Long> filterFilesByRepository(final String repo, List<Long> ids, Ice.Current current) {
+    public List<Long> filterFilesByRepository(final String repo, List<Long> ids, Current current) {
         final List<Long> inRepo = new ArrayList<Long>();
         for (final List<Long> idsBatch : Iterables.partition(ids, BATCH_SIZE)) {
             inRepo.addAll( executor
@@ -415,7 +415,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     public OriginalFile getOriginalFile(final long repoId,
-            final Ice.Current current) throws SecurityViolation {
+            final Current current) throws SecurityViolation {
 
          try {
              ome.model.core.OriginalFile oFile = executor
@@ -436,7 +436,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     @SuppressWarnings("unchecked")
     public List<OriginalFile> getOriginalFiles(final String repoUuid, final CheckedPath checked,
-            final Ice.Current current) throws SecurityViolation {
+            final Current current) throws SecurityViolation {
 
          try {
              List<ome.model.core.OriginalFile> oFiles = (List<ome.model.core.OriginalFile>) executor
@@ -506,7 +506,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     public Fileset saveFileset(final String repoUuid, final Fileset _fs,
             final ChecksumAlgorithm checksumAlgorithm, final List<CheckedPath> paths,
-            final Ice.Current current) throws ServerError {
+            final Current current) throws ServerError {
 
         final IceMapper mapper = new IceMapper();
         final List<CheckedPath> parents = new ArrayList<CheckedPath>();
@@ -569,7 +569,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     @SuppressWarnings("unchecked")
     public List<Fileset> loadFilesets(final List<Long> ids,
-            final Ice.Current current) throws ServerError {
+            final Current current) throws ServerError {
 
         if (ids == null || ids.size() == 0) {
             return new ArrayList<Fileset>(); // EARLY EXIT
@@ -594,7 +594,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     public OriginalFile register(final String repoUuid, final CheckedPath checked,
-            final String mimetype, final Ice.Current current) throws ServerError {
+            final String mimetype, final Current current) throws ServerError {
 
         if (checked.isRoot) {
             throw new omero.SecurityViolation(null, null,
@@ -655,7 +655,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
     }
 
-    public Job saveJob(final Job job, final Ice.Current current)
+    public Job saveJob(final Job job, final Current current)
             throws ServerError {
 
         if (job == null) {
@@ -686,7 +686,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
 
 
     public void updateJob(final Job job, final String message, final String status,
-            final Ice.Current current) throws ServerError {
+            final Current current) throws ServerError {
 
         if (job == null || job.getId() == null) {
             throw new omero.ValidationException(null, null,
@@ -720,7 +720,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     public void makeDirs(final PublicRepositoryI repo,
             final List<CheckedPath> dirs,
             final boolean parents,
-            final Ice.Current __current) throws ServerError {
+            final Current __current) throws ServerError {
         try {
             /* first check for sudo to find real user's event context */
             final EventContext effectiveEventContext;
@@ -845,7 +845,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
         return toReturn;
     }
 
-    public FsFile getFile(final long id, final Ice.Current current,
+    public FsFile getFile(final long id, final Current current,
             final String repoUuid) {
         return executor.execute(current.ctx, currentUser(current),
                 new Executor.SimpleWork<FsFile>(this, "getFile", id) {
@@ -913,7 +913,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
         });
     }
 
-    public omero.sys.EventContext getEventContext(Ice.Current curr) {
+    public omero.sys.EventContext getEventContext(Current curr) {
         final Principal currentUser = new Principal(curr.ctx.get(omero.constants.SESSIONUUID.value));
         final EventContext ec = executor.execute(curr.ctx, currentUser,
                 new Executor.SimpleWork<EventContext>(this, "getEventContext") {
@@ -925,7 +925,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
         return IceMapper.convert(ec);
     }
 
-    public String getUserInstitution(final long userId, Ice.Current current) {
+    public String getUserInstitution(final long userId, Current current) {
         return executor.execute(current.ctx, currentUser(current),
                 new Executor.SimpleWork<String>(this, "getUserInstitution") {
             @Transactional(readOnly = true)
@@ -1097,7 +1097,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
      * @return See above.
      * @throws SecurityViolation if the file can't be read.
      */
-    protected Map<String, String> fileContext(long fileId, Ice.Current current)
+    protected Map<String, String> fileContext(long fileId, Current current)
         throws omero.SecurityViolation {
 
         // TODO: we should perhaps pass "-1" here regardless of what group is
@@ -1117,7 +1117,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
      * @param current
      * @return See above.
      */
-    protected Map<String, String> groupContext(Long groupId, Ice.Current current) {
+    protected Map<String, String> groupContext(Long groupId, Current current) {
         final Map<String, String> context = new HashMap<String, String>();
         if (current.ctx != null) {
             context.putAll(current.ctx);
@@ -1129,7 +1129,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     @Override
-    public ome.model.enums.ChecksumAlgorithm getChecksumAlgorithm(final String name, Ice.Current current) {
+    public ome.model.enums.ChecksumAlgorithm getChecksumAlgorithm(final String name, Current current) {
         return executor.execute(current.ctx, currentUser(current),
                 new Executor.LoggedWork<ome.model.enums.ChecksumAlgorithm>() {
 
@@ -1150,7 +1150,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     @Override
-    public ome.model.core.OriginalFile getOriginalFileWithHasher(final long id, Ice.Current current) {
+    public ome.model.core.OriginalFile getOriginalFileWithHasher(final long id, Current current) {
         return executor.execute(current.ctx, currentUser(current),
                 new Executor.LoggedWork<ome.model.core.OriginalFile>() {
 
@@ -1171,7 +1171,7 @@ public class RepositoryDaoImpl implements RepositoryDao {
     }
 
     @Override
-    public void saveObject(final IObject object, Ice.Current current) {
+    public void saveObject(final IObject object, Current current) {
         executor.execute(current.ctx, currentUser(current),
                 new Executor.LoggedWork<Void>() {
 

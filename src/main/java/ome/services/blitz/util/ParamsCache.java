@@ -47,7 +47,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import Ice.UserException;
+import com.zeroc.Ice.UserException;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -131,7 +131,7 @@ public class ParamsCache implements ApplicationContextAware {
      * @return See above.
      * @throws UserException
      */
-    public JobParams getParams(Long id, String sha1, Ice.Current curr) throws UserException {
+    public JobParams getParams(Long id, String sha1, com.zeroc.Ice.Current curr) throws UserException {
         Slf4JStopWatch get = sw("get." + id);
         try {
             return cache.get(new Key(id, sha1, curr));
@@ -294,31 +294,31 @@ public class ParamsCache implements ApplicationContextAware {
         }
 
         /**
-         * Call {@link ParamsHelper#generateScriptParams(long, boolean, Ice.Current)}
+         * Call {@link ParamsHelper#generateScriptParams(long, boolean, com.zeroc.Ice.Current)}
          * either as the current admin user or if this is a user script, creating
          * a temporary loader with just that context.
          */
         JobParams createParams(Key key) throws Exception {
             ParamsHelper helper = getHelper();
-            Ice.Current curr = getCurrent();
+            com.zeroc.Ice.Current curr = getCurrent();
             return helper.generateScriptParams(key.id, false, curr);
         }
 
-        abstract Ice.Current getCurrent();
+        abstract com.zeroc.Ice.Current getCurrent();
 
         abstract void close();
 
     }
 
     /**
-     * Subclass for when no {@link Ice.Current} is available. Uses "root" as
+     * Subclass for when no {@link com.zeroc.Ice.Current} is available. Uses "root" as
      * the login and creates a new session which <em>must</em> be closed.
      */
     private static class RootLoader extends Loader {
 
         final String root;
         final Long gid;
-        Ice.Current curr;
+        com.zeroc.Ice.Current curr;
 
         RootLoader(Registry reg, OmeroContext ctx, Roles roles) throws Exception {
             this(reg, ctx, roles, null);
@@ -333,7 +333,7 @@ public class ParamsCache implements ApplicationContextAware {
 
         ServiceFactoryI getFactory() throws Exception {
 
-            Ice.Identity id;
+            com.zeroc.Ice.Identity id;
 
             ServiceFactoryPrx prx = reg.getInternalServiceFactory(
                  root, null, 3, 1,
@@ -347,7 +347,7 @@ public class ParamsCache implements ApplicationContextAware {
             return sf;
         }
 
-        Ice.Current getCurrent() {
+        com.zeroc.Ice.Current getCurrent() {
             return curr;
         }
 
@@ -359,7 +359,7 @@ public class ParamsCache implements ApplicationContextAware {
     }
 
     /**
-     * Simpler subclass which uses the {@link Ice.Current} stored within a
+     * Simpler subclass which uses the {@link com.zeroc.Ice.Current} stored within a
      * {@link Key} instance.
      */
     private static class UserLoader extends Loader {
@@ -375,7 +375,7 @@ public class ParamsCache implements ApplicationContextAware {
             return lookupFactory(new FindServiceFactoryMessage(this, key.curr));
         }
 
-        Ice.Current getCurrent() {
+        com.zeroc.Ice.Current getCurrent() {
             return key.curr;
         }
         void close() {
@@ -393,13 +393,13 @@ public class ParamsCache implements ApplicationContextAware {
 
         final Long id;
         final String sha1;
-        final Ice.Current curr;
+        final com.zeroc.Ice.Current curr;
 
         Key(Long id, String sha1) {
             this(id, sha1, null);
         }
 
-        Key(Long id, String sha1, Ice.Current curr) {
+        Key(Long id, String sha1, com.zeroc.Ice.Current curr) {
             this.id = id;
             this.sha1 = sha1;
             this.curr = curr;

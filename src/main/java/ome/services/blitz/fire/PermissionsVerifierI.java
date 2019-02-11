@@ -24,8 +24,8 @@ import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
 import Glacier2._PermissionsVerifierDisp;
-import Ice.Current;
-import Ice.StringHolder;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.StringHolder;
 
 /**
  * @author Josh Moore, josh.moore at gmx.de

@@ -13,7 +13,7 @@ import ome.api.ServiceInterface;
 import ome.services.blitz.util.IceMethodInvoker;
 import ome.system.OmeroContext;
 import omero.util.IceMapper;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Throttling implementation which only allows a single invocation to be run at
@@ -32,7 +32,7 @@ public class SerialThrottlingStrategy extends AbstractThrottlingStrategy {
     }
 
     public void callInvokerOnRawArgs(ServiceInterface service,
-            IceMethodInvoker invoker, Object __cb, Ice.Current __current,
+            IceMethodInvoker invoker, Object __cb, Current __current,
             Object... args) {
         IceMapper mapper = new IceMapper();
         Callback cb = new Callback(service, invoker, mapper, __cb, __current,

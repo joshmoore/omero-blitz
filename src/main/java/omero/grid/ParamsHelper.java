@@ -26,9 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
-import Ice.ReadObjectCallback;
-import Ice.UnmarshalOutOfBoundsException;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.ReadObjectCallback;
+import com.zeroc.Ice.UnmarshalOutOfBoundsException;
 
 /**
  *
@@ -105,7 +105,7 @@ public class ParamsHelper {
         return null;
     }
 
-    ome.model.jobs.ParseJob getParseJobForScript(final long scriptId, final Ice.Current current) {
+    ome.model.jobs.ParseJob getParseJobForScript(final long scriptId, final Current current) {
         ome.model.jobs.ParseJob job = (ome.model.jobs.ParseJob) ex.execute(current.ctx, p,
                 new Executor.SimpleWork(this, "getParseJobForScript", scriptId) {
                     @Transactional(readOnly = true)
@@ -130,7 +130,7 @@ public class ParamsHelper {
         return job;
     }
 
-    JobParams generateScriptParams(long id, Ice.Current __current)
+    JobParams generateScriptParams(long id, Current __current)
             throws ServerError {
        return generateScriptParams(id, true, __current);
     }
@@ -140,7 +140,7 @@ public class ParamsHelper {
      * If the "save" argument is true, then the {@link JobParams} instance will
      * be saved to the database; otherwise, the {@link ParseJob} will be deleted.
      */
-    public JobParams generateScriptParams(long id, boolean save, Ice.Current __current)
+    public JobParams generateScriptParams(long id, boolean save, Current __current)
             throws ServerError {
 
         ParseJob job = buildParseJob(id);
@@ -161,7 +161,7 @@ public class ParamsHelper {
     }
 
     void saveScriptParams(JobParams params,
-            final ParseJob job, Ice.Current __current)
+            final ParseJob job, Current __current)
             throws ServerError {
 
         final byte[] data = parse(params, __current);
@@ -180,7 +180,7 @@ public class ParamsHelper {
         });
     }
 
-    void deleteScriptParams(final ParseJob job, Ice.Current __current)
+    void deleteScriptParams(final ParseJob job, Current __current)
             throws ServerError {
 
         ex.execute(__current.ctx, p, new Executor.SimpleWork(this, "deleteScriptParams", job.getId().getValue()) {
@@ -198,8 +198,8 @@ public class ParamsHelper {
         });
     }
 
-    byte[] parse(JobParams params, Ice.Current current) {
-        Ice.OutputStream os = IceUtil.createSafeOutputStream(
+    byte[] parse(JobParams params, Current current) {
+        com.zeroc.Ice.OutputStream os = IceUtil.createSafeOutputStream(
                 current.adapter.getCommunicator());
         byte[] bytes = null;
         try {
@@ -212,25 +212,25 @@ public class ParamsHelper {
         return bytes;
     }
 
-    JobParams parse(byte[] data, Ice.Current current) {
+    JobParams parse(byte[] data, Current current) {
 
         if (data == null) {
             return null; // EARLY EXIT!
         }
 
-        Ice.InputStream is = IceUtil.createSafeInputStream(
+        com.zeroc.Ice.InputStream is = IceUtil.createSafeInputStream(
                 current.adapter.getCommunicator(), data);
         final JobParams[] params = new JobParams[1];
         try {
             is.readObject(new ReadObjectCallback() {
-                public void invoke(Ice.Object arg0) {
+                public void invoke(com.zeroc.Ice.Object arg0) {
                     params[0] = (JobParams) arg0;
                 }
             });
             is.readPendingObjects();
         } catch (UnmarshalOutOfBoundsException oob) {
             // ok, returning null.
-        } catch (Ice.MarshalException me) {
+        } catch (MarshalException me) {
             // less specific than oob; not great, but returning null. #5662
             log.error(String.format("MarshalException: %s (len=%s)",
                     me.reason, data.length));

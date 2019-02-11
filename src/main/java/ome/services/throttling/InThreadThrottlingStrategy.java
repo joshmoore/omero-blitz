@@ -17,7 +17,7 @@ import omero.util.IceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  * Throttling implementation which uses the calling server {@link Thread} for
@@ -34,7 +34,7 @@ public class InThreadThrottlingStrategy extends AbstractThrottlingStrategy {
         this.cd = cd;
     }
 
-    void setup(Ice.Current current) {
+    void setup(Current current) {
         if (current != null) {
             cd.setContext(current.ctx);
         }
@@ -45,7 +45,7 @@ public class InThreadThrottlingStrategy extends AbstractThrottlingStrategy {
     }
 
     public void callInvokerOnRawArgs(ServiceInterface service,
-            IceMethodInvoker invoker, Object __cb, Ice.Current __current,
+            IceMethodInvoker invoker, Object __cb, Current __current,
             Object... args) {
 
         setup(__current);

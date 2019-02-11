@@ -47,7 +47,7 @@ import omero.util.ObjectFactoryRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Communicator;
+import com.zeroc.Ice.Communicator;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -63,7 +63,7 @@ public class CurrentSessionsRequestI extends CurrentSessionsRequest
                 final SessionManager sessionManager, final SessionProvider sessionProvider) {
             factory = new ObjectFactory(ice_staticId()) {
                 @Override
-                public Ice.Object create(String name) {
+                public com.zeroc.Ice.Object create(String name) {
                     return new CurrentSessionsRequestI(
                             current, sessionManager, sessionProvider);
                 }};

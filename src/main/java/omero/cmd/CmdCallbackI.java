@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import omero.ServerError;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  *
@@ -71,9 +71,9 @@ public class CmdCallbackI extends _CmdCallbackDisp {
 
     private static final long serialVersionUID = 1L;
 
-    private final Ice.ObjectAdapter adapter;
+    private final com.zeroc.Ice.ObjectAdapter adapter;
 
-    private final Ice.Identity id;
+    private final com.zeroc.Ice.Identity id;
 
     /**
      * Latch which is released once {@link #finished(Response, Status, Current)} is
@@ -111,16 +111,16 @@ public class CmdCallbackI extends _CmdCallbackDisp {
         this(ccb.adapter, ccb.id.category, ccb.handle);
     }
     
-    public CmdCallbackI(Ice.ObjectAdapter adapter, String category,
+    public CmdCallbackI(com.zeroc.Ice.ObjectAdapter adapter, String category,
             HandlePrx handle)
         throws ServerError {
 
         this.adapter = adapter;
         this.handle = handle;
-        this.id = new Ice.Identity();
+        this.id = new com.zeroc.Ice.Identity();
         this.id.name = UUID.randomUUID().toString();
         this.id.category = category;
-        Ice.ObjectPrx prx = adapter.add(this, id);
+        com.zeroc.Ice.ObjectPrx prx = adapter.add(this, id);
         CmdCallbackPrx cb = CmdCallbackPrxHelper.uncheckedCast(prx);
         handle.addCallback(cb);
         initialPoll();
@@ -139,7 +139,7 @@ public class CmdCallbackI extends _CmdCallbackDisp {
      * receive a call to finished, leading to perceived hangs.
      *
      * By default, this method starts a background thread and
-     * calls {@link #poll()}. An {@link Ice.ObjectNotExistException}
+     * calls {@link #poll()}. An {@link com.zeroc.Ice.ObjectNotExistException}
      * implies that another caller has already closed the
      * {@link HandlePrx}.
      */

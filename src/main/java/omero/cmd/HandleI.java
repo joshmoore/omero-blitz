@@ -29,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.MapMaker;
 
-import Ice.Current;
-import Ice.Identity;
+import com.zeroc.Ice.Current;
+import com.zeroc.Ice.Identity;
 
 /**
  * Servant for the handle proxy from the Command API. This is also a
@@ -121,7 +121,7 @@ public class HandleI implements _HandleOperations, IHandle,
     /**
      * The identity of this servant, used during logging and similar operations.
      */
-    private/* final */Ice.Identity id;
+    private/* final */Identity id;
 
     private/* final */SessionI sess;
 
@@ -169,16 +169,16 @@ public class HandleI implements _HandleOperations, IHandle,
     //
 
     public void addCallback(CmdCallbackPrx cb, Current __current) {
-        Ice.Identity id = cb.ice_getIdentity();
-        String key = Ice.Util.identityToString(id);
+        Identity id = cb.ice_getIdentity();
+        String key = com.zeroc.Ice.Util.identityToString(id);
         helper.info("Add callback: %s", key);
         cb = CmdCallbackPrxHelper.checkedCast(cb.ice_oneway());
         callbacks.put(key, cb);
     }
 
     public void removeCallback(CmdCallbackPrx cb, Current __current) {
-        Ice.Identity id = cb.ice_getIdentity();
-        String key = Ice.Util.identityToString(id);
+        Identity id = cb.ice_getIdentity();
+        String key = com.zeroc.Ice.Util.identityToString(id);
         helper.info("Remove callback: %s", key);
         cb = CmdCallbackPrxHelper.checkedCast(cb.ice_oneway());
         callbacks.remove(key);
@@ -323,7 +323,7 @@ public class HandleI implements _HandleOperations, IHandle,
     // CloseableServant. See documentation in interface.
     //
 
-    public void close(Ice.Current current) {
+    public void close(Current current) {
         sess.unregisterServant(id); // No exception
         try {
             closeWithoutNotification(current);
@@ -332,7 +332,7 @@ public class HandleI implements _HandleOperations, IHandle,
         }
     }
 
-    private void closeWithoutNotification(Ice.Current current) {
+    private void closeWithoutNotification(Current current) {
         helper.info("Closing...");
         final State s = state.get();
         if (!State.FINISHED.equals(s) && !State.CANCELLED.equals(s)) {
@@ -369,7 +369,7 @@ public class HandleI implements _HandleOperations, IHandle,
             final List<Object> rv;
             if (req instanceof ReadOnlyStatus.IsAware && ((ReadOnlyStatus.IsAware) req).isReadOnly(readOnly)) {
                 rv = (List<Object>) executor.execute(merged, principal,
-                        new RunSteps(this, "run (ro)", Ice.Util.identityToString(id), req) {
+                        new RunSteps(this, "run (ro)", com.zeroc.Ice.Util.identityToString(id), req) {
                     @Transactional(readOnly = true)
                     public List<Object> doWork(Session session, ServiceFactory sf) {
                         return innerWork(session, sf);
@@ -377,7 +377,7 @@ public class HandleI implements _HandleOperations, IHandle,
                 });
             } else {
                 rv = (List<Object>) executor.execute(merged, principal,
-                        new RunSteps(this, "run (rw)", Ice.Util.identityToString(id), req) {
+                        new RunSteps(this, "run (rw)", com.zeroc.Ice.Util.identityToString(id), req) {
                     @Transactional(readOnly = false)
                     public List<Object> doWork(Session session, ServiceFactory sf) {
                         return innerWork(session, sf);

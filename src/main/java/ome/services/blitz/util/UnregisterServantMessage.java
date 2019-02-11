@@ -27,18 +27,18 @@ public class UnregisterServantMessage extends InternalMessage {
 
     private static final long serialVersionUID = 3409582093802L;
 
-    private final transient Ice.Current curr;
+    private final transient com.zeroc.Ice.Current curr;
 
     private final transient ServantHolder holder;
 
-    public UnregisterServantMessage(Object source, Ice.Current current,
+    public UnregisterServantMessage(Object source, com.zeroc.Ice.Current current,
         ServantHolder holder) {
         super(source);
         this.curr = current;
         this.holder = holder;
     }
 
-    public Ice.Current getCurrent() {
+    public com.zeroc.Ice.Current getCurrent() {
         return this.curr;
     }
 

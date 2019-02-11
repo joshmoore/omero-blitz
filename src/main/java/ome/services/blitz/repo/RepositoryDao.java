@@ -3,7 +3,7 @@ package ome.services.blitz.repo;
 import java.util.List;
 
 import org.hibernate.Session;
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 import ome.api.RawFileStore;
 import ome.io.nio.FileBuffer;
@@ -40,7 +40,7 @@ public interface RepositoryDao {
      *      {@link RawFileBean#setFileIdWithBuffer(long, FileBuffer)} called.
      */
     RawFileStore getRawFileStore(long fileId, CheckedPath checked, String mode,
-            final Ice.Current current) throws SecurityViolation;
+            final Current current) throws SecurityViolation;
 
     /**
      * Delegate to {@link ome.util.SqlAction#findRepoFile(String, String, String, String)}
@@ -53,7 +53,7 @@ public interface RepositoryDao {
      * @return See above.
      */
     OriginalFile findRepoFile(String uuid, CheckedPath checked,
-            String mimetype, Ice.Current current) throws ServerError;
+            String mimetype, Current current) throws ServerError;
 
     /**
      * As {@link #findRepoFile(String, CheckedPath, String, Current)} but
@@ -78,7 +78,7 @@ public interface RepositoryDao {
 
     /**
      * Checks that the given {@link CheckedPath} objects exist (via
-     * {@link #findRepoFile(String, CheckedPath, String, Ice.Current)})
+     * {@link #findRepoFile(String, CheckedPath, String, Current)})
      * and are in the "user" group. If they don't exist, they are created; and
      * if they aren't in the "user" group, they are moved.
      */
@@ -94,7 +94,7 @@ public interface RepositoryDao {
      *      allowed to access the given file.
      * @return See above.
      */
-    boolean canUpdate(IObject obj, Ice.Current current);
+    boolean canUpdate(IObject obj, Current current);
 
     /**
      * Find the original file IDs among those given that are in the given repository.
@@ -103,7 +103,7 @@ public interface RepositoryDao {
      * @param current Ice method invocation context
      * @return those IDs among those given whose original files are in the given repository
      */
-    List<Long> filterFilesByRepository(String repo, List<Long> ids, Ice.Current current);
+    List<Long> filterFilesByRepository(String repo, List<Long> ids, Current current);
 
     /**
      * Gets the original file instance for a given file ID.
@@ -112,7 +112,7 @@ public interface RepositoryDao {
      * @return the original file corresponding to the given file ID
      * @throws SecurityViolation if the query threw a security violation
      */
-    OriginalFile getOriginalFile(long fileId, Ice.Current current)
+    OriginalFile getOriginalFile(long fileId, Current current)
             throws SecurityViolation;
 
     /**
@@ -127,7 +127,7 @@ public interface RepositoryDao {
      * @param current
      */
     List<OriginalFile> getOriginalFiles(String repoUuid, CheckedPath checked,
-            Ice.Current current) throws SecurityViolation;
+            Current current) throws SecurityViolation;
 
     /**
      * Fill the various fields of the {@link Fileset} and then save the
@@ -143,7 +143,7 @@ public interface RepositoryDao {
      * @param current Current context
      */
     Fileset saveFileset(String repoUuid, Fileset fs, ChecksumAlgorithm checksumAlgorithm,
-            List<CheckedPath> paths, Ice.Current current) throws ServerError;
+            List<CheckedPath> paths, Current current) throws ServerError;
 
     /**
      * Load filesets by id.
@@ -151,7 +151,7 @@ public interface RepositoryDao {
      * @param current
      * @return See above.
      */
-    List<Fileset> loadFilesets(List<Long> ids, Ice.Current current)
+    List<Fileset> loadFilesets(List<Long> ids, Current current)
             throws ServerError;
 
     /**
@@ -172,7 +172,7 @@ public interface RepositoryDao {
      *
      */
     OriginalFile register(String repoUuid, CheckedPath checked, String mimetype,
-            final Ice.Current current) throws ServerError;
+            final Current current) throws ServerError;
 
     /**
      * Like {@link #register(String, CheckedPath, String, Ice.Current)} but
@@ -203,7 +203,7 @@ public interface RepositoryDao {
      * @return the requested FsFile object
      *
      */
-    FsFile getFile(final long id, final Ice.Current current,
+    FsFile getFile(final long id, final Current current,
             final String repoUuid);
 
     /**
@@ -216,7 +216,7 @@ public interface RepositoryDao {
      * @return See above.
      * @throws ServerError
      */
-    <T extends Job> T saveJob(T job, Ice.Current current) throws ServerError;
+    <T extends Job> T saveJob(T job, Current current) throws ServerError;
 
     /**
      * Set both the message and the status of the given job.
@@ -226,14 +226,14 @@ public interface RepositoryDao {
      * @param status If null, no modification will be made for the status.
      * @param current Not null.
      */
-    void updateJob(Job job, String message, String status, Ice.Current current)
+    void updateJob(Job job, String message, String status, Current current)
         throws ServerError;
 
     /**
      * Look up information for the current session as specified in the ctx
      * field of the current.
      */
-    EventContext getEventContext(final Ice.Current current);
+    EventContext getEventContext(final Current current);
 
     /**
      * Get the current user's institution.
@@ -241,7 +241,7 @@ public interface RepositoryDao {
      * @param current the current ICE method invocation context
      * @return the institution, may be {@code null}
      */
-    String getUserInstitution(long userId, Ice.Current current);
+    String getUserInstitution(long userId, Current current);
 
     /**
      * Get the current user's institution.

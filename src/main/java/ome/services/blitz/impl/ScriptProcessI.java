@@ -53,11 +53,11 @@ public class ScriptProcessI extends AbstractAmdServant
 
     private final ScriptProcessPrx self;
 
-    private final Ice.Identity id;
+    private final com.zeroc.Ice.Identity id;
 
     private final long jobId;
 
-    public ScriptProcessI(ServiceFactoryI sf, Ice.Current current,
+    public ScriptProcessI(ServiceFactoryI sf, com.zeroc.Ice.Current current,
             InteractiveProcessorPrx processorPrx,
             _InteractiveProcessorOperations processor, ProcessPrx process)
             throws ServerError {
@@ -68,7 +68,7 @@ public class ScriptProcessI extends AbstractAmdServant
         this.process = process;
         this.sf = sf;
         this.cb = new ProcessCallbackI(sf.getAdapter(), "ProcessCallback", process);
-        this.id = new Ice.Identity(UUID.randomUUID().toString(), PROCESSCALLBACK.value);
+        this.id = new com.zeroc.Ice.Identity(UUID.randomUUID().toString(), PROCESSCALLBACK.value);
         this.self = ScriptProcessPrxHelper.uncheckedCast(
                 sf.registerServant(this.id, new _ScriptProcessTie(this)));
         sf.allow(this.self);

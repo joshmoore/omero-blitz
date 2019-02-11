@@ -64,7 +64,7 @@ CONSTANTS -- Don't change for whole file
 #set($PojoI = "${Pojo}I")
 #set($POJO  = "${Pojo.toUpperCase()}")
 #set($POJOI = "${PojoI.toUpperCase()}")
-#set($JAV_CURRENT = "Ice.Current current" )
+#set($JAV_CURRENT = "com.zeroc.Ice.Current current" )
 #set($PYC_CURRENT = "current = None" )
 #set($CPP_CURRENT = "const Ice::Current& current" )
 #set($CPP_CURRENT_UNUSED = "const Ice::Current& /* current */" )
@@ -202,8 +202,8 @@ Note how the whitespace for the python definitions is important.
 [$pyc] IceImport.load("omero_model_${Pojo}_ice")
 [$pyc] from omero.rtypes import rlong
 [$pyc] from collections import namedtuple
-[$pyc] _omero = Ice.openModule("omero")
-[$pyc] _omero_model = Ice.openModule("omero.model")
+[$pyc] _omero = com.zeroc.Ice.openModule("omero")
+[$pyc] _omero_model = com.zeroc.Ice.openModule("omero.model")
 [$pyc] __name__ = "omero.model"
 
 [$pyc] class ${PojoI}(_omero_model.$Pojo):

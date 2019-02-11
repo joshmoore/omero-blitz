@@ -35,7 +35,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 import ome.services.blitz.impl.AbstractCloseableAmdServant;
 import ome.services.blitz.impl.ServiceFactoryI;
 import ome.services.blitz.repo.PublicRepositoryI.AMD_submit;
@@ -94,7 +94,7 @@ public class ManagedImportProcessI extends AbstractCloseableAmdServant
     /**
      * Current which created this instance.
      */
-    private final Ice.Current current;
+    private final Current current;
 
     /**
      * The managed repo instance which created (and ultimately is responsible
@@ -193,10 +193,10 @@ public class ManagedImportProcessI extends AbstractCloseableAmdServant
      * i.e. who's responsible for closing them and removing them from the
      * adapter.
      */
-    protected ImportProcessPrx registerProxy(Ice.Current ignore) throws ServerError {
+    protected ImportProcessPrx registerProxy(Current ignore) throws ServerError {
         _ImportProcessTie tie = new _ImportProcessTie(this);
-        Ice.Current adjustedCurr = repo.makeAdjustedCurrent(current);
-        Ice.ObjectPrx prx = repo.registerServant(tie, this, adjustedCurr);
+        Current adjustedCurr = repo.makeAdjustedCurrent(current);
+        com.zeroc.Ice.ObjectPrx prx = repo.registerServant(tie, this, adjustedCurr);
         return ImportProcessPrxHelper.uncheckedCast(prx);
    }
 
@@ -252,7 +252,7 @@ public class ManagedImportProcessI extends AbstractCloseableAmdServant
                 public UploadState call() throws ServerError {
                     final StopWatch sw2 = new Slf4JStopWatch();
                     final String path = location.sharedPath + FsFile.separatorChar + location.usedFiles.get(i);
-                    final Ice.Current adjustedCurr = repo.makeAdjustedCurrent(ManagedImportProcessI.this.current);
+                    final Current adjustedCurr = repo.makeAdjustedCurrent(ManagedImportProcessI.this.current);
                     adjustedCurr.ctx.put(CallContext.FILENAME_KEY, logFilename);
                     adjustedCurr.ctx.put(CallContext.TOKEN_KEY, rootToken);
                     final RawFileStorePrx prx = repo.file(path, applicableMode,  adjustedCurr);
@@ -413,7 +413,7 @@ public class ManagedImportProcessI extends AbstractCloseableAmdServant
         return state.offset;
     }
 
-    public HandlePrx getHandle(Ice.Current ignore) {
+    public HandlePrx getHandle(Current ignore) {
         return handle;
     }
 

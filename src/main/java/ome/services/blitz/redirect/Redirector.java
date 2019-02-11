@@ -52,7 +52,7 @@ public interface Redirector {
         /**
          * Active communicator for use by the {@link Redirector} instance.
          */
-        Ice.Communicator getCommunicator();
+        com.zeroc.Ice.Communicator getCommunicator();
         
         /**
          * Return all known managers in the current cluster context, possibly
@@ -74,7 +74,7 @@ public interface Redirector {
      * @throws CannotCreateSessionException
      */
     public SessionPrx getProxyOrNull(Context context, String userId,
-            Glacier2.SessionControlPrx control, Ice.Current current)
+            Glacier2.SessionControlPrx control, com.zeroc.Ice.Current current)
             throws CannotCreateSessionException;
 
     /**

@@ -15,8 +15,6 @@ import omero.model.OriginalFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
-import Ice.ObjectAdapter;
 
 /**
  * Standalone repository service.

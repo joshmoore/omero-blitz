@@ -29,13 +29,13 @@ public abstract class Task {
 
     protected final boolean isVoid;
 
-    protected final Ice.Current current;
+    protected final com.zeroc.Ice.Current current;
 
     protected final Method response;
 
     protected final Method exception;
 
-    public Task(Object callback, Ice.Current current, boolean isVoid) {
+    public Task(Object callback, com.zeroc.Ice.Current current, boolean isVoid) {
         this.current = current;
         this.isVoid = isVoid;
         this.cb = callback;

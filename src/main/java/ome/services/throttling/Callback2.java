@@ -21,7 +21,7 @@ public class Callback2<R> extends Task {
 
     private final Object cb;
 
-    private final Ice.Current current;
+    private final com.zeroc.Ice.Current current;
 
     private final Callable<R> callable;
 

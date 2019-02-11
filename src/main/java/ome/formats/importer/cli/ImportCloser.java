@@ -124,7 +124,7 @@ class ImportCloser {
                     try {
                         imPrx.ice_ping();
                         rv.add(imPrx);
-                    } catch (Ice.ObjectNotExistException onee) {
+                    } catch (com.zeroc.Ice.ObjectNotExistException onee) {
                         // ignore
                     }
                 }

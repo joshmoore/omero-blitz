@@ -106,12 +106,12 @@ public class RequestObjectFactoryRegistry extends
         this.ctx = (OmeroContext) ctx;
     }
 
-    public Map<String, ObjectFactory> createFactories(final Ice.Communicator ic) {
+    public Map<String, ObjectFactory> createFactories(final com.zeroc.Ice.Communicator ic) {
         Map<String, ObjectFactory> factories = new HashMap<String, ObjectFactory>();
         factories.put(TimingI.ice_staticId(), new ObjectFactory(
                 TimingI.ice_staticId()) {
             @Override
-            public Ice.Object create(String name) {
+            public com.zeroc.Ice.Object create(String name) {
                 return new TimingI();
             }
 
@@ -119,7 +119,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(DoAllI.ice_staticId(), new ObjectFactory(
                 DoAllI.ice_staticId()) {
             @Override
-            public Ice.Object create(String name) {
+            public com.zeroc.Ice.Object create(String name) {
                 return new DoAllI(ctx);
             }
 
@@ -127,7 +127,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(ListRequestsI.ice_staticId(), new ObjectFactory(
                 ListRequestsI.ice_staticId()) {
             @Override
-            public Ice.Object create(String name) {
+            public com.zeroc.Ice.Object create(String name) {
                 return new ListRequestsI(ctx);
             }
 
@@ -135,7 +135,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(Chgrp2I.ice_staticId(),
                 new ObjectFactory(Chgrp2I.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(Chgrp2I.class);
                     }
 
@@ -143,7 +143,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(Chmod2I.ice_staticId(),
                 new ObjectFactory(Chmod2I.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(Chmod2I.class);
                     }
 
@@ -151,7 +151,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(Chown2I.ice_staticId(),
                 new ObjectFactory(Chown2I.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(Chown2I.class);
                     }
 
@@ -159,7 +159,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(Delete2I.ice_staticId(),
                 new ObjectFactory(Delete2I.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(Delete2I.class);
                     }
 
@@ -167,7 +167,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(SkipHeadI.ice_staticId(),
                 new ObjectFactory(SkipHeadI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(SkipHeadI.class);
                     }
 
@@ -175,49 +175,49 @@ public class RequestObjectFactoryRegistry extends
         factories.put(LegalGraphTargetsI.ice_staticId(),
                 new ObjectFactory(LegalGraphTargetsI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return new LegalGraphTargetsI(graphRequestFactory);
                     }
                 });
         factories.put(OriginalMetadataRequestI.ice_staticId(),
                 new ObjectFactory(OriginalMetadataRequestI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return new OriginalMetadataRequestI(pixelsService);
                     }
                 });
         factories.put(UsedFilesRequestI.ice_staticId(),
                 new ObjectFactory(UsedFilesRequestI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return new UsedFilesRequestI(pixelsService);
                     }
                 });
         factories.put(ManageImageBinariesI.ice_staticId(),
                 new ObjectFactory(ManageImageBinariesI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return new ManageImageBinariesI(pixelsService, voter);
                     }
                 });
         factories.put(FindPyramidsI.ice_staticId(),
                 new ObjectFactory(FindPyramidsI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return new FindPyramidsI(pixelsService);
                     }
                 });
         factories.put(DiskUsageI.ice_staticId(),
                 new ObjectFactory(DiskUsageI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return new DiskUsageI(pixelsService, thumbnailService, graphRequestFactory.getGraphPathBean());
                     }
                 });
         factories.put(DiskUsage2I.ice_staticId(),
                 new ObjectFactory(DiskUsage2I.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         final DiskUsage2I request = graphRequestFactory.getRequest(DiskUsage2I.class);
                         request.setPixelsService(pixelsService);
                         request.setThumbnailService(thumbnailService);
@@ -227,35 +227,35 @@ public class RequestObjectFactoryRegistry extends
         factories.put(DuplicateI.ice_staticId(),
                 new ObjectFactory(DuplicateI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(DuplicateI.class);
                     }
                 });
         factories.put(SendEmailRequestI.ice_staticId(),
                 new ObjectFactory(SendEmailRequestI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                     	return new SendEmailRequestI(mailUtil);
                     }
                 });
         factories.put(ResetPasswordRequestI.ice_staticId(),
                 new ObjectFactory(ResetPasswordRequestI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                     	return new ResetPasswordRequestI(mailUtil, passwordUtil, sec, passwordProvider);
                     }
                 });
         factories.put(FindParentsI.ice_staticId(),
                 new ObjectFactory(FindParentsI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(FindParentsI.class);
                     }
                 });
         factories.put(FindChildrenI.ice_staticId(),
                 new ObjectFactory(FindChildrenI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.getRequest(FindChildrenI.class);
                     }
                 });
@@ -263,7 +263,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(ChildOptionI.ice_staticId(),
                 new ObjectFactory(ChildOptionI.ice_staticId()) {
                     @Override
-                    public Ice.Object create(String name) {
+                    public com.zeroc.Ice.Object create(String name) {
                         return graphRequestFactory.createChildOption();
                     }
                 });

@@ -65,7 +65,7 @@ import omero.romio.PlaneDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.Current;
+import com.zeroc.Ice.Current;
 
 /**
  *
@@ -382,7 +382,7 @@ public class BfPixelsStoreI extends _RawPixelsStoreDisp {
     }
 
     /* (non-Javadoc)
-     * @see omero.api._PyramidServiceOperations#getResolutionLevels_async(omero.api.AMD_PyramidService_getResolutionLevels, Ice.Current)
+     * @see omero.api._PyramidServiceOperations#getResolutionLevels_async(omero.api.AMD_PyramidService_getResolutionLevels, Current)
      */
     public void getResolutionLevels_async(
             AMD_PyramidService_getResolutionLevels __cb, Current __current)
@@ -399,7 +399,7 @@ public class BfPixelsStoreI extends _RawPixelsStoreDisp {
     }
 
     /* (non-Javadoc)
-     * @see omero.api._PyramidServiceOperations#getTileSize_async(omero.api.AMD_PyramidService_getTileSize, Ice.Current)
+     * @see omero.api._PyramidServiceOperations#getTileSize_async(omero.api.AMD_PyramidService_getTileSize, Current)
      */
     public void getTileSize_async(AMD_PyramidService_getTileSize __cb,
             Current __current) throws ServerError
@@ -408,7 +408,7 @@ public class BfPixelsStoreI extends _RawPixelsStoreDisp {
     }
 
     /* (non-Javadoc)
-     * @see omero.api._PyramidServiceOperations#requiresPixelsPyramid_async(omero.api.AMD_PyramidService_requiresPixelsPyramid, Ice.Current)
+     * @see omero.api._PyramidServiceOperations#requiresPixelsPyramid_async(omero.api.AMD_PyramidService_requiresPixelsPyramid, Current)
      */
     public void requiresPixelsPyramid_async(AMD_PyramidService_requiresPixelsPyramid __cb,
             Current __current) throws ServerError
@@ -417,7 +417,7 @@ public class BfPixelsStoreI extends _RawPixelsStoreDisp {
     }
 
     /* (non-Javadoc)
-     * @see omero.api._PyramidServiceOperations#setResolutionLevel_async(omero.api.AMD_PyramidService_setResolutionLevel, int, Ice.Current)
+     * @see omero.api._PyramidServiceOperations#setResolutionLevel_async(omero.api.AMD_PyramidService_setResolutionLevel, int, Current)
      */
     public void setResolutionLevel_async(
             AMD_PyramidService_setResolutionLevel __cb, int resolutionLevel,
@@ -427,7 +427,7 @@ public class BfPixelsStoreI extends _RawPixelsStoreDisp {
     }
 
     /* (non-Javadoc)
-     * @see omero.api._PyramidServiceOperations#getResolutionLevel_async(omero.api.AMD_PyramidService_getResolutionLevel, Ice.Current)
+     * @see omero.api._PyramidServiceOperations#getResolutionLevel_async(omero.api.AMD_PyramidService_getResolutionLevel, Current)
      */
     public void getResolutionLevel_async(
             AMD_PyramidService_getResolutionLevel __cb, Current __current)
@@ -437,7 +437,7 @@ public class BfPixelsStoreI extends _RawPixelsStoreDisp {
     }
 
     /* (non-Javadoc)
-     * @see omero.api._RawPixelsStoreOperations#getTile_async(omero.api.AMD_RawPixelsStore_getTile, int, int, int, int, int, int, int, Ice.Current)
+     * @see omero.api._RawPixelsStoreOperations#getTile_async(omero.api.AMD_RawPixelsStore_getTile, int, int, int, int, int, int, int, Current)
      */
     public void getTile_async(AMD_RawPixelsStore_getTile __cb, int z, int c,
             int t, int x, int y, int w, int h, Current __current)
@@ -447,7 +447,7 @@ public class BfPixelsStoreI extends _RawPixelsStoreDisp {
     }
 
     /* (non-Javadoc)
-     * @see omero.api._RawPixelsStoreOperations#setTile_async(omero.api.AMD_RawPixelsStore_setTile, byte[], int, int, int, int, int, int, int, Ice.Current)
+     * @see omero.api._RawPixelsStoreOperations#setTile_async(omero.api.AMD_RawPixelsStore_setTile, byte[], int, int, int, int, int, int, int, Current)
      */
     public void setTile_async(AMD_RawPixelsStore_setTile __cb, byte[] buf,
             int z, int c, int t, int x, int y, int w, int h, Current __current)

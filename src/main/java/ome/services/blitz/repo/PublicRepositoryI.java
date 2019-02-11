@@ -54,8 +54,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.annotation.Transactional;
 
-import Ice.Current;
-
 import ome.api.IQuery;
 import ome.api.RawFileStore;
 import ome.formats.importer.ImportConfig;
@@ -217,15 +215,6 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         this.serverPaths.setPathSanitizer(new MakePathComponentSafe(this.filePathRestrictions));
     }
 
-    /**
-     * Wrap the current instance with an {@link Ice.TieBase} so that it
-     * can be turned into a proxy. This is required due to the subclassing
-     * between public repo instances.
-     */
-    public Ice.Object tie() {
-        return new _RepositoryTie(this);
-    }
-
     public String getRepoUuid() {
         return repoUuid;
     }
@@ -290,7 +279,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
 
     /**
      * Delete paths recursively as described in Repositories.ice. Internally
-     * uses {@link #treeList(String, Ice.Current)} to build the recursive
+     * uses {@link #treeList(String, Current)} to build the recursive
      * list of files.
      *
      * @param files non-null, preferably non-empty list of files to check.
@@ -302,7 +291,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
             Current __current) throws ServerError {
 
         // TODO: This could be refactored to be the default in shared servants
-        final Ice.Current adjustedCurr = makeAdjustedCurrent(__current);
+        final com.zeroc.Ice.Current adjustedCurr = makeAdjustedCurrent(__current);
         final String delId = Delete2.ice_staticId();
         final Delete2 deleteRequest = (Delete2) getFactory(delId, adjustedCurr).create(delId);
         final List<Long> fileIds = new ArrayList<Long>();
@@ -365,7 +354,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         final CheckedPath checked = checkPath(path, null, __current);
 
         // See comment below in RawFileStorePrx
-        Ice.Current adjustedCurr = makeAdjustedCurrent(__current);
+        com.zeroc.Ice.Current adjustedCurr = makeAdjustedCurrent(__current);
 
 
         // Check that the file is in the DB and has minimally "r" permissions
@@ -394,7 +383,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         _RawPixelsStoreTie tie = new _RawPixelsStoreTie(rps);
         RegisterServantMessage msg = new RegisterServantMessage(this, tie, adjustedCurr);
         publishMessage(msg);
-        Ice.ObjectPrx prx = msg.getProxy();
+        com.zeroc.Ice.ObjectPrx prx = msg.getProxy();
         if (prx == null) {
             throw new omero.InternalException(null, null, "No ServantHolder for proxy.");
         }
@@ -420,7 +409,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
      * and the DB). If this doesn't hold, then a SecurityViolation will be thrown.
      */
     protected OriginalFile findInDb(CheckedPath checked, String mode,
-            Ice.Current current) throws ServerError {
+                                    com.zeroc.Ice.Current current) throws ServerError {
 
         final OriginalFile ofile =
                 repositoryDao.findRepoFile(repoUuid, checked, null, current);
@@ -489,7 +478,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
      */
     //TODO: Should be refactored elsewhere.
     @Deprecated
-    protected ome.model.core.OriginalFile persistLogFile(final ome.model.core.OriginalFile originalFile, Ice.Current current)
+    protected ome.model.core.OriginalFile persistLogFile(final ome.model.core.OriginalFile originalFile, com.zeroc.Ice.Current current)
                 throws ServerError {
 
         final Executor executor = this.context.getBean("executor", Executor.class);
@@ -515,12 +504,12 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
 }
 
     protected OriginalFile findOrCreateInDb(CheckedPath checked, String mode,
-            Ice.Current curr) throws ServerError {
+                                            com.zeroc.Ice.Current curr) throws ServerError {
         return findOrCreateInDb(checked, mode, null, curr);
     }
 
     protected OriginalFile findOrCreateInDb(CheckedPath checked, String mode,
-            String mimetype, Ice.Current curr) throws ServerError {
+            String mimetype, com.zeroc.Ice.Current curr) throws ServerError {
 
         OriginalFile ofile = findInDb(checked, mode, curr);
         if (ofile != null) {
@@ -542,17 +531,17 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         return ofile;
     }
 
-    protected Ice.Current makeAdjustedCurrent(Ice.Current __current) {
+    protected com.zeroc.Ice.Current makeAdjustedCurrent(com.zeroc.Ice.Current __current) {
         // WORKAROUND: See the comment in RawFileStoreI.
         // The most likely correction of this
         // is to have PublicRepositories not be global objects, but be created
         // on demand for each session via SharedResourcesI
         final String sessionUuid = __current.ctx.get(omero.constants.SESSIONUUID.value);
-        final Ice.Current adjustedCurr = new Ice.Current();
+        final com.zeroc.Ice.Current adjustedCurr = new com.zeroc.Ice.Current();
         adjustedCurr.ctx = __current.ctx;
         adjustedCurr.adapter = __current.adapter;
         adjustedCurr.operation = __current.operation;
-        adjustedCurr.id = new Ice.Identity(__current.id.name, sessionUuid);
+        adjustedCurr.id = new com.zeroc.Ice.Identity(__current.id.name, sessionUuid);
         return adjustedCurr;
     }
 
@@ -562,7 +551,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
      * @param sessionUuid a new session UUID for the instance
      * @return a new {@link Ice.Current} instance like the given one but with the new session UUID
      */
-    protected Current sudo(Current current, String sessionUuid) {
+    protected Current sudo(com.zeroc.Ice.Current current, String sessionUuid) {
         final Current sudoCurrent =  makeAdjustedCurrent(current);
         sudoCurrent.ctx = new HashMap<String, String>(current.ctx);
         sudoCurrent.ctx.put(SUDO_REAL_SESSIONUUID, current.ctx.get(omero.constants.SESSIONUUID.value));
@@ -587,7 +576,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
             Current __current) throws ServerError, InternalException {
 
 
-        final Ice.Current adjustedCurr = makeAdjustedCurrent(__current);
+        final com.zeroc.Ice.Current adjustedCurr = makeAdjustedCurrent(__current);
         final BlitzExecutor be =
                 context.getBean("throttlingStrategy", BlitzExecutor.class);
 
@@ -608,7 +597,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         }
 
         final _RawFileStoreTie tie = new _RawFileStoreTie(rfs);
-        Ice.ObjectPrx prx = registerServant(tie, rfs, adjustedCurr);
+        com.zeroc.Ice.ObjectPrx prx = registerServant(tie, rfs, adjustedCurr);
         return RawFileStorePrxHelper.uncheckedCast(prx);
 
     }
@@ -625,14 +614,14 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
      * @return See above.
      * @throws ServerError
      */
-    Ice.ObjectPrx registerServant(Ice.Object tie,
-            AbstractAmdServant servant, Ice.Current current)
+    com.zeroc.Ice.ObjectPrx registerServant(com.zeroc.Ice.Object tie,
+            AbstractAmdServant servant, com.zeroc.Ice.Current current)
                     throws ServerError {
 
         final RegisterServantMessage msg = new RegisterServantMessage(this, tie,
                 servant.getClass().getSimpleName(), current);
         publishMessage(msg);
-        Ice.ObjectPrx prx = msg.getProxy();
+        com.zeroc.Ice.ObjectPrx prx = msg.getProxy();
         if (prx == null) {
             throw new omero.InternalException(null, null, "No ServantHolder for proxy.");
         }
@@ -656,13 +645,13 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
 
     protected AMD_submit submitRequest(final ServiceFactoryI sf,
             final omero.cmd.Request req,
-            final Ice.Current current) throws ServerError, InternalException {
+            final com.zeroc.Ice.Current current) throws ServerError, InternalException {
         return submitRequest(sf, req, current, null);
     }
 
     protected AMD_submit submitRequest(final ServiceFactoryI sf,
             final omero.cmd.Request req,
-            final Ice.Current current,
+            final com.zeroc.Ice.Current current,
             final Executor.Priority priority) throws ServerError, InternalException {
 
         final AMD_submit submit = new AMD_submit();
@@ -677,8 +666,8 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
         return submit;
     }
 
-    protected Ice.ObjectFactory getFactory(String id, Ice.Current current) {
-        final Ice.Communicator ic = current.adapter.getCommunicator();
+    protected com.zeroc.Ice.ObjectFactory getFactory(String id, com.zeroc.Ice.Current current) {
+        final com.zeroc.Ice.Communicator ic = current.adapter.getCommunicator();
         return ic.findObjectFactory(id);
     }
 
@@ -838,7 +827,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
      * @return OriginalFile object.
      *
      */
-    private CheckedPath checkId(final long id, final Ice.Current curr)
+    private CheckedPath checkId(final long id, final com.zeroc.Ice.Current curr)
         throws SecurityViolation, ValidationException {
         // TODO: could getOriginalFile and getFile be reduced to a single call?
         final FsFile file = this.repositoryDao.getFile(id, curr, this.repoUuid);

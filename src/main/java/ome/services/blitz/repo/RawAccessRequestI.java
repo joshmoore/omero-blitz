@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 
-import Ice.Current;
-
 import ome.io.nio.FileBuffer;
 
 import ome.services.blitz.fire.Registry;
@@ -99,7 +97,7 @@ public class RawAccessRequestI extends RawAccessRequest implements IRequest {
             String proposedName = "InternalRepository-" + repoUuid;
             InternalRepositoryPrx[] proxies = reg.lookupRepositories();
             for (InternalRepositoryPrx prx : proxies) {
-                Ice.Identity id = prx.ice_getIdentity();
+                com.zeroc.Ice.Identity id = prx.ice_getIdentity();
                 if (proposedName.equals(id.name)) {
                     repo = prx;
                     log.debug("Found repo " + repoUuid);

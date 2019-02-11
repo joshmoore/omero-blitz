@@ -24,46 +24,46 @@ public class RegisterServantMessage extends FindServiceFactoryMessage {
 
     private static final long serialVersionUID = 3409582093802L;
 
-    private final transient Ice.Object servant;
+    private final transient com.zeroc.Ice.Object servant;
 
     private final String readableName;
 
-    private transient Ice.ObjectPrx prx;
+    private transient com.zeroc.Ice.ObjectPrx prx;
 
-    public RegisterServantMessage(Object source, Ice.Object servant,
-            Ice.Current current) {
+    public RegisterServantMessage(Object source, com.zeroc.Ice.Object servant,
+                                  com.zeroc.Ice.Current current) {
         this(source, servant, "unknown", current);
     }
 
-    public RegisterServantMessage(Object source, Ice.Object servant,
+    public RegisterServantMessage(Object source, com.zeroc.Ice.Object servant,
             String name, Ice.Current current) {
         super(source, current);
         this.servant = servant;
         this.readableName = name;
     }
 
-    public Ice.Object getServant() {
+    public com.zeroc.Ice.Object getServant() {
         return this.servant;
     }
 
-    private void setProxy(Ice.ObjectPrx prx) {
+    private void setProxy(com.zeroc.Ice.ObjectPrx prx) {
         if (this.prx != null) {
             throw new RuntimeException("Proxy can only be set once!");
         }
         this.prx = prx;
     }
 
-    public Ice.ObjectPrx getProxy() {
+    public com.zeroc.Ice.ObjectPrx getProxy() {
         return this.prx;
     }
 
-    public void setServiceFactory(Ice.Identity id, ServiceFactoryI sf)
+    public void setServiceFactory(com.zeroc.Ice.Identity id, ServiceFactoryI sf)
             throws omero.ServerError {
         super.setServiceFactory(id, sf);
         if (sf != null) {
-            final Ice.Object servant = getServant();
+            final com.zeroc.Ice.Object servant = getServant();
             final String name = UUID.randomUUID().toString() + "-" + readableName;
-            final Ice.Identity newId = new Ice.Identity(name, id.name);
+            final com.zeroc.Ice.Identity newId = new com.zeroc.Ice.Identity(name, id.name);
             sf.configureServant(servant); // Sets holder
             setProxy(sf.registerServant(newId, servant, getCurrent()));
         }

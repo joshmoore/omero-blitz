@@ -10,7 +10,6 @@ import ome.services.blitz.fire.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Ice.ObjectAdapter;
 
 /**
  * Simple configuration class which is created via repository.xml Spring
@@ -24,11 +23,11 @@ public class InternalRepositoryConfig {
     private final static Logger log = LoggerFactory
             .getLogger(InternalRepositoryConfig.class);
 
-    private final Ice.InitializationData id;
+    private final com.zeroc.Ice.InitializationData id;
 
-    private final Ice.Communicator ic;
+    private final com.zeroc.Ice.Communicator ic;
 
-    private final Ice.ObjectAdapter oa;
+    private final com.zeroc.Ice.ObjectAdapter oa;
 
     private final Registry reg;
 
@@ -37,13 +36,13 @@ public class InternalRepositoryConfig {
         //
         // Ice Initialization
         //
-        id = new Ice.InitializationData();
-        id.properties = Ice.Util.createProperties();
+        id = new com.zeroc.Ice.InitializationData();
+        id.properties = com.zeroc.Ice.Util.createProperties();
         String ICE_CONFIG = System.getProperty("ICE_CONFIG");
         if (ICE_CONFIG != null) {
             id.properties.load(ICE_CONFIG);
         }
-        ic = Ice.Util.initialize(id);
+        ic = com.zeroc.Ice.Util.initialize(id);
 
         reg = new Registry.Impl(ic);
         oa = ic.createObjectAdapter("RepositoryAdapter");
@@ -57,11 +56,11 @@ public class InternalRepositoryConfig {
 
     }
 
-    public Ice.Communicator getCommunicator() {
+    public com.zeroc.Ice.Communicator getCommunicator() {
         return ic;
     }
 
-    public ObjectAdapter getObjectAdapter() {
+    public com.zeroc.Ice.ObjectAdapter getObjectAdapter() {
         return oa;
     }
 
