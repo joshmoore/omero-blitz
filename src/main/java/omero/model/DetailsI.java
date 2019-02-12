@@ -44,7 +44,7 @@ public class DetailsI extends Details implements ome.model.ModelBased {
         };
     };
 
-    public final static Ice.ObjectFactory Factory = makeFactory(null);
+    public final static com.zeroc.Ice.ObjectFactory Factory = makeFactory(null);
 
     protected final omero.client client;
 
@@ -79,11 +79,11 @@ public class DetailsI extends Details implements ome.model.ModelBased {
         return this.call;
     }
 
-    public omero.model.Experimenter getOwner(Ice.Current current) {
+    public omero.model.Experimenter getOwner(com.zeroc.Ice.Current current) {
         return this.owner;
     }
 
-    public void setOwner(omero.model.Experimenter owner, Ice.Current current) {
+    public void setOwner(omero.model.Experimenter owner, com.zeroc.Ice.Current current) {
         this.owner = owner;
 
     }

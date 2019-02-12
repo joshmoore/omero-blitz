@@ -326,35 +326,35 @@ public class client {
         }
 
         // Strictly necessary for this class to work
-        optionallySetProperty(id, "Ice.ImplicitContext", "Shared");
-        optionallySetProperty(id, "Ice.ACM.Client.Timeout",
+        optionallySetProperty(id, "com.zeroc.Ice.ImplicitContext", "Shared");
+        optionallySetProperty(id, "com.zeroc.Ice.ACM.Client.Timeout",
                 ""+omero.constants.ACMCLIENTTIMEOUT.value);
-        optionallySetProperty(id, "Ice.ACM.Client.Heartbeat", ""+
+        optionallySetProperty(id, "com.zeroc.Ice.ACM.Client.Heartbeat", ""+
                 omero.constants.ACMCLIENTHEARTBEAT.value);
-        optionallySetProperty(id, "Ice.CacheMessageBuffers", "0");
-        optionallySetProperty(id, "Ice.RetryIntervals", "-1");
-        optionallySetProperty(id, "Ice.Default.EndpointSelection", "Ordered");
-        optionallySetProperty(id, "Ice.Default.PreferSecure", "1");
-        optionallySetProperty(id, "Ice.Plugin.IceSSL", "IceSSL.PluginFactory");
-        optionallySetProperty(id, "IceSSL.Protocols", "tls1");
-        optionallySetProperty(id, "IceSSL.Ciphers", "NONE (DH_anon.*AES)");
-        optionallySetProperty(id, "IceSSL.VerifyPeer", "0");
+        optionallySetProperty(id, "com.zeroc.Ice.CacheMessageBuffers", "0");
+        optionallySetProperty(id, "com.zeroc.Ice.RetryIntervals", "-1");
+        optionallySetProperty(id, "com.zeroc.Ice.Default.EndpointSelection", "Ordered");
+        optionallySetProperty(id, "com.zeroc.Ice.Default.PreferSecure", "1");
+        optionallySetProperty(id, "com.zeroc.Ice.Plugin.IceSSL", "IceSSL.PluginFactory");
+        optionallySetProperty(id, "com.zeroc.IceSSL.Protocols", "tls1");
+        optionallySetProperty(id, "com.zeroc.IceSSL.Ciphers", "NONE (DH_anon.*AES)");
+        optionallySetProperty(id, "com.zeroc.IceSSL.VerifyPeer", "0");
         optionallySetProperty(id, "omero.block_size", Integer
             .toString(omero.constants.DEFAULTBLOCKSIZE.value));
 
         // Setting MessageSizeMax
-        optionallySetProperty(id, "Ice.MessageSizeMax", Integer
+        optionallySetProperty(id, "com.zeroc.Ice.MessageSizeMax", Integer
             .toString(omero.constants.MESSAGESIZEMAX.value));
 
         // Setting ConnectTimeout
-        parseAndSetInt(id, "Ice.Override.ConnectTimeout",
+        parseAndSetInt(id, "com.zeroc.Ice.Override.ConnectTimeout",
                 omero.constants.CONNECTTIMEOUT.value);
 
         // Set large thread pool max values for all communicators
         for (String x : Arrays.asList("Client", "Server")) {
-            String sizemax = id.properties.getProperty(String.format("Ice.ThreadPool.%s.SizeMax", x));
+            String sizemax = id.properties.getProperty(String.format("com.zeroc.Ice.ThreadPool.%s.SizeMax", x));
             if (sizemax == null || sizemax.length() == 0) {
-                id.properties.setProperty(String.format("Ice.ThreadPool.%s.SizeMax", x), "50");
+                id.properties.setProperty(String.format("com.zeroc.Ice.ThreadPool.%s.SizeMax", x), "50");
             }
         }
 
@@ -363,7 +363,7 @@ public class client {
                 omero.constants.GLACIER2PORT.value);
 
         // Default Router, set a default and then replace
-        String router = id.properties.getProperty("Ice.Default.Router");
+        String router = id.properties.getProperty("com.zeroc.Ice.Default.Router");
         if (router == null || router.length() == 0) {
             router = omero.constants.DEFAULTROUTER.value;
         }
@@ -371,7 +371,7 @@ public class client {
                 "<\"omero.host\" not set>");
         router = router.replaceAll("@omero.port@", port);
         router = router.replaceAll("@omero.host@", host);
-        id.properties.setProperty("Ice.Default.Router", router);
+        id.properties.setProperty("com.zeroc.Ice.Default.Router", router);
 
         // Dump properties
         String dump = id.properties.getProperty("omero.dump");
@@ -610,7 +610,7 @@ public class client {
      */
     public Map<String, String> getPropertyMap(com.zeroc.Ice.Properties properties) {
         Map<String, String> rv = new HashMap<String, String>();
-        for (String prefix : Arrays.asList("omero", "Ice")) {
+        for (String prefix : Arrays.asList("omero", "com.zeroc.Ice")) {
             Map<String, String> prefixed = properties
                     .getPropertiesForPrefix(prefix);
             rv.putAll(prefixed);
@@ -713,7 +713,7 @@ public class client {
                 __oa = __ic.createObjectAdapterWithRouter("omero.ClientCallback", rtr);
                 __oa.activate();
 
-                Ice.Identity id = new Ice.Identity();
+                com.zeroc.Ice.Identity id = new Ice.Identity();
                 id.name = __uuid;
                 id.category = rtr.getCategoryForClient();
 

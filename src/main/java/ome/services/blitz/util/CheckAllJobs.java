@@ -58,7 +58,7 @@ public class CheckAllJobs extends OnContextRefreshedEventListener {
         this.ex = ex;
         this.oa = oa;
         this.tm = tm;
-        this.id = new Ice.Identity(UUID.randomUUID().toString(),
+        this.id = new com.zeroc.Ice.Identity(UUID.randomUUID().toString(),
                 PROCESSORCALLBACK.value);
     }
 

@@ -412,7 +412,7 @@ public final class SessionManagerI extends Glacier2._SessionManagerDisp
     protected ServiceFactoryI getServiceFactory(com.zeroc.Ice.Identity iid) {
         com.zeroc.Ice.Object obj = adapter.find(iid);
         if (obj == null) {
-            log.debug(Ice.Util.identityToString(iid)
+            log.debug(com.zeroc.Ice.Util.identityToString(iid)
                     + " already removed.");
             return null;
         }

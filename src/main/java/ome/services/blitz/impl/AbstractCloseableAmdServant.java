@@ -46,7 +46,7 @@ public abstract class AbstractCloseableAmdServant extends AbstractAmdServant
         super(service, be);
     }
 
-    public final void close(Ice.Current __current) {
+    public final void close(com.zeroc.Ice.Current __current) {
         final RuntimeException[] re = new RuntimeException[1];
         AMD_StatefulServiceInterface_close cb =
             new AMD_StatefulServiceInterface_close() {
@@ -78,7 +78,7 @@ public abstract class AbstractCloseableAmdServant extends AbstractAmdServant
      * @see <a href="https://trac.openmicroscopy.org/ome/ticket/1855">ticket:1855</a>
      */
     public final void close_async(AMD_StatefulServiceInterface_close __cb,
-            Ice.Current __current) {
+                                  com.zeroc.Ice.Current __current) {
 
         Throwable t = null;
 
@@ -123,13 +123,13 @@ public abstract class AbstractCloseableAmdServant extends AbstractAmdServant
         }
     }
 
-    protected abstract void preClose(Ice.Current current) throws Throwable;
+    protected abstract void preClose(com.zeroc.Ice.Current current) throws Throwable;
 
     /**
      * Should not throw any exceptions which should be detected by clients
      * since it is called in a finally block after the client thread has been
      * released.
      */
-    protected abstract void postClose(Ice.Current current);
+    protected abstract void postClose(com.zeroc.Ice.Current current);
 
 }

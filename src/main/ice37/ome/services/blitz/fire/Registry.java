@@ -78,11 +78,11 @@ public interface Registry {
     public abstract IceGrid.AdminSessionPrx getAdminSession()
             throws PermissionDeniedException;
 
-    public abstract void addObject(Ice.ObjectPrx obj) throws Exception;
+    public abstract void addObject(com.zeroc.Ice.ObjectPrx obj) throws Exception;
 
-    public abstract void removeObject(Ice.Identity id) throws Exception;
+    public abstract void removeObject(com.zeroc.Ice.Identity id) throws Exception;
 
-    public abstract boolean removeObjectSafely(Ice.Identity id);
+    public abstract boolean removeObjectSafely(com.zeroc.Ice.Identity id);
 
     /**
      * Returns all found cluster nodes or null if something goes wrong during
@@ -102,9 +102,9 @@ public interface Registry {
 
         private final static Logger log = LoggerFactory.getLogger(Registry.class);
 
-        private final Ice.Communicator ic;
+        private final com.zeroc.Ice.Communicator ic;
 
-        public Impl(Ice.Communicator ic) {
+        public Impl(com.zeroc.Ice.Communicator ic) {
             this.ic = ic;
         }
 
@@ -114,7 +114,7 @@ public interface Registry {
 
             int tryCount = 0;
             Exception excpt = null;
-            Ice.ObjectPrx prx = ic.stringToProxy("IceGrid/Query");
+            com.zeroc.Ice.ObjectPrx prx = ic.stringToProxy("IceGrid/Query");
             IceGrid.QueryPrx query = IceGrid.QueryPrxHelper.checkedCast(prx);
 
             if (client_uuid == null || client_uuid.isEmpty()) {
@@ -135,7 +135,7 @@ public interface Registry {
                             .checkedCast(prx);
                     SessionPrx sf = blitz.create(user, null, ctx);
                     return omero.api.ServiceFactoryPrxHelper.checkedCast(sf);
-                } catch (Ice.ObjectAdapterDeactivatedException oade) {
+                } catch (com.zeroc.Ice.ObjectAdapterDeactivatedException oade) {
                     // Server is going down. wait an interval and this may have
                     // been shutdown, too.
                     excpt = oade;
@@ -165,10 +165,10 @@ public interface Registry {
          * 
          * @see ome.services.blitz.fire.T#getGridQuery()
          */
-        public IceGrid.QueryPrx getGridQuery() {
+        public com.zeroc.IceGrid.QueryPrx getGridQuery() {
             try {
-                Ice.ObjectPrx objectPrx = ic.stringToProxy("IceGrid/Query");
-                IceGrid.QueryPrx query = IceGrid.QueryPrxHelper
+                com.zeroc.Ice.ObjectPrx objectPrx = ic.stringToProxy("IceGrid/Query");
+                com.zeroc.IceGrid.QueryPrx query = com.zeroc.IceGrid.QueryPrxHelper
                         .checkedCast(objectPrx);
                 return query;
             } catch (Exception e) {
@@ -182,12 +182,12 @@ public interface Registry {
          * 
          * @see ome.services.blitz.fire.T#getAdminSession()
          */
-        public IceGrid.AdminSessionPrx getAdminSession()
+        public com.zeroc.IceGrid.AdminSessionPrx getAdminSession()
                 throws PermissionDeniedException {
-            Ice.ObjectPrx objectPrx = ic.stringToProxy("IceGrid/Registry");
-            IceGrid.RegistryPrx reg = IceGrid.RegistryPrxHelper
+            com.zeroc.Ice.ObjectPrx objectPrx = ic.stringToProxy("IceGrid/Registry");
+            com.zeroc.IceGrid.RegistryPrx reg = com.zeroc.IceGrid.RegistryPrxHelper
                     .checkedCast(objectPrx);
-            IceGrid.AdminSessionPrx session = reg
+            com.zeroc.IceGrid.AdminSessionPrx session = reg
                     .createAdminSession("null", "");
             return session;
         }
@@ -197,15 +197,15 @@ public interface Registry {
          * 
          * @see ome.services.blitz.fire.T#addObject(Ice.ObjectPrx)
          */
-        public void addObject(Ice.ObjectPrx obj) throws Exception {
-            IceGrid.AdminSessionPrx session = getAdminSession();
-            IceGrid.AdminPrx admin = session.getAdmin();
+        public void addObject(com.zeroc.Ice.ObjectPrx obj) throws Exception {
+            com.zeroc.IceGrid.AdminSessionPrx session = getAdminSession();
+            com.zeroc.IceGrid.AdminPrx admin = session.getAdmin();
             String str = ic.identityToString(obj.ice_getIdentity());
             try {
                 admin.addObject(obj);
                 log.info("Added " + str 
                         + " to registry");
-            } catch (IceGrid.ObjectExistsException e) {
+            } catch (com.zeroc.IceGrid.ObjectExistsException e) {
                 admin.updateObject(obj);
                 log.info("Updated " + str + " in registry");
             } finally {
@@ -218,8 +218,8 @@ public interface Registry {
          * 
          * @see ome.services.blitz.fire.T#removeObject(Ice.Identity)
          */
-        public void removeObject(Ice.Identity id) throws Exception {
-            IceGrid.AdminSessionPrx session = getAdminSession();
+        public void removeObject(com.zeroc.Ice.Identity id) throws Exception {
+            com.zeroc.IceGrid.AdminSessionPrx session = getAdminSession();
             try {
                 session.getAdmin().removeObject(id);
                 log.info("Removed " + ic.identityToString(id)
@@ -234,12 +234,12 @@ public interface Registry {
          * 
          * @see ome.services.blitz.fire.T#removeObjectSafely(Ice.Identity)
          */
-        public boolean removeObjectSafely(Ice.Identity id) {
+        public boolean removeObjectSafely(com.zeroc.Ice.Identity id) {
             try {
                 removeObject(id);
                 return true;
-            } catch (IceGrid.ObjectNotRegisteredException onre) {
-                log.debug(Ice.Util.identityToString(id) + " not registered");
+            } catch (com.zeroc.IceGrid.ObjectNotRegisteredException onre) {
+                log.debug(com.zeroc.Ice.Util.identityToString(id) + " not registered");
             } catch (Exception e) {
                 log.error("Failed to remove registry object "
                         + Ice.Util.identityToString(id), e);
@@ -248,12 +248,12 @@ public interface Registry {
         }
 
         public ClusterNodePrx[] lookupClusterNodes() {
-            IceGrid.QueryPrx query = getGridQuery();
+            com.zeroc.IceGrid.QueryPrx query = getGridQuery();
             if (query == null) {
                 return null; // EARLY EXIT
             }
             try {
-                Ice.ObjectPrx[] candidates = null;
+                com.zeroc.Ice.ObjectPrx[] candidates = null;
                 candidates = query.findAllObjectsByType(_ClusterNodeDisp
                         .ice_staticId());
                 ClusterNodePrx[] nodes = new ClusterNodePrx[candidates.length];
@@ -271,12 +271,12 @@ public interface Registry {
         }
 
         public ProcessorPrx[] lookupProcessors() {
-            IceGrid.QueryPrx query = getGridQuery();
+            com.zeroc.IceGrid.QueryPrx query = getGridQuery();
             if (query == null) {
                 return null; // EARLY EXIT
             }
             try {
-                Ice.ObjectPrx[] candidates = null;
+                com.zeroc.Ice.ObjectPrx[] candidates = null;
                 candidates = query.findAllObjectsByType(_ProcessorDisp
                         .ice_staticId());
                 ProcessorPrx[] procs = new ProcessorPrx[candidates.length];
@@ -293,12 +293,12 @@ public interface Registry {
         }
 
         public TablesPrx[] lookupTables() {
-            IceGrid.QueryPrx query = getGridQuery();
+            com.zeroc.IceGrid.QueryPrx query = getGridQuery();
             if (query == null) {
                 return null; // EARLY EXIT
             }
             try {
-                Ice.ObjectPrx[] candidates = null;
+                com.zeroc.Ice.ObjectPrx[] candidates = null;
                 candidates = query.findAllObjectsByType(_TablesDisp.ice_staticId());
                 TablesPrx[] tables = new TablesPrx[candidates.length];
                 for (int i = 0; i < tables.length; i++) {
@@ -314,12 +314,12 @@ public interface Registry {
         }
 
         public InternalRepositoryPrx[] lookupRepositories() {
-            IceGrid.QueryPrx query = getGridQuery();
+            com.zeroc.IceGrid.QueryPrx query = getGridQuery();
             if (query == null) {
                 return null; // EARLY EXIT
             }
             try {
-                Ice.ObjectPrx[] candidates = null;
+                com.zeroc.Ice.ObjectPrx[] candidates = null;
                 candidates = query.findAllObjectsByType(_InternalRepositoryDisp
                         .ice_staticId());
                 InternalRepositoryPrx[] repos = new InternalRepositoryPrx[candidates.length];
@@ -337,12 +337,12 @@ public interface Registry {
         }
         
         public MonitorServerPrx[] lookupMonitorServers() {
-            IceGrid.QueryPrx query = getGridQuery();
+            com.zeroc.IceGrid.QueryPrx query = getGridQuery();
             if (query == null) {
                 return null; // EARLY EXIT
             }
             try {
-                Ice.ObjectPrx[] candidates = null;
+                com.zeroc.Ice.ObjectPrx[] candidates = null;
                 candidates = query.findAllObjectsByType(_MonitorServerDisp.ice_staticId());
                 MonitorServerPrx[] mss = new MonitorServerPrx[candidates.length];
                 for (int i = 0; i < mss.length; i++) {

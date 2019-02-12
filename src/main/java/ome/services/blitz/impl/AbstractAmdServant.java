@@ -131,7 +131,7 @@ public abstract class AbstractAmdServant implements ApplicationContextAware {
         }
     }
 
-    public final void callInvokerOnRawArgs(Object __cb, Ice.Current __current,
+    public final void callInvokerOnRawArgs(Object __cb, com.zeroc.Ice.Current __current,
             Object... args) {
         if (service == null) {
             throw new ome.conditions.InternalException(
@@ -141,7 +141,7 @@ public abstract class AbstractAmdServant implements ApplicationContextAware {
     }
 
     public final void callInvokerOnMappedArgs(IceMapper mapper, Object __cb,
-            Ice.Current __current, Object... args) {
+                                              com.zeroc.Ice.Current __current, Object... args) {
         if (service == null) {
             throw new ome.conditions.InternalException(
                     "Null service; cannot use callInvoker()");
@@ -150,11 +150,11 @@ public abstract class AbstractAmdServant implements ApplicationContextAware {
                 __current, args);
     }
 
-    public final void runnableCall(Ice.Current __current, Task r) {
+    public final void runnableCall(com.zeroc.Ice.Current __current, Task r) {
         this.be.runnableCall(__current, r);
     }
 
-    public final <R> void safeRunnableCall(Ice.Current __current, Object cb,
+    public final <R> void safeRunnableCall(com.zeroc.Ice.Current __current, Object cb,
             boolean isVoid, Callable<R> callable) {
         this.be.safeRunnableCall(__current, cb, isVoid, callable);
     }

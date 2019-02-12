@@ -21,15 +21,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
   <bean class="omero.rtypes.RTypeObjectFactoryRegistry">
-        <property name="iceCommunicator" ref="Ice.Communicator"/>
+        <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
   </bean>
 
   <bean id="roitypes" class="ome.services.roi.RoiTypes.RoiTypesObjectFactoryRegistry">
-        <property name="iceCommunicator" ref="Ice.Communicator"/>
+        <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
   </bean>
 
   <bean class="omero.util.ModelObjectFactoryRegistry" depends-on="roitypes">
-        <property name="iceCommunicator" ref="Ice.Communicator"/>
+        <property name="iceCommunicator" ref="com.zeroc.Ice.Communicator"/>
   </bean>
 
 </beans>

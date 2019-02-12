@@ -325,7 +325,7 @@ public class ExporterI extends AbstractCloseableAmdServant implements
                     });
         } catch (Exception e) {
             IceMapper mapper = new IceMapper();
-            Ice.UserException ue = mapper.handleException(e, factory.getExecutor().getContext());
+            com.zeroc.Ice.UserException ue = mapper.handleException(e, factory.getExecutor().getContext());
             __cb.ice_exception(ue);
         }
     }
@@ -463,7 +463,7 @@ public class ExporterI extends AbstractCloseableAmdServant implements
                     });
         } catch (Exception e) {
             IceMapper mapper = new IceMapper();
-            Ice.UserException ue = mapper.handleException(e, factory.getExecutor().getContext());
+            com.zeroc.Ice.UserException ue = mapper.handleException(e, factory.getExecutor().getContext());
             __cb.ice_exception(ue);
         }
     }
@@ -538,7 +538,7 @@ public class ExporterI extends AbstractCloseableAmdServant implements
     // =========================================================================
 
     @Override
-    protected void preClose(Ice.Current current) {
+    protected void preClose(Current current) {
         retrieve = null;
         if (file != null) {
             file.delete();

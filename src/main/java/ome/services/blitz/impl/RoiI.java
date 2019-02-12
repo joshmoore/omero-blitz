@@ -645,7 +645,7 @@ public class RoiI extends AbstractAmdServant implements _IRoiOperations,
 
         @SuppressWarnings("unchecked")
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
             RoiResult result = new RoiResult();
             result.opts = opts;
 
@@ -698,7 +698,7 @@ public class RoiI extends AbstractAmdServant implements _IRoiOperations,
 
         @SuppressWarnings("unchecked")
         public Object mapReturnValue(IceMapper mapper, Object value)
-                throws Ice.UserException {
+                throws com.zeroc.Ice.UserException {
 
             Map<Long, RoiResult> rv = new HashMap<Long, RoiResult>();
             Map<Long, List<ome.model.roi.Roi>> iv = (Map<Long, List<ome.model.roi.Roi>>) value;

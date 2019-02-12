@@ -381,7 +381,7 @@ public class ScriptI extends AbstractAmdServant implements _IScriptOperations,
         });
     }
 
-    private String loadText(final OriginalFile file, final Ice.Current current)
+    private String loadText(final OriginalFile file, final Current current)
         throws ServerError {
 
         if (scripts.isInRepo(file.getId())) {

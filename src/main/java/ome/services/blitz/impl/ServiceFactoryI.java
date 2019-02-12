@@ -308,12 +308,12 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     }
 
     public IRoiPrx getRoiService(com.zeroc.Ice.Current current) throws ServerError {
-        Ice.ObjectPrx prx = getByName(ROISERVICE.value, current);
+        com.zeroc.Ice.ObjectPrx prx = getByName(ROISERVICE.value, current);
         return IRoiPrxHelper.uncheckedCast(prx);
     }
 
     public IScriptPrx getScriptService(com.zeroc.Ice.Current current) throws ServerError {
-        Ice.ObjectPrx prx = getByName(SCRIPTSERVICE.value, current);
+        com.zeroc.Ice.ObjectPrx prx = getByName(SCRIPTSERVICE.value, current);
         return IScriptPrxHelper.uncheckedCast(prx);
     }
 
@@ -339,7 +339,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
     }
 
     public IUpdatePrx getUpdateService(com.zeroc.Ice.Current current) throws ServerError {
-        Ice.ObjectPrx prx = getByName(UPDATESERVICE.value, current);
+        com.zeroc.Ice.ObjectPrx prx = getByName(UPDATESERVICE.value, current);
         return IUpdatePrxHelper.uncheckedCast(prx);
 
     }
@@ -503,7 +503,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
         if (false) { // ticket:2558, disabling because of long logins. See also
                      // #2485
             this.callback = callback;
-            log.info(Ice.Util.identityToString(this.sessionId())
+            log.info(com.zeroc.Util.identityToString(this.sessionId())
                     + " set callback to " + this.callback);
             try {
                 subscribe(HEARTBEAT.value, callback, current);
@@ -601,7 +601,7 @@ public final class ServiceFactoryI extends omero.cmd.SessionI implements _Servic
                 if (prx == null) {
                     continue;
                 }
-                Ice.Identity id = prx.ice_getIdentity();
+                com.zeroc.Ice.Identity id = prx.ice_getIdentity();
                 if (null == holder.get(id)) {
                     retVal |= 1 << i;
                 }

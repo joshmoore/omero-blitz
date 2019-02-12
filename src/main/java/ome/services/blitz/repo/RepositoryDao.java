@@ -175,7 +175,7 @@ public interface RepositoryDao {
             final Current current) throws ServerError;
 
     /**
-     * Like {@link #register(String, CheckedPath, String, Ice.Current)} but
+     * Like {@link #register(String, CheckedPath, String, Current)} but
      * does not create a new transaction. Instead, the {@link ServiceFactory}
      * and {@link SqlAction} must be passed in. The returned OriginalFile
      * instance is still connected to Hibernate.

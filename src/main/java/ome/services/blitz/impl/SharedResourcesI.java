@@ -392,7 +392,7 @@ public class SharedResourcesI extends AbstractCloseableAmdServant implements
                        Map<String, String> ctx = new HashMap<String, String>();
                        ctx.put("omero.group", "-1");
                        server.begin_getTable(file, sf.proxy(), ctx,
-                           new Ice.Callback() {
+                           new com.zeroc.allback() {
                                public void completed(com.zeroc.Ice.AsyncResult r) {
                                    try {
                                        holder.set(server.end_getTable(r));

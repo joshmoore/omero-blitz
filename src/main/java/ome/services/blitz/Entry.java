@@ -178,7 +178,7 @@ public class Entry {
             // Parse out any omero.* properties from ICE_CONFIG
             // and set them in the System
             com.zeroc.Ice.InitializationData id = new com.zeroc.Ice.InitializationData();
-            id.properties = Ice.Util.createProperties();
+            id.properties = com.zeroc.Ice.Util.createProperties();
             if (ICE_CONFIG != null) {
                 id.properties.load(ICE_CONFIG);
                 for (String k : id.properties.getPropertiesForPrefix("omero").keySet()) {
@@ -187,8 +187,8 @@ public class Entry {
             }
             
             ctx = OmeroContext.getInstance(name);
-            if (ctx.containsBean("Ice.Communicator")) {
-                ic = (com.zeroc.Ice.Communicator) ctx.getBean("Ice.Communicator");
+            if (ctx.containsBean("com.zeroc.Ice.Communicator")) {
+                ic = (com.zeroc.Ice.Communicator) ctx.getBean("com.zeroc.Ice.Communicator");
             } else {
                 // TODO This should be adapted to work for any process
                 // that doesn't need to add servants. Here "Indexer" could

@@ -43,7 +43,7 @@ public class ConfigRedirector extends AbstractRedirector {
      * @throws CannotCreateSessionException
      */
     public SessionPrx getProxyOrNull(Context ctx, String userId,
-            Glacier2.SessionControlPrx control, Ice.Current current)
+            Glacier2.SessionControlPrx control, com.zeroc.Ice.Current current)
             throws CannotCreateSessionException {
 
         // First, give the abstract class a chance to handle common cases

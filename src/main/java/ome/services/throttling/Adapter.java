@@ -49,7 +49,7 @@ public class Adapter extends Task {
             try {
                 retVal = this.ex.execute(this.p, this.work);
             } catch (Throwable t) {
-                Ice.UserException ue = mapper.handleException(t, ex
+                com.zeroc.Ice.UserException ue = mapper.handleException(t, ex
                         .getContext());
                 exception(ue, ex.getContext());
                 return; // EARLY EXIT

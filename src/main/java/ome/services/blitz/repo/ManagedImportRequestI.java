@@ -455,7 +455,7 @@ public class ManagedImportRequestI extends ImportRequest implements IRequest {
             }
             try {
                 process.close();
-            } catch (Ice.ObjectNotExistException onee) {
+            } catch (com.zeroc.Ice.ObjectNotExistException onee) {
                 // Likely already closed.
             } catch (Throwable t) {
                 log.error("Failed to close process on autoClose", t);

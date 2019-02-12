@@ -111,7 +111,7 @@ public abstract class AbstractPyramidServant extends AbstractCloseableAmdServant
      */
     public final static ReturnMapping RESOLUTION_DESCRIPTIONS = new ReturnMapping() {
         public Object mapReturnValue(IceMapper mapper, Object value)
-        throws Ice.UserException {
+        throws com.zeroc.Ice.UserException {
 
             if (value == null) {
                 return null;

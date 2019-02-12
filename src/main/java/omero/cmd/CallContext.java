@@ -37,9 +37,9 @@ public class CallContext implements MethodInterceptor {
 
     private final String token;
 
-    private final Ice.Current current;
+    private final com.zeroc.Ice.Current current;
 
-    public CallContext(OmeroContext ctx, String token, Ice.Current current) {
+    public CallContext(OmeroContext ctx, String token, com.zeroc.Ice.Current current) {
         this.cd = ctx.getBean(CurrentDetails.class);
         this.token = token;
         this.current = current;
@@ -64,8 +64,8 @@ public class CallContext implements MethodInterceptor {
             final Object[] args = arg0.getArguments();
             if (args != null && args.length > 0) {
                 final Object last = args[args.length-1];
-                if (Ice.Current.class.isAssignableFrom(last.getClass())) {
-                    final Ice.Current current = (Ice.Current) last;
+                if (com.zeroc.Ice.Current.class.isAssignableFrom(last.getClass())) {
+                    final com.zeroc.Ice.Current current = (Ice.Current) last;
                     final Map<String, String> ctx = current.ctx;
                     if (ctx != null && ctx.size() > 0) {
                         cd.setContext(ctx);

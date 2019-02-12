@@ -567,7 +567,7 @@ public class SessionI implements _SessionOperations {
      * know.
      */
     public com.zeroc.Ice.ObjectPrx registerServant(com.zeroc.Ice.Identity id, com.zeroc.Ice.Object servant,
-            Ice.Current current)
+                                                   com.zeroc.Ice.Current current)
             throws ServerError {
 
         com.zeroc.Ice.ObjectPrx prx = null;
@@ -732,7 +732,7 @@ public class SessionI implements _SessionOperations {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
         sb.append("(");
-        sb.append(Ice.Util.identityToString(sessionId()));
+        sb.append(com.zeroc.Ice.Util.identityToString(sessionId()));
         sb.append(")");
         return sb.toString();
     }

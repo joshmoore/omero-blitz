@@ -36,7 +36,7 @@ public class RegisterServantMessage extends FindServiceFactoryMessage {
     }
 
     public RegisterServantMessage(Object source, com.zeroc.Ice.Object servant,
-            String name, Ice.Current current) {
+            String name, com.zeroc.Ice.Current current) {
         super(source, current);
         this.servant = servant;
         this.readableName = name;

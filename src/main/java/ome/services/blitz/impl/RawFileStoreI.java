@@ -171,8 +171,8 @@ _RawFileStoreOperations, ServiceFactoryAware {
         adjustedCtx.put(omero.constants.SESSIONUUID.value, current.id.category);
         adjustedCtx.put(omero.constants.CLIENTUUID.value, current.ctx.get(CLIENTUUID.value));
 
-        final Ice.ObjectPrx prx = sf.getAdapter().createProxy(
-                Ice.Util.stringToIdentity("PublicRepository-" + repo));
+        final com.zeroc.Ice.ObjectPrx prx = sf.getAdapter().createProxy(
+                com.zeroc.Ice.Util.stringToIdentity("PublicRepository-" + repo));
         final RepositoryPrx repoPrx = RepositoryPrxHelper.checkedCast(prx);
         final RawFileStorePrx rfsPrx = repoPrx.fileById(fileId, adjustedCtx);
         OpsDelegate ops = new OpsDelegate(be, rfsTie, this, rfsPrx);

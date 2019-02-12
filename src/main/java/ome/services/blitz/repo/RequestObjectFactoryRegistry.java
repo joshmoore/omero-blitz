@@ -82,7 +82,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(ManagedImportRequestI.ice_staticId(), new ObjectFactory(
                 ManagedImportRequestI.ice_staticId()) {
             @Override
-            public Ice.Object create(String name) {
+            public com.zeroc.Ice.Object create(String name) {
                 ManagedImportRequestI mir = new ManagedImportRequestI(reg, sizes, dao,
                         new OMEROWrapper(
                                 new ImportConfig(),
@@ -97,7 +97,7 @@ public class RequestObjectFactoryRegistry extends
         factories.put(RawAccessRequestI.ice_staticId(), new ObjectFactory(
                 RawAccessRequestI.ice_staticId()) {
             @Override
-            public Ice.Object create(String name) {
+            public com.zeroc.Ice.Object create(String name) {
                 return new RawAccessRequestI(reg);
             }
 

@@ -25,7 +25,7 @@ public class Callback2<R> extends Task {
 
     private final Callable<R> callable;
 
-    public Callback2(Ice.Current current, Object cb, boolean isVoid,
+    public Callback2(com.zeroc.Ice.Current current, Object cb, boolean isVoid,
             Callable<R> callable) {
 
         super(cb, current, isVoid);

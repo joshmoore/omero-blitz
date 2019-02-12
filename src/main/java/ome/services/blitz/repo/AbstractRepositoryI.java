@@ -277,7 +277,7 @@ public abstract class AbstractRepositoryI extends _InternalRepositoryDisp
         return repoUuid;
     }
 
-    public final Ice.Communicator getCommunicator() {
+    public final com.zeroc.Ice.Communicator getCommunicator() {
         return oa.getCommunicator();
     }
 
@@ -481,7 +481,7 @@ public abstract class AbstractRepositoryI extends _InternalRepositoryDisp
             //
             oa.activate(); // Must happen before the registry tries to connect
 
-            for (Ice.ObjectPrx prx : objs) {
+            for (com.zeroc.Ice.ObjectPrx prx : objs) {
                 reg.addObject(prx);
             }
 

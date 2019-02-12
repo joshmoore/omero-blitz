@@ -31,21 +31,21 @@ public interface TopicManager extends ApplicationListener {
      * Enforces <em>no</em> security constraints. For the moment, that is the
      * responsibility of application code. WILL CHANGE>
      */
-    public void register(String topicName, Ice.ObjectPrx prx, boolean strict)
+    public void register(String topicName, com.zeroc.Ice.ObjectPrx prx, boolean strict)
     throws omero.ServerError;
 
-    public void unregister(String topicName, Ice.ObjectPrx prx)
+    public void unregister(String topicName, com.zeroc.Ice.ObjectPrx prx)
     throws omero.ServerError;
 
     public final static class TopicMessage extends ApplicationEvent {
 
         private final String topic;
-        private final Ice.ObjectPrxHelperBase base;
+        private final com.zeroc.Ice.ObjectPrxHelperBase base;
         private final String method;
         private final Object[] args;
 
         public TopicMessage(Object source, String topic,
-                Ice.ObjectPrxHelperBase base, String method, Object... args) {
+                            com.zeroc.Ice.ObjectPrxHelperBase base, String method, Object... args) {
             super(source);
             this.topic = topic;
             this.base = base;
@@ -58,9 +58,9 @@ public interface TopicManager extends ApplicationListener {
 
         private final static Logger log = LoggerFactory.getLogger(Impl.class);
 
-        private final Ice.Communicator communicator;
+        private final com.zeroc.Ice.Communicator communicator;
 
-        public Impl(Ice.Communicator communicator) {
+        public Impl(com.zeroc.Ice.Communicator communicator) {
             this.communicator = communicator;
         }
 
@@ -70,13 +70,13 @@ public interface TopicManager extends ApplicationListener {
                 TopicMessage msg = (TopicMessage) event;
                 try {
 
-                    IceStorm.TopicManagerPrx topicManager = managerOrNull();
+                    com.zeroc.IceStorm.TopicManagerPrx topicManager = managerOrNull();
                     if (topicManager == null) {
                         log.warn("No topic manager");
                         return; // EARLY EXIT
                     }
 
-                    Ice.ObjectPrx obj = publisherOrNull(msg.topic);
+                    com.zeroc.Ice.ObjectPrx obj = publisherOrNull(msg.topic);
                     msg.base.__copyFrom(obj);
                     Method m = null;
                     for (Method check : msg.base.getClass().getMethods()) {
@@ -101,7 +101,7 @@ public interface TopicManager extends ApplicationListener {
                     } else {
                         m.invoke(msg.base, msg.args);
                     }
-                } catch (Ice.NoEndpointException nee) {
+                } catch (com.zeroc.Ice.NoEndpointException nee) {
                     // Most likely caused during testing.
                     log.debug("Ice.NoEndpointException");
                 } catch (Exception e) {
@@ -110,7 +110,7 @@ public interface TopicManager extends ApplicationListener {
             }
         }
 
-        public void register(String topicName, Ice.ObjectPrx prx, boolean strict)
+        public void register(String topicName, com.zeroc.Ice.ObjectPrx prx, boolean strict)
                 throws omero.ServerError {
             String id = prx.ice_id();
             id = id.replaceFirst("_", "");
@@ -123,13 +123,13 @@ public interface TopicManager extends ApplicationListener {
                 throw new ApiUsageException(null, null,
                         "Unknown type for proxy: " + prx.ice_id());
             }
-            IceStorm.TopicPrx topic = topicOrNull(topicName);
+            com.zeroc.IceStorm.TopicPrx topic = topicOrNull(topicName);
 
             while (topic != null) { // See 45.7.3 IceStorm Clients under HA
                 // IceStorm
                 try {
                     topic.subscribeAndGetPublisher(null, prx);
-                } catch (Ice.UnknownException ue) {
+                } catch (com.zeroc.Ice.UnknownException ue) {
                     log.warn("Unknown exception on subscribeAndGetPublisher");
                     continue;
                 } catch (AlreadySubscribed e) {
@@ -140,7 +140,7 @@ public interface TopicManager extends ApplicationListener {
                 } catch (BadQoS e) {
                     throw new InternalException(null, null,
                             "BadQos in TopicManager.subscribe");
-                } catch (Ice.UserException ue) {
+                } catch (com.zeroc.Ice.UserException ue) {
                     // Actually IceStorm.InvalidSubscriber, for Ice 3.4/3.5 compatibility
                     log.warn("Invalid subscriber on subscribeAndGetPublisher");
                     continue;
@@ -149,11 +149,11 @@ public interface TopicManager extends ApplicationListener {
             }
         }
 
-        public void unregister(String topicName, Ice.ObjectPrx prx)
+        public void unregister(String topicName, com.zeroc.Ice.ObjectPrx prx)
             throws omero.ServerError {
 
             try {
-                IceStorm.TopicPrx topic = topicOrNull(topicName);
+                com.zeroc.IceStorm.TopicPrx topic = topicOrNull(topicName);
                 if (topic != null) {
                     topic.unsubscribe(prx);
                 }
@@ -167,28 +167,28 @@ public interface TopicManager extends ApplicationListener {
         // Helpers
         // =========================================================================
 
-        protected IceStorm.TopicManagerPrx managerOrNull() {
+        protected com.zeroc.IceStorm.TopicManagerPrx managerOrNull() {
 
-            Ice.ObjectPrx objectPrx = communicator
+            com.zeroc.Ice.ObjectPrx objectPrx = communicator
                     .stringToProxy("IceGrid/Query");
-            Ice.ObjectPrx[] candidates = null;
+            com.zeroc.Ice.ObjectPrx[] candidates = null;
 
             try {
-                IceGrid.QueryPrx query = IceGrid.QueryPrxHelper
+                com.zeroc.IceGrid.QueryPrx query = com.zeroc.IceGrid.QueryPrxHelper
                         .checkedCast(objectPrx);
                 candidates = query
                         .findAllObjectsByType("_IceStorm_TopicManager");
-            } catch (Ice.CommunicatorDestroyedException cde) {
+            } catch (com.zeroc.Ice.CommunicatorDestroyedException cde) {
                 // Nothing we can do. Return null;
                 return null;
-            } catch (Ice.NoEndpointException nee) {
+            } catch (com.zeroc.Ice.NoEndpointException nee) {
                 // Most likely caused during testing.
                 log.debug("Ice.NoEndpointException");
             } catch (Exception e) {
                 log.warn("Error querying for topic manager", e);
             }
 
-            IceStorm.TopicManagerPrx tm = null;
+            com.zeroc.IceStorm.TopicManagerPrx tm = null;
 
             if (candidates == null || candidates.length == 0) {
                 log.warn("Found no topic manager");
@@ -197,7 +197,7 @@ public interface TopicManager extends ApplicationListener {
                         + candidates.length);
             } else {
                 try {
-                    tm = IceStorm.TopicManagerPrxHelper
+                    tm = com.zeroc.IceStorm.TopicManagerPrxHelper
                             .checkedCast(candidates[0]);
                 } catch (Exception e) {
                     log.warn("Could not cast to TopicManager", e);
@@ -206,13 +206,13 @@ public interface TopicManager extends ApplicationListener {
             return tm;
         }
 
-        protected IceStorm.TopicPrx topicOrNull(String name) {
-            IceStorm.TopicManagerPrx topicManager = managerOrNull();
-            IceStorm.TopicPrx topic = null;
+        protected com.zeroc.IceStorm.TopicPrx topicOrNull(String name) {
+            com.zeroc.IceStorm.TopicManagerPrx topicManager = managerOrNull();
+            com.zeroc.IceStorm.TopicPrx topic = null;
             if (topicManager != null) {
                 try {
                     topic = topicManager.create(name);
-                } catch (IceStorm.TopicExists ex2) {
+                } catch (com.zeroc.IceStorm.TopicExists ex2) {
                     try {
                         topic = topicManager.retrieve(name);
                     } catch (NoSuchTopic e) {
@@ -224,9 +224,9 @@ public interface TopicManager extends ApplicationListener {
             return topic;
         }
 
-        protected Ice.ObjectPrx publisherOrNull(String name) {
+        protected com.zeroc.Ice.ObjectPrx publisherOrNull(String name) {
             IceStorm.TopicPrx topic = topicOrNull(name);
-            Ice.ObjectPrx pub = null;
+            com.zeroc.Ice.ObjectPrx pub = null;
             if (topic != null) {
                 pub = topic.getPublisher().ice_oneway();
             }

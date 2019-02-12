@@ -86,13 +86,13 @@ public class ProcessorCallbackI extends AbstractAmdServant
     }
 
     /**
-     * Generates a UUID-based {@link Ice.Identity} with the category of
+     * Generates a UUID-based {@link com.zeroc.Ice.Identity} with the category of
      * {@link PROCESSORCALLBACK#value} and then calls
      * {@link #activateAndWait(Current, Ice.Identity)}.
      * @return See above.
      */
-    public ProcessorPrx activateAndWait(Ice.Current current) throws ServerError {
-        Ice.Identity acceptId = new Ice.Identity();
+    public ProcessorPrx activateAndWait(Current current) throws ServerError {
+        com.zeroc.Ice.Identity acceptId = new com.zeroc.Ice.Identity();
         acceptId.name = UUID.randomUUID().toString();
         acceptId.category = PROCESSORCALLBACK.value;
         return activateAndWait(current, acceptId);
@@ -108,9 +108,9 @@ public class ProcessorCallbackI extends AbstractAmdServant
      * @return See above.
      * @throws ServerError
      */
-    public ProcessorPrx activateAndWait(Ice.Current current,
-            Ice.Identity acceptId) throws ServerError {
-        Ice.ObjectPrx prx = sf.registerServant(acceptId,
+    public ProcessorPrx activateAndWait(Current current,
+                                        com.zeroc.Ice.Identity acceptId) throws ServerError {
+        com.zeroc.Ice.ObjectPrx prx = sf.registerServant(acceptId,
                 new _ProcessorCallbackTie(this));
 
         try {
@@ -172,7 +172,7 @@ public class ProcessorCallbackI extends AbstractAmdServant
                 } else {
                     reason = "since disallowed";
                 }
-            } catch (Ice.ObjectNotExistException onee) {
+            } catch (com.zeroc.Ice.ObjectNotExistException onee) {
                 exc = onee;
                 reason = "due to ObjectNotExistException: " + procLog;
             } catch (Exception e) {

@@ -64,12 +64,14 @@ public class ApiConsistencyCheck implements BeanPostProcessor {
             return arg0; // EARLY EXIT!
         }
 
+        /*
         if (arg0 instanceof Ice.TieBase) {
             Ice.TieBase tie = (Ice.TieBase) arg0;
             if (tie.ice_delegate() instanceof BlitzOnly) {
                 return arg0; // EARLY EXIT!
             }
         }
+        */
 
         if (arg0 instanceof _ServiceInterfaceOperations) {
             final _ServiceInterfaceOperations sio = (_ServiceInterfaceOperations) arg0;
