@@ -126,6 +126,8 @@ slice {
         files = fileTree(dir: file("src/generated/slice"), include: '**/*.ice')
         if (slice.iceVersion.contains('3.6')) {
             args = "--tie"
+        } else {
+            args = ["--meta", "suppress-warning:deprecated"]
         }
     }
 }
