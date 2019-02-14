@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.MailException;
 
 import ome.conditions.ApiUsageException;
 import ome.model.meta.Experimenter;
@@ -164,7 +165,7 @@ public class ResetPasswordRequestI extends ResetPasswordRequest implements
                 mailUtil.sendEmail(sender, e.getEmail(), subject, body, false,
                         null, null);
                 log.info("sent new password for {} to {}", e.getOmeName(), e.getEmail());
-            } catch (RuntimeException me) {
+            } catch (MailException me) {
                 log.error(me.getMessage());
                 throw helper.cancel(new ERR(), null, "mail-send-failed",
                         "MailException", String.format(me.getMessage()));

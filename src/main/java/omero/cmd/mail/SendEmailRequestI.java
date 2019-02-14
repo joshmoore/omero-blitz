@@ -30,6 +30,7 @@ import omero.cmd.Response;
 import omero.cmd.SendEmailRequest;
 import omero.cmd.SendEmailResponse;
 import ome.model.meta.Experimenter;
+import org.springframework.mail.MailException;
 
 /**
  * Callback interface allowing to send email using JavaMailSender, supporting
@@ -129,7 +130,7 @@ public class SendEmailRequestI extends SendEmailRequest implements IRequest, Rea
         try {
             mailUtil.sendEmail(this.sender, email, subject, body, html, null,
                     null);
-        } catch (RuntimeException me) {
+        } catch (MailException me) {
             log.error(me.getMessage());
             rsp.invalidemails.add(email);
         }

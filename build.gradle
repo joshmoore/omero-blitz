@@ -1,9 +1,6 @@
-import com.zeroc.gradle.icebuilder.slice.PythonTask
-
 plugins {
-    id "java"
+    id "java-library"
     id 'maven-publish'
-    id 'org.openmicroscopy.dsl' version '5.5.0-SNAPSHOT'
     id 'org.openmicroscopy.blitz' version '5.5.0-SNAPSHOT'
     id 'com.zeroc.gradle.ice-builder.slice' version '1.5.0-SNAPSHOT'
 }
@@ -16,12 +13,13 @@ targetCompatibility = JavaVersion.VERSION_1_8
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url 'http://repo.boundlessgeo.com/main/' }
+    maven { url 'https://artifacts.openmicroscopy.org/artifactory/maven/' }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'org.openmicroscopy:omero-server:5.5.0-SNAPSHOT'
+
+    api 'org.openmicroscopy:omero-server:5.5.0-SNAPSHOT'
 
     implementation 'com.sun.activation:javax.activation:1.2.0'
 
@@ -36,14 +34,23 @@ dependencies {
     implementation 'net.sf.ehcache:ehcache:2.10.6'
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs "src/generated/java"
-        }
-        resources {
-            srcDirs "src/generated/resources"
-        }
+if (slice.iceVersion.contains('3.7')) {
+    slice.output = file('src/generated/ice37')
+    dependencies {
+        implementation 'com.zeroc:icegrid:3.7.2'
+        implementation 'com.zeroc:icestorm:3.7.2'
+    }
+    sourceSets.main.java {
+        srcDirs 'src/main/ice37', slice.output
+    }
+} else if (slice.iceVersion.contains('3.6')) {
+    slice.output = file('src/generated/ice36')
+    dependencies {
+        implementation 'com.zeroc:icegrid:3.6.4'
+        implementation 'com.zeroc:icestorm:3.6.4'
+    }
+    sourceSets.main.java {
+        srcDirs 'src/main/ice36', slice.output
     }
 }
 
@@ -57,33 +64,32 @@ ext {
  * from .combined files.
  **/
 blitz {
-    outputPath "src/generated"
+    template = "src/main/resources/templates/combined.vm"
+    databaseType = "psql"
+
     api {
         java {
             language "java"
-            outputPath "java/omero/model"
+            outputDir "java/omero/model"
         }
 
         ice {
             language "ice"
-            outputPath "slice/omero/model"
+            outputDir "slice/omero/model"
             outputName "\$1"
         }
 
         python {
             language "python"
-            outputPath pythonOutputDir
+            outputDir pythonOutputDir
             outputName "omero_model_\$1I"
         }
     }
 }
 
 dsl {
-    templateFiles fileTree(
-            dir: "src/main/resources/templates",
-            include: '**/*.vm'
-    )
-    outputPath "src/generated"
+    databaseType "psql"
+    outputDir blitz.outputDir
     resource {
         iceMap {
             template "java_ice_map.vm"
@@ -100,6 +106,10 @@ dsl {
             outputFile "$pythonOutputDir/omero/ObjectFactoryRegistrar.py"
         }
     }
+}
+
+clean {
+    delete blitz.outputDir
 }
 
 slice {
@@ -122,7 +132,7 @@ tasks.addRule('Pattern: pythonTask<ID>') { String taskName ->
         def dir = camel.replaceAll("([A-Z])", '/$1').toLowerCase()
         def dirAsPrefix = dir.replace("/", "_") + "_"
 
-        task(taskName, type: PythonTask, dependsOn: "copySliceFiles") {
+        task(taskName, type: com.zeroc.gradle.icebuilder.slice.PythonTask, dependsOn: "copySliceFiles") {
             includeDirs = "src/generated/slice"
             inputFiles = fileTree(dir: "src/generated/slice/${dir}", include: '**.ice')
             outputDir = file("$pythonOutputDir")
@@ -143,33 +153,24 @@ task pythonTaskGroup {
     ]
 }
 
-afterEvaluate {
-    if (slice.iceVersion.contains('3.7')) {
-        slice.output = file('src/generated/ice37')
-        dependencies {
-            implementation 'com.zeroc:icegrid:3.7.+'
-            implementation 'com.zeroc:icestorm:3.7.+'
-        }
-        sourceSets.main.java {
-            srcDirs 'src/main/ice37', slice.output
-        }
-    } else if (slice.iceVersion.contains('3.6')) {
-        slice.output = file('src/generated/ice36')
-        dependencies {
-            implementation 'com.zeroc:icegrid:3.6.+'
-            implementation 'com.zeroc:icestorm:3.6.+'
-        }
-        sourceSets.main.java {
-            srcDirs 'src/main/ice36', slice.output
-        }
-    }
-}
-
 // Set compileSlice to depend on the generation of ice files from "splitIce"
 compileSlice.dependsOn "copySliceFiles"
 
 // Set compileJava to additionally depend on "splitJava"
 compileJava.dependsOn "splitJava"
 
+jar {
+    manifest {
+        attributes(
+                'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                'Created-By': "Gradle ${gradle.gradleVersion}",
+                'Build-Jdk': "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                'Main-Class': 'ome.services.blitz.Entry',
+                "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' ')
+        )
+    }
+}
+
 // Add publish functionality
 apply from: 'publish.gradle'
+

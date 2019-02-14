@@ -28,6 +28,7 @@ package ome.services.blitz.repo;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -765,7 +766,7 @@ public class PublicRepositoryI implements _RepositoryOperations, ApplicationCont
                     repositoryDao.register(repoUuid, checked,
                             DIRECTORY_MIMETYPE, sf, sql, s);
                 } catch (ValidationException ve) {
-                    if (ve.getCause().getClass().getSimpleName().equals("PSQLException") ) {
+                    if (ve.getCause() instanceof SQLException) {
                         // Could have collided with another thread also creating the directory.
                         // See Trac #11096 regarding originalfile table uniqueness of columns repo, path, name.
                         // So, give the other thread time to complete registration.
