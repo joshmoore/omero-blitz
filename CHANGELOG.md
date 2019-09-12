@@ -1,3 +1,10 @@
+5.5.4 (Sep 2019)
+----------------
+
+- Add deprecation warning to Blitz objects (#62)
+- Increase VerifyDepthMax for websocket login (#66)
+- Prepare Blitz objects for Python 3 support (#69, #70)
+
 5.5.3 (July 2019)
 -----------------
 
